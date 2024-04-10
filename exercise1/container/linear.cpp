@@ -37,14 +37,14 @@ bool LinearContainer<Data>::operator!=(const LinearContainer<Data> & that) const
 }
 
 template <typename Data>
-inline Data LinearContainer<Data>::Front() const 
+inline const Data & LinearContainer<Data>::Front() const 
 {
     if (this->Empty()) 
     {
-        //throw std::length_error (EMPTY_CONTAINER_MSG);
+        throw std::length_error (EMPTY_CONTAINER_MSG);
             //Errore del compilatore: 
             //‘length_error’ is not a member of ‘std’
-        std::__throw_length_error (EMPTY_CONTAINER_MSG);
+        // std::__throw_length_error (EMPTY_CONTAINER_MSG);
     } 
     else
     {
@@ -53,11 +53,11 @@ inline Data LinearContainer<Data>::Front() const
 }
 
 template <typename Data>
-inline Data LinearContainer<Data>::Front() 
+inline Data & LinearContainer<Data>::Front() 
 {
     if (this->Empty()) 
     {
-        std::__throw_length_error (EMPTY_CONTAINER_MSG);
+        throw std::length_error (EMPTY_CONTAINER_MSG);
     } 
     else
     {
@@ -66,11 +66,11 @@ inline Data LinearContainer<Data>::Front()
 }
 
 template <typename Data>
-inline Data LinearContainer<Data>::Back() const 
+inline const Data & LinearContainer<Data>::Back() const 
 {
     if (this->Empty()) 
     {
-        std::__throw_length_error (EMPTY_CONTAINER_MSG);
+        throw std::length_error (EMPTY_CONTAINER_MSG);
     } 
     else 
     {
@@ -79,11 +79,11 @@ inline Data LinearContainer<Data>::Back() const
 }
 
 template <typename Data>
-inline Data LinearContainer<Data>::Back() 
+inline Data & LinearContainer<Data>::Back() 
 {
     if (this->Empty()) 
     {
-        std::__throw_length_error (EMPTY_CONTAINER_MSG);
+        throw std::length_error (EMPTY_CONTAINER_MSG);
     } 
     else 
     {
@@ -92,7 +92,7 @@ inline Data LinearContainer<Data>::Back()
 }
 
 template <typename Data>
-void LinearContainer<Data>::Traverse(TraverseFun traverseFun) const
+inline void LinearContainer<Data>::Traverse(TraverseFun traverseFun) const
 {
     this->PreOrderTraverse(traverseFun);
 }
@@ -116,7 +116,7 @@ void LinearContainer<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 }
 
 template <typename Data>
-void LinearContainer<Data>::Map(MapFun mapFun) 
+inline void LinearContainer<Data>::Map(MapFun mapFun) 
 {
     this->PreOrderMap(mapFun);
 }

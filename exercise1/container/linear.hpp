@@ -5,6 +5,7 @@
 /* ************************************************************************** */
 
 #include "mappable.hpp"
+#include <stdexcept>
 
 /* ************************************************************************** */
 
@@ -48,14 +49,14 @@ public:
 
   // Specific member functions
 
-  virtual Data operator[](const unsigned long idx) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
+  virtual const Data & operator[](const unsigned long idx) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
   virtual Data & operator[](const unsigned long idx) = 0; // (mutable version; concrete function must throw std::out_of_range when out of range)
 
-  inline Data Front() const; // (non-mutable version; concrete function must throw std::length_error when empty)
-  inline Data Front(); // (mutable version; concrete function must throw std::length_error when empty)
+  virtual inline const Data & Front() const; // (non-mutable version; concrete function must throw std::length_error when empty)
+  virtual inline Data & Front(); // (mutable version; concrete function must throw std::length_error when empty)
 
-  inline Data Back() const; // (non-mutable version; concrete function must throw std::length_error when empty)
-  inline Data Back(); // (mutable version; concrete function must throw std::length_error when empty)
+  virtual inline const Data & Back() const; // (non-mutable version; concrete function must throw std::length_error when empty)
+  virtual inline Data & Back(); // (mutable version; concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
 
@@ -63,7 +64,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void Traverse(TraverseFun) const override; // Override TraversableContainer member
+  inline void Traverse(TraverseFun) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
@@ -83,7 +84,7 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  void Map(MapFun) override; // Override MappableContainer member
+  inline void Map(MapFun) override; // Override MappableContainer member
 
   /* ************************************************************************ */
 
@@ -102,7 +103,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class SortableLinearContainer : public LinearContainer<Data>{
+class SortableLinearContainer : virtual public LinearContainer<Data>{
   // Must extend LinearContainer<Data>
 
 private:
