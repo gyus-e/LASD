@@ -228,11 +228,11 @@ void SortableLinearContainer<Data>::heapify(const unsigned long i, const unsigne
     const unsigned long Dx = (2 * i) + 2;
     unsigned long max = i;
 
-    if (Sx < heapsize && this->A[Sx] > this->A[max])
+    if (Sx < heapsize && (*this)[Sx] > (*this)[max])
     {
         max = Sx;
     }
-    if (Dx < heapsize && this->A[Dx] > this->A[max])
+    if (Dx < heapsize && (*this)[Dx] > (*this)[max])
     {
         max = Dx;
     }
