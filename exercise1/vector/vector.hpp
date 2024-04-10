@@ -15,7 +15,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class Vector : public ResizableContainer, public LinearContainer<Data> {
+class Vector : public ResizableContainer, public virtual LinearContainer<Data> {
   // Must extend ResizableContainer,
   //             LinearContainer<Data>
 
@@ -103,7 +103,7 @@ protected:
 /* ************************************************************************** */
 
 template <typename Data>
-class SortableVector {
+class SortableVector : public Vector<Data>, public SortableLinearContainer<Data> {
   // Must extend Vector<Data>,
   //             SortableLinearContainer<Data>
 
@@ -120,35 +120,35 @@ protected:
 public:
 
   // Default constructor
-  // SortableVector() specifiers;
+  SortableVector() = default;
 
   /* ************************************************************************ */
 
   // Specific constructors
-  // SortableVector(argument) specifiers; // A vector with a given initial dimension
-  // SortableVector(argument) specifiers; // A vector obtained from a TraversableContainer
-  // SortableVector(argument) specifiers; // A vector obtained from a MappableContainer
+  SortableVector(unsigned long sz) : Vector<Data> (sz) {} // A vector with a given initial dimension
+  SortableVector(const TraversableContainer<Data> & con) : Vector<Data> (con) {} // A vector obtained from a TraversableContainer
+  SortableVector(const MappableContainer<Data> & con) : Vector<Data> (con) {} // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
   // Copy constructor
-  // SortableVector(argument) specifiers;
+  // SortableVector(const SortableVector &);
 
   // Move constructor
-  // SortableVector(argument) specifiers;
+  // SortableVector(SortableVector &&);
 
   /* ************************************************************************ */
 
   // Destructor
-  // ~SortableVector() specifiers;
+  ~SortableVector() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument) specifiers;
+  // SortableVector operator=(const SortableVector &);
 
   // Move assignment
-  // type operator=(argument) specifiers;
+  // SortableVector operator=(const SortableVector &);
 
 protected:
 
