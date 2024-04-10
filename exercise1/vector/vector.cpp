@@ -3,7 +3,7 @@ namespace lasd {
 
 /* ************************************************************************** */
 
-//specific constructor
+//specific constructors
 template<typename Data>
 Vector<Data>::Vector (unsigned long sz)
 {
@@ -22,14 +22,68 @@ Vector<Data>::Vector (unsigned long sz)
     }
 }
 
+template<typename Data>
+Vector<Data>::Vector (const TraversableContainer<Data> & cont)
+{
+    unsigned long sz = cont.Size();
+    this->setSize (sz);
+    if (sz != 0)
+    {
+        try 
+        {
+            this->A = new Data [sz];
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+
+        unsigned long i = 0;
+        cont.Traverse (
+            [this, &i] (const Data & dat)
+            {
+                this->A[i] = dat;
+                i++;
+            }
+        );
+    }
+}
+
+template<typename Data>
+Vector<Data>::Vector (const MappableContainer<Data> & cont)
+{
+    unsigned long sz = cont.Size();
+    this->setSize (sz);
+    if (sz != 0)
+    {
+        try 
+        {
+            this->A = new Data [sz];
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+
+        unsigned long i = 0;
+        cont.Traverse (
+            [this, &i] (const Data & dat)
+            {
+                this->A[i] = dat;
+                i++;
+            }
+        );
+    }
+}
+
 //destructor
 template<typename Data>
 Vector<Data>::~Vector ()
 {
     if (this->A != nullptr)
     {
-        delete [] A;
-        A = nullptr;
+        delete [] this->A;
+        this->A = nullptr;
     }
 }
 
@@ -55,29 +109,29 @@ Vector<Data> Vector<Data>::operator=(Vector && that)
 
 //copy constructor
 template<typename Data>
-Vector<Data>::Vector (const Vector & vec)
+Vector<Data>::Vector (const Vector & that)
 {
-    this->setSize(vec.Size());
-    A = new Data [this->Size()];
+    this->setSize(that.Size());
+    this->A = new Data [this->Size()];
 
-    for (unsigned long i = 0; i < vec.Size(); i++)
+    for (unsigned long i = 0; i < that.Size(); i++)
     {
-        this->A[i] = vec.A[i];
+        this->A[i] = that.A[i];
     }
 }
 
 //copy operator
 template<typename Data>
-Vector<Data> Vector<Data>::operator=(const Vector & vec)
+Vector<Data> Vector<Data>::operator=(const Vector & that)
 {
-    if (this->Size() != vec.Size())
+    if (this->Size() != that.Size())
     {
-        this->Resize(vec.Size());
+        this->Resize(that.Size());
     }
 
-    for (unsigned long i = 0; i < vec.Size(); i++)
+    for (unsigned long i = 0; i < that.Size(); i++)
     {
-        this->A[i] = vec.A[i];
+        this->A[i] = that.A[i];
     }
 }
 
@@ -155,17 +209,55 @@ inline Data & Vector<Data>::Back()
     }
 }
 
+template <typename Data>
+bool Vector<Data>::operator==(const Vector<Data> & that) const noexcept
+{
+    if (this->Size() != that.Size())
+    {
+        return false;
+    }
+    for (unsigned long i = 0; i < this->Size(); i++)
+    {
+        if  (this->A[i] != that.A[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename Data>
+bool Vector<Data>::operator!=(const Vector<Data> & that) const noexcept
+{
+    if (this->Size() != that.Size())
+    {
+        return true;
+    }
+    for (unsigned long i = 0; i < this->Size(); i++)
+    {
+        if  (this->A[i] != that.A[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 template<typename Data>
 void Vector<Data>::Resize(unsigned long newSize)
 {
     Data * NewA = nullptr;
-    try 
+
+    if (newSize > 0)
     {
-        NewA = new Data [newSize];
-    }
-    catch (std::bad_alloc &exc)
-    {
-        throw;
+        try 
+        {
+            NewA = new Data [newSize];
+        }
+        catch (std::bad_alloc &exc)
+        {
+            throw;
+        }
     }
     
     unsigned long minSize = this->Size();
@@ -194,7 +286,7 @@ void Vector<Data>::Resize(unsigned long newSize)
     // }
 
 
-    if (A != nullptr)
+    if (this->A != nullptr)
     {
         delete [] this->A;
         this->A = nullptr;
@@ -203,6 +295,17 @@ void Vector<Data>::Resize(unsigned long newSize)
     this->A = NewA;
     this->setSize(newSize);
 }
+
+template <typename Data>
+void Vector<Data>::Clear()
+{
+    if (this->A != nullptr)
+    {
+        delete [] this->A;
+        this->A = nullptr;
+    }
+    this->setSize(0);
+} 
 
 /* ************************************************************************** */
 

@@ -39,8 +39,8 @@ public:
 
   // Specific constructors
   Vector (unsigned long); // A vector with a given initial dimension
-  // Vector(argument) specifiers; // A vector obtained from a TraversableContainer
-  // Vector(argument) specifiers; // A vector obtained from a MappableContainer
+  Vector(const TraversableContainer<Data> &); // A vector obtained from a TraversableContainer
+  Vector(const MappableContainer<Data> &); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -66,14 +66,14 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
+  bool operator==(const Vector &) const noexcept;
+  bool operator!=(const Vector &) const noexcept;
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
 
-  // type Clear() specifiers; // Override ClearableContainer member
+  void Clear() override; // Override ClearableContainer member
 
   /* ************************************************************************ */
 
