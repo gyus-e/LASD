@@ -6,6 +6,7 @@
 
 #include "../container/container.hpp"
 #include "../container/linear.hpp"
+#include <stdexcept>
 
 /* ************************************************************************** */
 
@@ -14,7 +15,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class Vector : public virtual ResizableContainer, public virtual LinearContainer<Data> {
+class Vector : public ResizableContainer, public LinearContainer<Data> {
   // Must extend ResizableContainer,
   //             LinearContainer<Data>
 
@@ -44,10 +45,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  // Vector(argument) specifiers;
+  Vector(const Vector &);
 
   // Move constructor
-  // Vector(argument) specifiers;
+  Vector(Vector &&) noexcept;
 
   /* ************************************************************************ */
 
@@ -57,10 +58,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument) specifiers;
+  Vector operator=(const Vector &);
 
   // Move assignment
-  // type operator=(argument) specifiers;
+  Vector operator=(Vector &&);
 
   /* ************************************************************************ */
 
@@ -84,14 +85,14 @@ public:
 
   // Specific member functions (inherited from LinearContainer)
 
-  inline Data operator[](unsigned long idx) const override; // Override (NonMutable) LinearContainer member (must throw std::out_of_range when out of range)
+  inline const Data & operator[](unsigned long idx) const override; // Override (NonMutable) LinearContainer member (must throw std::out_of_range when out of range)
   inline Data & operator[](unsigned long idx) override; // Override (Mutable) LinearContainer member (must throw std::out_of_range when out of range)
 
-  // type Front() specifiers; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
-  // type Front() specifiers; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
+  inline const Data & Front() const override; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
+  inline Data & Front() override; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
 
-  // type Back() specifiers; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
-  // type Back() specifiers; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
+  inline const Data & Back() const override; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
+  inline Data & Back() override; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
 
 protected:
 
