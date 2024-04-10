@@ -17,7 +17,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class MappableContainer : public TraversableContainer<Data> {
+class MappableContainer : public virtual TraversableContainer<Data> {
   // Must extend TraversableContainer<Data>
 
 private:
@@ -61,7 +61,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class PreOrderMappableContainer : public virtual MappableContainer<Data>, public PreOrderTraversableContainer<Data> {
+class PreOrderMappableContainer : public virtual MappableContainer<Data>, public virtual PreOrderTraversableContainer<Data> {
   // Must extend MappableContainer<Data>,
   //             PreOrderTraversableContainer<Data>
 
@@ -112,7 +112,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class PostOrderMappableContainer : public virtual MappableContainer<Data>, public PostOrderTraversableContainer<Data> {
+class PostOrderMappableContainer : public virtual MappableContainer<Data>, public virtual PostOrderTraversableContainer<Data> {
   // Must extend MappableContainer<Data>,
   //             PostOrderTraversableContainer<Data>
 
