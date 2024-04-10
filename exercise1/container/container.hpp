@@ -24,8 +24,7 @@ protected:
   /* ************************************************************************ */
 
   // Default constructor
-  Container(unsigned long sz = 0) {this->size = sz;}
-
+  Container(unsigned long sz = 0) : size(sz) {}
   void setSize (unsigned long sz) {this->size = sz;}
 
 public:
