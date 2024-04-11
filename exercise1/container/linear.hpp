@@ -7,6 +7,8 @@
 #include "mappable.hpp"
 #include <stdexcept>
 
+// #include <iostream>
+
 /* ************************************************************************** */
 
 namespace lasd {
@@ -146,10 +148,11 @@ protected:
   void heapSort ();
   void buildHeap (const unsigned long);
   void heapify (const unsigned long i, const unsigned long heapsize);
-
+  inline friend unsigned long parent (unsigned long l);
 };
 
 /* ************************************************************************** */
+inline unsigned long parent (unsigned long l) {if (l <= 2) return 0; else return (unsigned long) (l/2);}
 
 }
 

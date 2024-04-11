@@ -195,7 +195,10 @@ bool SortableLinearContainer<Data>::operator!=(const SortableLinearContainer<Dat
 template <typename Data>
 void SortableLinearContainer<Data>::Sort ()
 {
-    this->heapSort ();
+    if (! this->Empty())
+    {    
+        this->heapSort ();
+    }
 }
 
 template <typename Data>
@@ -204,7 +207,7 @@ void SortableLinearContainer<Data>::heapSort()
     const unsigned long SZ = this->Size();
     unsigned long heapsize = SZ;
     buildHeap(SZ);
-    for (unsigned long i = SZ - 1; i > 0; i--)
+    for (unsigned long i = SZ-1; i > 0; i--)
     {
         this->swap(i, 0);
         heapsize--;
@@ -215,8 +218,13 @@ void SortableLinearContainer<Data>::heapSort()
 template <typename Data>
 void SortableLinearContainer<Data>::buildHeap(const unsigned long heapsize)
 {
-    for (unsigned long i = (unsigned long) (heapsize / 2); i >= 0; i--)
+    for (unsigned long i = parent(heapsize); i >= 0; i--) 
+    //per qualche motivo, i viene decrementato ulteriormente una volta raggiunto 0
     {
+        if ((long) i < 0)
+        {
+            return;
+        }
         this->heapify(i, heapsize);
     }
 }
