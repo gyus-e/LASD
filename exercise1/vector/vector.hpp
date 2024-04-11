@@ -132,10 +132,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  // SortableVector(const SortableVector &);
+  SortableVector(const SortableVector & vec) : Vector<Data> ((const Vector<Data> &) vec) {}
 
   // Move constructor
-  // SortableVector(SortableVector &&);
+  SortableVector(SortableVector && vec) noexcept : Vector<Data> ((Vector<Data> &&) vec) {}
 
   /* ************************************************************************ */
 
@@ -145,10 +145,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  // SortableVector operator=(const SortableVector &);
+  SortableVector operator=(const SortableVector &);
 
   // Move assignment
-  // SortableVector operator=(const SortableVector &);
+  SortableVector operator=(SortableVector &&);
 
 protected:
 

@@ -309,4 +309,30 @@ void Vector<Data>::Clear()
 
 /* ************************************************************************** */
 
+
+//move operator
+template<typename Data>
+SortableVector<Data> SortableVector<Data>::operator=(SortableVector && that)
+{
+    this->A = std::move(that.A);
+    this->setSize(that.Size());
+    that.A = nullptr;
+    that.setSize(0);
+}
+
+//copy operator
+template<typename Data>
+SortableVector<Data> SortableVector<Data>::operator=(const SortableVector & that)
+{
+    if (this->Size() != that.Size())
+    {
+        this->Resize(that.Size());
+    }
+
+    for (unsigned long i = 0; i < that.Size(); i++)
+    {
+        this->A[i] = that.A[i];
+    }
+}
+
 }
