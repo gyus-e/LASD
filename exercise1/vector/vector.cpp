@@ -141,7 +141,7 @@ inline Data & Vector<Data>::operator[](unsigned long idx)
 {
     if (idx >= this->Container::Size ())
     {
-        throw std::out_of_range ("");
+        throw std::out_of_range ("from vector::operator []");
     }
     return this->A[idx];
 }
@@ -152,7 +152,7 @@ inline const Data & Vector<Data>::operator[](unsigned long idx) const
 {
     if (idx >= this->Container::Size ())
     {
-        throw std::out_of_range ("");
+        throw std::out_of_range ("from vector::operator []");
     }
     return this->A[idx];
 }
