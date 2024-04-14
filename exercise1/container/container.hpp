@@ -15,11 +15,12 @@ class Container {
 private:
 
   // ...
-  unsigned long size = 0;
+  // unsigned long size = 0;
 
 protected:
 
   // ...
+  unsigned long size = 0;
 
   /* ************************************************************************ */
 

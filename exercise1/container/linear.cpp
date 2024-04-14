@@ -109,8 +109,12 @@ void LinearContainer<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 template <typename Data>
 void LinearContainer<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 {
-    for (unsigned long i = this->Size() - 1; i >= 0; i--)
+    for (unsigned long i = (this->Size() - 1); i >= 0; i--)
     {
+        if ((long) i < 0)
+        {
+            return;
+        }
         traverseFun ((*this)[i]);
     }
 }
@@ -135,6 +139,10 @@ void LinearContainer<Data>::PostOrderMap(MapFun mapFun)
 {
     for (unsigned long i = this->Size() - 1; i >= 0; i--)
     {
+        if ((long) i < 0)
+        {
+            return;
+        }
         mapFun ((*this)[i]);
     }
 }
