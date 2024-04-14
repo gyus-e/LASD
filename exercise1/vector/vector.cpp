@@ -91,8 +91,8 @@ Vector<Data>::~Vector ()
 template<typename Data>
 Vector<Data>::Vector (Vector && that) noexcept
 {
-    this->A = std::move (that.A);
-    this->setSize(that.Size());
+    this->A = that.A;
+    this->size = std::move(that.size);
     that.A = nullptr;
     that.setSize(0);
 }
@@ -101,10 +101,11 @@ Vector<Data>::Vector (Vector && that) noexcept
 template<typename Data>
 Vector<Data> Vector<Data>::operator=(Vector && that)
 {
-    this->A = std::move(that.A);
-    this->setSize(that.Size());
+    this->A = that.A;
+    this->size = std::move(that.size);
     that.A = nullptr;
     that.setSize(0);
+    return *this;
 }
 
 //copy constructor
@@ -314,10 +315,11 @@ void Vector<Data>::Clear()
 template<typename Data>
 SortableVector<Data> SortableVector<Data>::operator=(SortableVector && that)
 {
-    this->A = std::move(that.A);
-    this->setSize(that.Size());
+    this->A = that.A;
+    this->size = std::move(that.size);
     that.A = nullptr;
     that.setSize(0);
+    return *this;
 }
 
 //copy operator

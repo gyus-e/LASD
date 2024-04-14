@@ -22,11 +22,12 @@ class Vector : public virtual ResizableContainer, public virtual LinearContainer
 private:
 
   // ...
-  Data * A = nullptr;
 
 protected:
 
-  // using Container::Size;
+  using Container::size;
+  
+  Data * A = nullptr;
 
   // ...
 
@@ -113,7 +114,8 @@ private:
 
 protected:
 
-  // using Container::???;
+  using Container::size;
+  using Vector<Data>::A;
 
   // ...
 
