@@ -142,7 +142,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  virtual ~SortableVector() = default;
+  virtual ~SortableVector() = default;// {if (this->A != nullptr) {delete [] this->A}; this->A = nullptr;}
 
   /* ************************************************************************ */
 

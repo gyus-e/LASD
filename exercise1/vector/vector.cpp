@@ -22,6 +22,7 @@ Vector<Data>::Vector (unsigned long sz)
     }
 }
 
+// A vector obtained from a TraversableContainer
 template<typename Data>
 Vector<Data>::Vector (const TraversableContainer<Data> & cont)
 {
@@ -49,6 +50,8 @@ Vector<Data>::Vector (const TraversableContainer<Data> & cont)
     }
 }
 
+
+// A vector obtained from a MappableContainer
 template<typename Data>
 Vector<Data>::Vector (const MappableContainer<Data> & cont)
 {
