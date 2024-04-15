@@ -46,6 +46,7 @@ namespace lasd
             }
             curr = curr->next;
         }
+        return *this;
     }
 
     //move constructor
@@ -70,6 +71,7 @@ namespace lasd
         that.head = nullptr;
         that.tail = nullptr;
         that.size = 0;
+        return *this;
     }
 
     // A list obtained from a TraversableContainer
