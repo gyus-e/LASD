@@ -26,6 +26,9 @@ private:
 
 protected:
 
+  using typename TraversableContainer<Data>::TraverseFun;
+  using typename MappableContainer<Data>::MapFun;
+
   using Container::size;
 
   struct Node {
@@ -61,6 +64,46 @@ protected:
     /* ********************************************************************** */
 
     // Specific member functions
+
+    void PreOrderTraverse (TraverseFun func) const
+    {
+      func (this->element);
+
+      if (this->next != nullptr)
+      {
+        this->next->PreOrderTraverse (func);
+      }
+    }
+
+    void PostOrderTraverse (TraverseFun func) const
+    {
+      if (this->next != nullptr)
+      {
+        this->next->PostOrderTraverse(func);
+      }
+
+      func (this->element);
+    }
+
+    void PreOrderMap (MapFun func)
+    {
+      func (this->element);
+
+      if (this->next != nullptr)
+      {
+        this->next->PreOrderTraverse (func);
+      }
+    }
+
+    void PostOrderMap (MapFun func)
+    {
+      if (this->next != nullptr)
+      {
+        this->next->PostOrderMap (func);
+      }
+
+      func (this->element);
+    }
 
   };
 
@@ -147,41 +190,38 @@ public:
 
   // Specific member function (inherited from TraversableContainer)
 
-  // using typename TraversableContainer<Data>::TraverseFun;
 
-  // type Traverse(arguments) specifiers; // Override TraversableContainer member
+  inline void Traverse(TraverseFun func) const override {this->PreOrderTraverse(func);} // Override TraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderTraversableContainer)
 
-  // type PreOrderTraverse(arguments) specifiers; // Override PreOrderTraversableContainer member
+  inline void PreOrderTraverse(TraverseFun func) const override {this->head->PreOrderTraverse(func);} // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  // type PostOrderTraverse(arguments) specifiers; // Override PostOrderTraversableContainer member
+  inline void PostOrderTraverse(TraverseFun func) const override {this->head->PostOrderTraverse(func);} // Override PostOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  // using typename MappableContainer<Data>::MapFun;
-
-  // type Map(argument) specifiers; // Override MappableContainer member
+  inline void Map(MapFun func) override {this->PreOrderMap(func);} // Override MappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  // type PreOrderMap(argument) specifiers; // Override PreOrderMappableContainer member
+  inline void PreOrderMap(MapFun func) override {this->head->PreOrderMap(func);} // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  // type PostOrderMap(argument) specifiers; // Override PostOrderMappableContainer member
+  inline void PostOrderMap(MapFun func) override {this->head->PostOrderMap(func);} // Override PostOrderMappableContainer member
 
 protected:
 
