@@ -362,6 +362,58 @@ namespace lasd
         return ret;
     } 
 
+    template <typename Data>
+    bool List<Data>::operator==(const List & that) const
+    {
+
+        if (this->size != that.size)
+        {
+            return false;
+        }
+
+        Node * thisCurr = this->head;
+        Node * thatCurr = that.head;
+
+        while (thisCurr != nullptr) //&& thatCurr != nullptr scontato se hanno la stessa dimensione
+        {
+            if (thisCurr->element != thatCurr->element)
+            {
+                return false;
+            }
+            thisCurr = thisCurr->next;
+            thatCurr = thatCurr->next;
+        }
+
+        return true;
+    }
+
+    template <typename Data>
+    bool List<Data>::operator!=(const List & that) const
+    {
+
+        if (this->size != that.size)
+        {
+            return true;
+        }
+
+        Node * thisCurr = this->head;
+        Node * thatCurr = that.head;
+
+        while (thisCurr != nullptr) //&& thatCurr != nullptr scontato se hanno la stessa dimensione
+        {
+            if (thisCurr->element != thatCurr->element)
+            {
+                return true;
+            }
+            thisCurr = thisCurr->next;
+            thatCurr = thatCurr->next;
+        }
+
+        return false;
+    }
+
+
+
     /* ************************************************************************** */
 
 }

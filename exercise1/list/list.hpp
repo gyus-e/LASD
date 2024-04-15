@@ -101,8 +101,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
+  bool operator==(const List &) const;
+  bool operator!=(const List &) const;
 
   /* ************************************************************************ */
 
