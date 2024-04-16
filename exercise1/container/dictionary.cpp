@@ -23,9 +23,9 @@ bool DictionaryContainer<Data>::InsertAll(MappableContainer<Data> & con)
 {
     bool inserted = true;
     con->Map (
-        [this, &inserted](Data & dat)
+        [this, &inserted](Data && dat)
         {
-            inserted &= this->Insert(& dat); //?
+            inserted &= this->Insert(std::move(dat)); 
         }
     );
     return inserted;
@@ -64,9 +64,9 @@ bool DictionaryContainer<Data>::InsertSome(MappableContainer<Data> & con)
 {
     bool inserted = false;
     con->Map (
-        [this, &inserted](Data & dat)
+        [this, &inserted](Data && dat)
         {
-            inserted |= this->Insert(& dat); //?
+            inserted |= this->Insert(std::move(dat)); 
         }
     );
     return inserted;
