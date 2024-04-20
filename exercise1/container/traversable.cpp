@@ -10,7 +10,7 @@ Accumulator TraversableContainer<Data>::Fold(FoldFun<Accumulator> & foldFun, con
 {
     Accumulator acc = init;
     this->Traverse (
-        [acc, foldFun] (const Data & dat)
+        [&acc, foldFun] (const Data & dat)
         {
             acc = foldFun (dat, acc);
         }
