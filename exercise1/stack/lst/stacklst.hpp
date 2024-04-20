@@ -82,7 +82,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  using List<Data>::Clear;
+  inline void Clear() override {((List<Data>)(*this)).Clear();}
 
 protected:
 
