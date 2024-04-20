@@ -78,9 +78,7 @@ namespace lasd
     template<typename Data>
     List<Data>::List (const TraversableContainer<Data> & cont)
     {
-        unsigned long sz = cont.Size();
-        this->setSize (sz);
-        if (sz != 0)
+        if (cont.Size() != 0)
         {
             cont.Traverse (
                 [this] (const Data & dat)
@@ -93,16 +91,14 @@ namespace lasd
 
     // A list obtained from a MappableContainer
     template<typename Data>
-    List<Data>::List (const MappableContainer<Data> & cont)
+    List<Data>::List (MappableContainer<Data> && cont)
     {
-        unsigned long sz = cont.Size();
-        this->setSize (sz);
-        if (sz != 0)
+        if (cont.Size() != 0)
         {
             cont.Traverse (
-                [this] (const Data & dat)
+                [this] (Data && dat)
                 {
-                    this->Insert (dat);
+                    this->Insert (std::move(dat));
                 }
             );
         }
