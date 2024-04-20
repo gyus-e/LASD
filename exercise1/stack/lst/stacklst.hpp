@@ -43,10 +43,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  StackLst(const StackLst & lst) : List<Data> (lst) {}
+  StackLst(const StackLst & that) : List<Data> ((List<Data>)that) {}
 
   // Move constructor
-  StackLst(StackLst && lst) noexcept : List<Data> (std::move(lst)) {}
+  StackLst(StackLst && that) noexcept : List<Data> (std::move((List<Data>)that)) {}
 
   /* ************************************************************************ */
 
