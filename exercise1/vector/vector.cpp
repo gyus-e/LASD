@@ -53,7 +53,7 @@ Vector<Data>::Vector (const TraversableContainer<Data> & cont)
 
 // A vector obtained from a MappableContainer
 template<typename Data>
-Vector<Data>::Vector (const MappableContainer<Data> & cont)
+Vector<Data>::Vector (MappableContainer<Data> && cont)
 {
     unsigned long sz = cont.Size();
     this->setSize (sz);
@@ -70,9 +70,9 @@ Vector<Data>::Vector (const MappableContainer<Data> & cont)
 
         unsigned long i = 0;
         cont.Traverse (
-            [this, &i] (const Data & dat)
+            [this, &i] (Data && dat)
             {
-                this->A[i] = dat;
+                this->A[i] = std::move(dat);
                 i++;
             }
         );

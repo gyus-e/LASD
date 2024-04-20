@@ -41,7 +41,7 @@ public:
   // Specific constructors
   Vector (unsigned long); // A vector with a given initial dimension
   Vector(const TraversableContainer<Data> &); // A vector obtained from a TraversableContainer
-  Vector(const MappableContainer<Data> &); // A vector obtained from a MappableContainer
+  Vector(MappableContainer<Data> &&); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -129,7 +129,7 @@ public:
   // Specific constructors
   SortableVector(unsigned long sz) : Vector<Data> (sz) {} // A vector with a given initial dimension
   SortableVector(const TraversableContainer<Data> & con) : Vector<Data> (con) {} // A vector obtained from a TraversableContainer
-  SortableVector(const MappableContainer<Data> & con) : Vector<Data> (con) {} // A vector obtained from a MappableContainer
+  SortableVector(MappableContainer<Data> && con) : Vector<Data> (std::move(con)) {} // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -137,7 +137,7 @@ public:
   SortableVector(const SortableVector & vec) : Vector<Data> ((const Vector<Data> &) vec) {}
 
   // Move constructor
-  SortableVector(SortableVector && vec) noexcept : Vector<Data> ((Vector<Data> &&) vec) {}
+  SortableVector(SortableVector && vec) noexcept : Vector<Data> (std::move(vec)) {}
 
   /* ************************************************************************ */
 
