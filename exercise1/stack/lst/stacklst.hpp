@@ -46,7 +46,7 @@ public:
   StackLst(const StackLst & lst) : List<Data> (lst) {}
 
   // Move constructor
-  StackLst(StackLst && lst) : List<Data> (std::move(lst)) {}
+  StackLst(StackLst && lst) noexcept : List<Data> (std::move(lst)) {}
 
   /* ************************************************************************ */
 
@@ -64,8 +64,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const StackLst & that) {return (List<Data>)(*this) == (List<Data>)(that);}
-  bool operator!=(const StackLst & that) {return (List<Data>)(*this) != (List<Data>)(that);}
+  bool operator==(const StackLst & that) const {return (List<Data>)(*this) == (List<Data>)(that);}
+  bool operator!=(const StackLst & that) const {return (List<Data>)(*this) != (List<Data>)(that);}
 
   /* ************************************************************************ */
 
