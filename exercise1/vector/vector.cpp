@@ -69,8 +69,8 @@ Vector<Data>::Vector (MappableContainer<Data> && cont)
         }
 
         unsigned long i = 0;
-        cont.Traverse (
-            [this, &i] (Data && dat)
+        cont.Map (
+            [this, &i] (Data & dat)
             {
                 this->A[i] = std::move(dat);
                 i++;
