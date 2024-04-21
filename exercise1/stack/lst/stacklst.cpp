@@ -11,7 +11,7 @@ const Data & StackLst<Data>::Top() const
     {
         throw std::length_error("");
     } 
-    return this->head;
+    return this->Front();
 }
 
 template <typename Data>
@@ -21,7 +21,7 @@ Data & StackLst<Data>::Top()
     {
         throw std::length_error("");
     } 
-    return this->head;
+    return this->Front();
 }
 
 template <typename Data>
@@ -35,18 +35,13 @@ void StackLst<Data>::Pop()
 }
 
 template <typename Data>
-Data & StackLst<Data>::TopNPop() 
+Data StackLst<Data>::TopNPop() 
 {
-    Data ret = this->Front();
-    try 
+    if (this->Empty() || this->head == nullptr) 
     {
-        this->RemoveFromFront();
-
-    } catch (std::length_error & exc) 
-    {
-        throw;
-    } 
-    return ret;
+        throw std::length_error("");
+    }
+    return this->FrontNRemove();
 }
 
 template <typename Data>
