@@ -51,9 +51,9 @@ public:
 
   // Specific member functions
 
-  inline bool Empty() const noexcept {return (this->size == 0);} // (concrete function should not throw exceptions)
+  virtual inline bool Empty() const noexcept {return (this->size == 0);} // (concrete function should not throw exceptions)
 
-  inline unsigned long Size() const noexcept {return this->size;} // (concrete function should not throw exceptions)
+  virtual inline unsigned long Size() const noexcept {return this->size;} // (concrete function should not throw exceptions)
 
 };
 
