@@ -94,20 +94,16 @@ Vector<Data>::~Vector ()
 template<typename Data>
 Vector<Data>::Vector (Vector && that) noexcept
 {
-    this->A = that.A;
-    this->size = std::move(that.size);
-    that.A = nullptr;
-    that.setSize(0);
+    std::swap (this->A, that.A);
+    std::swap (this->size, that.size);
 }
 
 //move operator
 template<typename Data>
 Vector<Data> Vector<Data>::operator=(Vector && that)
 {
-    this->A = that.A;
-    this->size = std::move(that.size);
-    that.A = nullptr;
-    that.setSize(0);
+    std::swap (this->A, that.A);
+    std::swap (this->size, that.size);
     return *this;
 }
 
@@ -250,55 +246,43 @@ bool Vector<Data>::operator!=(const Vector<Data> & that) const noexcept
 template<typename Data>
 void Vector<Data>::Resize(unsigned long newSize)
 {
+    if (newSize == this->size)
+    {
+        return;
+    }
+
+    if (newSize == 0)
+    {
+        this->Clear();
+        return;
+    }
+
     Data * NewA = nullptr;
 
-    if (newSize > 0)
+    try 
     {
-        try 
-        {
-            NewA = new Data [newSize];
-        }
-        catch (std::bad_alloc &exc)
-        {
-            throw;
-        }
+        NewA = new Data [newSize] {};
     }
-    
-    unsigned long minSize = this->Size();
-    // bool bigger = true;
-    if (this->Size() > newSize) 
+    catch (std::bad_alloc & exc)
     {
-        // bigger = false;
-        minSize = newSize;
+        throw;
     }
 
-    
-
-    //se il nuovo Array è piú grande, inizializza i valori rimanenti
-    // if (bigger)
-    // {
-    //     while (i < newSize)
-    //     {
-    //         NewA [i] = 0;
-    //     }
-    // }
-
+    unsigned long minSize = std::min (this->size, newSize);
 
     if (this->A != nullptr)
     {
-        //se minSize = 0, non copia niente
-        unsigned long i = 0;
-        while (i < minSize)
+        for (unsigned long i = 0; i < minSize; i++)
         {
             NewA [i] = this->A[i];
-            i++;
         }
+
         delete [] this->A;
         this->A = nullptr;
     }
 
     this->A = NewA;
-    this->setSize(newSize);
+    this->size = newSize;
 }
 
 template <typename Data>
@@ -314,15 +298,12 @@ void Vector<Data>::Clear()
 
 /* ************************************************************************** */
 
-
+/*
 //move operator
 template<typename Data>
 SortableVector<Data> SortableVector<Data>::operator=(SortableVector && that)
 {
-    this->A = that.A;
-    this->size = std::move(that.size);
-    that.A = nullptr;
-    that.setSize(0);
+    
     return *this;
 }
 
@@ -340,5 +321,5 @@ SortableVector<Data> SortableVector<Data>::operator=(const SortableVector & that
         this->A[i] = that.A[i];
     }
 }
-
+*/
 }

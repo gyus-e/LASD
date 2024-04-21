@@ -134,10 +134,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  SortableVector(const SortableVector & vec) : Vector<Data> ((const Vector<Data> &) vec) {}
+  SortableVector(const SortableVector<Data> & vec) : Vector<Data> ((const Vector<Data>) vec) {}
 
   // Move constructor
-  SortableVector(SortableVector && vec) noexcept : Vector<Data> (std::move(vec)) {}
+  SortableVector(SortableVector<Data> && vec) noexcept : Vector<Data> (std::move(vec)) {}
 
   /* ************************************************************************ */
 
@@ -147,10 +147,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  SortableVector operator=(const SortableVector &);
+  SortableVector operator=(const SortableVector & that) {(Vector<Data>) (*this) = (const Vector<Data>) that; return *this;}
 
   // Move assignment
-  SortableVector operator=(SortableVector &&);
+  SortableVector operator=(SortableVector && that) {(Vector<Data>) (*this) = std::move ((Vector<Data>) that); return *this;}
 
 protected:
 
