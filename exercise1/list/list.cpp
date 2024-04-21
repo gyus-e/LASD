@@ -95,8 +95,8 @@ namespace lasd
     {
         if (cont.Size() != 0)
         {
-            cont.Traverse (
-                [this] (Data && dat)
+            cont.Map (
+                [this] (Data & dat)
                 {
                     this->Insert (std::move(dat));
                 }
