@@ -60,7 +60,7 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  StackVec operator=(const StackVec & that) {(Vector<Data>)(*this) = (Vector<Data>)(that); this->top = that.top; return *this;}
+  StackVec operator=(const StackVec & that) {(*(Vector<Data> *)(this)) = ((Vector<Data>)(that)); this->top = that.top; return *this;}
 
   // Move assignment
   StackVec operator=(StackVec && that) {(Vector<Data>)(*this) = std::move((Vector<Data>)(that)); this->top = that.top; return *this;}
@@ -86,9 +86,11 @@ public:
 
   // Specific member functions (inherited from Container)
 
-  inline bool Empty() const noexcept {return this->top == 0;} // Override Container member
+  inline bool Empty() const noexcept override {return (this->top == 0);} // Override Container member
 
-  inline unsigned long Size() const noexcept {return this->top;}; // Override Container member
+  inline unsigned long Size() const noexcept override {return this->top;} // Override Container member
+
+
 
   /* ************************************************************************ */
 
