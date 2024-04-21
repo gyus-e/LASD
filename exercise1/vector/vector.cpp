@@ -272,13 +272,7 @@ void Vector<Data>::Resize(unsigned long newSize)
         minSize = newSize;
     }
 
-    //se minSize = 0, non copia niente
-    unsigned long i = 0;
-    while (i < minSize)
-    {
-        NewA [i] = this->A[i];
-        i++;
-    }
+    
 
     //se il nuovo Array è piú grande, inizializza i valori rimanenti
     // if (bigger)
@@ -292,6 +286,13 @@ void Vector<Data>::Resize(unsigned long newSize)
 
     if (this->A != nullptr)
     {
+        //se minSize = 0, non copia niente
+        unsigned long i = 0;
+        while (i < minSize)
+        {
+            NewA [i] = this->A[i];
+            i++;
+        }
         delete [] this->A;
         this->A = nullptr;
     }
