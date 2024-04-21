@@ -109,12 +109,9 @@ Vector<Data> Vector<Data>::operator=(Vector && that)
 
 //copy constructor
 template<typename Data>
-Vector<Data>::Vector (const Vector & that)
+Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
 {
-    this->setSize(that.Size());
-    this->A = new Data [this->Size()];
-
-    for (unsigned long i = 0; i < that.Size(); i++)
+    for (unsigned long i = 0; i < this->size; i++) 
     {
         this->A[i] = that.A[i];
     }
@@ -124,15 +121,15 @@ Vector<Data>::Vector (const Vector & that)
 template<typename Data>
 Vector<Data> Vector<Data>::operator=(const Vector & that)
 {
-    if (this->Size() != that.Size())
+    if (this->A != nullptr)
     {
-        this->Resize(that.Size());
+        delete this->A;
     }
 
-    for (unsigned long i = 0; i < that.Size(); i++)
-    {
-        this->A[i] = that.A[i];
-    }
+    Vector<Data> * NewVector = new Vector<Data> (that);
+    this->A = NewVector->A;
+    this->size = NewVector->size;
+    return *this;
 }
 
 //linear operator
