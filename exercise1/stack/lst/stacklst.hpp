@@ -56,16 +56,16 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  StackLst operator=(const StackLst & that) {(List<Data>)(*this) = (List<Data>)(that); return *this;}
+  inline StackLst operator=(const StackLst & that) {(List<Data>)(*this) = (List<Data>)(that); return *this;}
 
   // Move assignment
-  StackLst operator=(StackLst && that) {(List<Data>)(*this) = std::move((List<Data>)(that)); return *this;}
+  inline StackLst operator=(StackLst && that) {(List<Data>)(*this) = std::move((List<Data>)(that)); return *this;}
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const StackLst & that) const {return (List<Data>)(*this) == (List<Data>)(that);}
-  bool operator!=(const StackLst & that) const {return (List<Data>)(*this) != (List<Data>)(that);}
+  inline bool operator==(const StackLst & that) const {return (List<Data>)(*this) == (List<Data>)(that);}
+  inline bool operator!=(const StackLst & that) const {return (List<Data>)(*this) != (List<Data>)(that);}
 
   /* ************************************************************************ */
 
