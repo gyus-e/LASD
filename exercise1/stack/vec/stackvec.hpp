@@ -29,8 +29,6 @@ private:
 protected:
 
   using Vector<Data>::size;
-
-  // ...
   unsigned long top = 0;
 
 public:
@@ -55,7 +53,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  ~StackVec() = default;
+  virtual ~StackVec() = default;
 
   /* ************************************************************************ */
 
@@ -63,7 +61,7 @@ public:
   StackVec operator=(const StackVec & that) {(*(Vector<Data> *)(this)) = ((Vector<Data>)(that)); this->top = that.top; return *this;}
 
   // Move assignment
-  StackVec operator=(StackVec && that) {(Vector<Data>)(*this) = std::move((Vector<Data>)(that)); this->top = that.top; return *this;}
+  StackVec operator=(StackVec && that) {(Vector<Data>)(*this) = std::move((Vector<Data>)(that)); std::swap(this->top, that.top); return *this;}
 
   /* ************************************************************************ */
 

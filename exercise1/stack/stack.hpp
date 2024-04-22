@@ -28,7 +28,7 @@ protected:
 public:
 
   // Destructor
-  ~Stack() = default;
+  virtual ~Stack() = default;
 
   /* ************************************************************************ */
 
