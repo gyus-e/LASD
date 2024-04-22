@@ -29,8 +29,6 @@ protected:
   using typename TraversableContainer<Data>::TraverseFun;
   using typename MappableContainer<Data>::MapFun;
 
-  using Container::size;
-
   struct Node {
 
     Data element;
@@ -109,6 +107,7 @@ protected:
 
   Node * head = nullptr;
   Node * tail = nullptr;
+  using Container::size;
 
 public:
 
