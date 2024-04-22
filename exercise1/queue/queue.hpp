@@ -27,7 +27,7 @@ protected:
 public:
 
   // Destructor
-  ~Queue() = default;
+  virtual ~Queue() = default;
 
   /* ************************************************************************ */
 
