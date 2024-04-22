@@ -10,6 +10,7 @@ namespace lasd
     {
         this->head = nullptr;
         this->tail = nullptr;
+        this->size = 0;
 
         Node* curr = that.head;
         while (curr != nullptr) 
@@ -24,6 +25,10 @@ namespace lasd
             }
             curr = curr->next;
         }
+        if (this->size != that.size)
+        {
+            throw std::runtime_error ("COPY CONSTRUCTOR SIZE ERROR");
+        }
     }
 
     //copy operator
@@ -32,6 +37,7 @@ namespace lasd
     {
         this->head = nullptr;
         this->tail = nullptr;
+        this->size = 0;
 
         Node* curr = that.head;
         while (curr != nullptr) 
@@ -46,6 +52,11 @@ namespace lasd
             }
             curr = curr->next;
         }
+        if (this->size != that.size)
+        {
+            throw std::runtime_error ("COPY OPERATOR SIZE ERROR");
+        }
+        
         return *this;
     }
 
@@ -53,24 +64,18 @@ namespace lasd
     template<typename Data>
     List<Data>::List (List && that) noexcept
     {
-        this->setSize (that.Size());
-        this->head = std::move(that.head);
-        this->tail = std::move(that.tail);
-        that.head = nullptr;
-        that.tail = nullptr;
-        that.size = 0;
+        std::swap(this->size, that.size);
+        std::swap(this->head, that.head);
+        std::swap(this->tail, that.tail);
     }
 
     //move operator
     template<typename Data>
     List<Data> List<Data>::operator= (List && that)
     {
-        this->setSize (that.Size());
-        this->head = std::move(that.head);
-        this->tail = std::move(that.tail);
-        that.head = nullptr;
-        that.tail = nullptr;
-        that.size = 0;
+        std::swap(this->size, that.size);
+        std::swap(this->head, that.head);
+        std::swap(this->tail, that.tail);
         return *this;
     }
 
@@ -172,16 +177,23 @@ namespace lasd
         {
             throw;
         }
-
-        if (this->tail == nullptr) {
-            head = newNode;
-            tail = newNode;
+        
+        if (this->head == nullptr)
+        {
+            if (this->size != 0)
+            {
+                throw std::logic_error ("SIZE NOT 0 IN EMPTY LIST");
+            }
+            this->head = newNode;
+        }
+        if (this->tail == nullptr) 
+        {
+            this->tail = newNode;
         } 
-
         else 
         {
-            tail->next = newNode;
-            tail = tail->next;
+            this->tail->next = newNode;
+            this->tail = this->tail->next;
         }
         this->size++;
     }
@@ -198,16 +210,23 @@ namespace lasd
         {
             throw;
         }
-
-        if (this->tail == nullptr) {
-            head = newNode;
-            tail = newNode;
+        
+        if (this->head == nullptr)
+        {
+            if (this->size != 0)
+            {
+                throw std::logic_error ("SIZE NOT 0 IN EMPTY LIST");
+            }
+            this->head = newNode;
+        }
+        if (this->tail == nullptr) 
+        {
+            this->tail = newNode;
         } 
-
         else 
         {
-            tail->next = newNode;
-            tail = tail->next;
+            this->tail->next = newNode;
+            this->tail = this->tail->next;
         }
         this->size++;
     }
@@ -223,6 +242,7 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
+            delete newNode;
             throw;
         }
 
@@ -246,6 +266,7 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
+            delete newNode;
             throw;
         }
 
@@ -261,6 +282,10 @@ namespace lasd
     template <typename Data>
     bool List<Data>::Insert(const Data &dat)
     {
+        if (this->Exists (dat))
+        {
+            return false;
+        }
         try
         {
             this->InsertAtBack(dat);
@@ -275,6 +300,10 @@ namespace lasd
     template <typename Data>
     bool List<Data>::Insert(Data &&dat)
     {
+        if (this->Exists (dat))
+        {
+            return false;
+        }
         try
         {
             this->InsertAtBack(std::move(dat));

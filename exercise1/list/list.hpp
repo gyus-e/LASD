@@ -40,16 +40,16 @@ protected:
 
     // Specific constructors
     Node () = default;
-    Node (const Data & dat) : element (dat) {}
-    Node (Data && dat) : element (std::move (dat)) {}
+    Node (const Data & dat) : element (dat), next (nullptr) {}
+    Node (Data && dat) : element (std::move (dat)), next (nullptr) {}
 
     /* ********************************************************************** */
 
     // Copy constructor
-    Node (const Node & N) {this->element = N.element; if (N.next != nullptr) {this->next = new Node (N.next);}} 
+    Node (const Node & that) : element (that.element), next (nullptr) {}
 
     // Move constructor
-    Node (Node && N) noexcept {this->element = std::move(N.element); this->next = N.next;}
+    Node (Node && that) noexcept {std::swap(this->element, that.element); std::swap(this->next, that.next);}
 
     /* ********************************************************************** */
 
