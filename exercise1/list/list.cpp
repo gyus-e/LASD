@@ -67,6 +67,12 @@ namespace lasd
         std::swap(this->size, that.size);
         std::swap(this->head, that.head);
         std::swap(this->tail, that.tail);
+        
+        // if (that.head != nullptr)
+        // {    
+        //     that.head->Clear();
+        //     delete that.head;
+        // }
     }
 
     //move operator
@@ -76,6 +82,11 @@ namespace lasd
         std::swap(this->size, that.size);
         std::swap(this->head, that.head);
         std::swap(this->tail, that.tail);
+        // if (that.head != nullptr)
+        // {    
+        //     that.head->Clear();
+        //     delete that.head;
+        // }
         return *this;
     }
 
@@ -88,7 +99,7 @@ namespace lasd
             cont.Traverse (
                 [this] (const Data & dat)
                 {
-                    this->Insert (dat);
+                    this->InsertAtBack (dat);
                 }
             );
         }
@@ -103,7 +114,7 @@ namespace lasd
             cont.Map (
                 [this] (Data & dat)
                 {
-                    this->Insert (std::move(dat));
+                    this->InsertAtBack (std::move(dat));
                 }
             );
         }
@@ -113,26 +124,49 @@ namespace lasd
     template <typename Data>
     List<Data>::~List ()
     {
-        Node* curr = this->head;
-        while (curr != nullptr) {
-            Node* next = curr->next;
-            delete curr;
-            curr = next;
-        }
+        this->Clear();
     }
 
+    //versione iterativa
+    // template <typename Data>
+    // void List<Data>::Clear ()
+    // {
+    //     Node* curr = this->head;
+    //     while (curr != nullptr) 
+    //     {
+    //         Node* next = curr->next;
+    //         delete curr;
+    //         curr = next;
+    //     }
+    // }
+
+    
+    //versione ricorsiva con debug
     template <typename Data>
     void List<Data>::Clear ()
     {
-        Node* curr = this->head;
-        while (curr != nullptr) {
-            Node* next = curr->next;
-            delete curr;
-            curr = next;
+        if (this->size == 0 && (head != nullptr || tail != nullptr))
+        {
+            throw std::logic_error ("SIZE 0 IN NON EMPTY LIST");
         }
-        this->size = 0;
+
+        if (this->size > 0)
+        {
+            if (head == nullptr || tail == nullptr)
+            {
+                throw std::logic_error ("SIZE NOT 0 IN EMPTY LIST");
+            }
+            this->head->Clear();
+            if (this->head->next != nullptr)
+            {
+                throw std::runtime_error ("CLEAR DOESN'T WORK");
+            }
+            delete this->head;
+        }
+        
         this->head = nullptr;
         this->tail = nullptr;
+        this->size = 0;
     }
 
     template <typename Data>
@@ -175,21 +209,18 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
+            // delete newNode;
             throw;
         }
-        
-        if (this->head == nullptr)
+        if (this->size == 0)
         {
-            if (this->size != 0)
+            if (this->head != nullptr)
             {
-                throw std::logic_error ("SIZE NOT 0 IN EMPTY LIST");
+                throw std::logic_error ("SIZE 0 IN NON EMPTY LIST");
             }
             this->head = newNode;
-        }
-        if (this->tail == nullptr) 
-        {
             this->tail = newNode;
-        } 
+        }
         else 
         {
             this->tail->next = newNode;
@@ -208,21 +239,19 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
+            // delete newNode;
             throw;
         }
         
-        if (this->head == nullptr)
+        if (this->size == 0)
         {
-            if (this->size != 0)
+            if (this->head != nullptr)
             {
-                throw std::logic_error ("SIZE NOT 0 IN EMPTY LIST");
+                throw std::logic_error ("SIZE 0 IN NON EMPTY LIST");
             }
             this->head = newNode;
-        }
-        if (this->tail == nullptr) 
-        {
             this->tail = newNode;
-        } 
+        }
         else 
         {
             this->tail->next = newNode;
@@ -242,7 +271,7 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
-            delete newNode;
+            // delete newNode;
             throw;
         }
 
@@ -266,7 +295,7 @@ namespace lasd
         }
         catch (std::bad_alloc & exc)
         {
-            delete newNode;
+            // delete newNode;
             throw;
         }
 
