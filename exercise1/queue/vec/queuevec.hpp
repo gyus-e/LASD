@@ -50,7 +50,7 @@ public:
   QueueVec(const QueueVec & that) : Vector<Data> ((Vector<Data>) that), dim(that.dim), head (that.head), tail (that.tail) {}
 
   // Move constructor
-  QueueVec(QueueVec && that) noexcept : Vector<Data> (std::move((Vector<Data>) that)), dim(that.dim), head (that.head), tail (that.tail) {}
+  QueueVec(QueueVec && that) noexcept : Vector<Data> (std::move((Vector<Data>) (that))) {std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail);}
 
   /* ************************************************************************ */
 
@@ -60,10 +60,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  QueueVec operator=(const QueueVec & that) {(*(Vector<Data> *)(this)) = ((Vector<Data>)(that)); this->dim = that.dim; this->head = that.head; this->tail = that.tail; return *this;}
+  QueueVec operator=(const QueueVec & that) {this->Vector<Data>::operator= ((Vector<Data>)(that)); this->dim = that.dim; this->head = that.head; this->tail = that.tail; return *this;}
 
   // Move assignment
-  QueueVec operator=(QueueVec && that) {(Vector<Data>)(*this) = std::move((Vector<Data>)(that)); std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail); return *this;}
+  QueueVec operator=(QueueVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail); return *this;}
 
   /* ************************************************************************ */
 
