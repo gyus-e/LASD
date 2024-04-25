@@ -44,7 +44,7 @@ protected:
     /* ********************************************************************** */
 
     // Copy constructor
-    Node (const Node & that) : element (that.element), next (nullptr) {}
+    Node (const Node & that) : element (that.element), next (that.next) {}
 
     // Move constructor
     Node (Node && that) noexcept {std::swap(this->element, that.element); std::swap(this->next, that.next);}
@@ -101,6 +101,16 @@ protected:
       }
 
       func (this->element);
+    }
+
+    void Clear ()
+    {
+      if (this->next != nullptr)
+      {
+        this->next->Clear();
+        delete this->next;
+        this->next = nullptr;
+      }
     }
 
   };
@@ -196,13 +206,13 @@ public:
 
   // Specific member function (inherited from PreOrderTraversableContainer)
 
-  inline void PreOrderTraverse(TraverseFun func) const override {if (this->head != nullptr) this->head->PreOrderTraverse(func);} // Override PreOrderTraversableContainer member
+  inline void PreOrderTraverse(TraverseFun func) const override {if (this->head != nullptr) {this->head->PreOrderTraverse(func);}} // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  inline void PostOrderTraverse(TraverseFun func) const override {if (this->head != nullptr) this->head->PostOrderTraverse(func);} // Override PostOrderTraversableContainer member
+  inline void PostOrderTraverse(TraverseFun func) const override {if (this->head != nullptr) {this->head->PostOrderTraverse(func);}} // Override PostOrderTraversableContainer member
 
   /* ************************************************************************ */
 
@@ -214,13 +224,13 @@ public:
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  inline void PreOrderMap(MapFun func) override {if (this->head != nullptr) this->head->PreOrderMap(func);} // Override PreOrderMappableContainer member
+  inline void PreOrderMap(MapFun func) override {if (this->head != nullptr) {this->head->PreOrderMap(func);}} // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  inline void PostOrderMap(MapFun func) override {if (this->head != nullptr) this->head->PostOrderMap(func);} // Override PostOrderMappableContainer member
+  inline void PostOrderMap(MapFun func) override {if (this->head != nullptr) {this->head->PostOrderMap(func);}} // Override PostOrderMappableContainer member
 
 protected:
 
