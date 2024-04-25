@@ -56,10 +56,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  inline StackLst operator=(const StackLst & that) {(List<Data>)(*this) = (List<Data>)(that); return *this;}
+  inline StackLst operator=(const StackLst & that) {this->List<Data>::operator=((List<Data>)(that)); return *this;}
 
   // Move assignment
-  inline StackLst operator=(StackLst && that) {(List<Data>)(*this) = std::move((List<Data>)(that)); return *this;}
+  inline StackLst operator=(StackLst && that) {this->List<Data>::operator=(std::move((List<Data>)(that))); return *this;}
 
   /* ************************************************************************ */
 
@@ -82,7 +82,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline void Clear() override {((List<Data>)(*this)).Clear();}
+  inline void Clear() override {this->List<Data>::Clear();}
 
 protected:
 
