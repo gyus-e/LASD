@@ -35,6 +35,49 @@ bool TraversableContainer<Data>::Exists(const Data & val) const noexcept
     return exists;
 }
 
+// template <typename Data>
+// bool TraversableContainer<Data>::operator==(const TraversableContainer & cont) const noexcept
+// {
+//     if (this->size != cont.Size())
+//     {
+//         return false;
+//     }
+
+//     Data * contElements = nullptr;
+//     try 
+//     {
+//         contElements = new Data [cont.Size()];
+//     }
+//     catch (std::bad_alloc & exc)
+//     {
+//         return false;
+//     }
+
+//     unsigned long i = 0;
+//     cont.Traverse (
+//         [contElements, &i] (const Data & dat)
+//         {
+//             contElements[i] = dat;
+//             i++;
+//         }
+//     );
+//     bool ret = true;
+//     unsigned long j = 0;
+//     this->Traverse (
+//         [contElements, &j, &ret] (const Data & dat)
+//         {
+//             // if (ret)
+//             // {
+//                 ret = ret && (contElements[j] == dat);
+//                 j++;
+//             // }
+//         }
+//     );
+
+//     delete contElements;
+//     return ret;
+// }
+
 /* ************************************************************************** */
 /*  PreOrderTraversableContainer    */
 
