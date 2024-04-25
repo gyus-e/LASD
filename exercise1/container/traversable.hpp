@@ -45,8 +45,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const TraversableContainer &) = delete; // Comparison of abstract types might be possible.
-  bool operator!=(const TraversableContainer &) = delete; // Comparison of abstract types might be possible.
+  bool operator==(const TraversableContainer &) const noexcept = delete; // Comparison of abstract types might be possible.
+  bool operator!=(const TraversableContainer &) const noexcept = delete; // Comparison of abstract types might be possible.
 
   /* ************************************************************************ */
 
