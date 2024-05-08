@@ -200,7 +200,7 @@ protected:
 public:
 
   // Destructor
-  ~InOrderTraversableContainer() = default;
+  virtual ~InOrderTraversableContainer() = default;
 
   /* ************************************************************************ */
 
@@ -256,7 +256,7 @@ protected:
 public:
 
   // Destructor
-  ~BreadthTraversableContainer() = default;
+  virtual ~BreadthTraversableContainer() = default;
 
   /* ************************************************************************ */
 
