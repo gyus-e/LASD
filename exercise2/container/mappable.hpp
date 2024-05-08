@@ -163,7 +163,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class InOrderMappableContainer {
+class InOrderMappableContainer : public virtual MappableContainer<Data>, public virtual InOrderTraversableContainer<Data> {
   // Must extend MappableContainer<Data>,
   //             InOrderTraversableContainer<Data>
 
@@ -174,46 +174,47 @@ private:
 protected:
 
   // ...
+  InOrderMappableContainer() = default;
 
 public:
 
   // Destructor
-  // ~InOrderMappableContainer() specifiers
+  virtual ~InOrderMappableContainer() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types is not possible.
+  InOrderMappableContainer operator=(const InOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  // type operator=(argument); // Move assignment of abstract types is not possible.
+  InOrderMappableContainer operator=(InOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract types is not possible.
-  // type operator!=(argument) specifiers; // Comparison of abstract types is not possible.
+  bool operator==(const InOrderMappableContainer &) = delete; // Comparison of abstract types is not possible.
+  bool operator!=(const InOrderMappableContainer &) = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Specific member function
 
-  // using typename MappableContainer<Data>::MapFun;
+  using typename MappableContainer<Data>::MapFun;
 
-  // type InOrderMap(argument) specifiers;
+  virtual void InOrderMap(MapFun) = 0;
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  // type Map(argument) specifiers; // Override MappableContainer member
+  inline void Map(MapFun mapFun) override {this->InOrderMap(mapFun);} // Override MappableContainer member
 
 };
 
 /* ************************************************************************** */
 
 template <typename Data>
-class BreadthMappableContainer {
+class BreadthMappableContainer : public virtual MappableContainer<Data>, public virtual BreadthTraversableContainer<Data> {
   // Must extend MappableContainer<Data>,
   //             BreadthTraversableContainer<Data>
 
@@ -224,39 +225,40 @@ private:
 protected:
 
   // ...
+  BreadthMappableContainer () = default;
 
 public:
 
   // Destructor
-  // ~BreadthMappableContainer() specifiers
+  virtual ~BreadthMappableContainer() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types is not possible.
+  BreadthMappableContainer operator=(const BreadthMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  // type operator=(argument); // Move assignment of abstract types is not possible.
+  BreadthMappableContainer operator=(BreadthMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract types is not possible.
-  // type operator!=(argument) specifiers; // Comparison of abstract types is not possible.
+  bool operator==(const BreadthMappableContainer &) = delete; // Comparison of abstract types is not possible.
+  bool operator!=(const BreadthMappableContainer &) = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Specific member function
 
-  // using typename MappableContainer<Data>::MapFun;
+  using typename MappableContainer<Data>::MapFun;
 
-  // type BreadthMap(argument) specifiers;
+  virtual void BreadthMap(MapFun) = 0;
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  // type Map(argument) specifiers; // Override MappableContainer member
+  inline void Map(MapFun mapFun) override {this->BreadthMap(mapFun);} // Override MappableContainer member
 
 };
 
