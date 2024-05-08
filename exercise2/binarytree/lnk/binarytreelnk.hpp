@@ -13,7 +13,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class BinaryTreeLnk {
+class BinaryTreeLnk : public virtual MutableBinaryTree<Data>{
   // Must extend MutableBinaryTree<Data>
 
 private:
@@ -22,30 +22,64 @@ private:
 
 protected:
 
-  // using BinaryTree<Data>::???;
+  using BinaryTree<Data>::size;
 
   // ...
 
-  struct NodeLnk { // Must extend MutableNode
+  struct NodeLnk : public virtual MutableBinaryTree<Data>::MutableNode { // Must extend MutableNode
 
   private:
 
-    // ...
+    Data elem;
+    NodeLnk * Sx = nullptr;
+    NodeLnk * Dx = nullptr;
 
   protected:
 
-    // ...
+    NodeLnk () = default;
 
   public:
+    virtual ~NodeLnk () {if (this->HasLeftChild()) {delete this->Sx;} if (this->HasRightChild()) {delete this->Dx;}}
 
-    // ...
+    inline Data & Element() override {return this->elem;} 
+
+    inline bool IsLeaf() const noexcept override {return this->Sx == nullptr == this->Dx;} 
+    inline bool HasLeftChild() const noexcept override {return this->Sx != nullptr;}
+    inline bool HasRightChild() const noexcept override {return this->Dx != nullptr;} 
+
+    NodeLnk & LeftChild() override // (concrete function must throw std::out_of_range when not existent)
+    {
+      if (this->HasLeftChild())
+      {
+        return this->Sx;
+      } 
+      else 
+      {
+        throw std::out_of_range ("left child does not exist.");
+      }
+    } 
+
+    NodeLnk & RightChild() override // (concrete function must throw std::out_of_range when not existent)
+    {
+      if (this->HasRightChild())
+      {
+        return this->Dx;
+      } 
+      else 
+      {
+        throw std::out_of_range ("right child does not exist.");
+      }
+    } 
 
   };
+
+
+  NodeLnk * root = nullptr;
 
 public:
 
   // Default constructor
-  // BinaryTreeLnk() specifiers;
+  BinaryTreeLnk() = default;
 
   /* ************************************************************************ */
 
@@ -64,7 +98,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  // ~BinaryTreeLnk() specifiers;
+  virtual ~BinaryTreeLnk();
 
   /* ************************************************************************ */
 
@@ -84,19 +118,19 @@ public:
 
   // Specific member functions (inherited from BinaryTree)
 
-  // type Root() specifiers; // Override BinaryTree member (throw std::length_error when empty)
+  const Data & Root() const override; // Override BinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MutableBinaryTree)
 
-  // type Root() specifiers; // Override MutableBinaryTree member (throw std::length_error when empty)
+  Data & Root() override; // Override MutableBinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
 
-  // type Clear() specifiers; // Override ClearableContainer member
+  void Clear() override; // Override ClearableContainer member
 
 };
 
