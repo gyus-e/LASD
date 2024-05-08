@@ -10,9 +10,9 @@
 #include "../iterator/iterator.hpp"
 
 #include "../stack/vec/stackvec.hpp"
-// #include "../stack/lst/stacklst.hpp"
+#include "../stack/lst/stacklst.hpp"
 #include "../queue/vec/queuevec.hpp"
-// #include "../queue/lst/queuelst.hpp"
+#include "../queue/lst/queuelst.hpp"
 
 #include <stdexcept>
 
@@ -108,7 +108,7 @@ public:
 
   // Specific member functions
 
-  virtual Data Root() const = 0; // (concrete function must throw std::length_error when empty)
+  virtual const Node & Root() const = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
 
@@ -221,7 +221,7 @@ public:
 
   // Specific member functions
 
-  virtual MutableNode Root() = 0; // (concrete function must throw std::length_error when empty)
+  virtual MutableNode & Root() = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
 
