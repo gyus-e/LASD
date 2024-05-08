@@ -44,7 +44,7 @@ bool BinaryTree<Data>::Node::operator!=(const Node & that) const
 template <typename Data>
 void BinaryTree<Data>::Node::PreOrderTraverse (TraverseFun traverseFun) const
 {
-    traverseFun(this->Element); //visita in preorder
+    traverseFun(this->Element()); //visita in preorder
     
     if (this->HasLeftChild())
     {
@@ -68,7 +68,7 @@ void BinaryTree<Data>::Node::PostOrderTraverse (TraverseFun traverseFun) const
         this->RightChild().PostOrderTraverse(traverseFun); //chiamata a destra
     }
     
-    traverseFun(this->Element); //visita in postorder
+    traverseFun(this->Element()); //visita in postorder
 }
 
 template <typename Data>
@@ -79,7 +79,7 @@ void BinaryTree<Data>::Node::InOrderTraverse (TraverseFun traverseFun) const
         this->LeftChild().InOrderTraverse(traverseFun); //chiamata a sinistra
     }    
 
-    traverseFun(this->Element); //visita in order
+    traverseFun(this->Element()); //visita in order
 
     if (this->HasRightChild())
     {
@@ -90,24 +90,24 @@ void BinaryTree<Data>::Node::InOrderTraverse (TraverseFun traverseFun) const
 template <typename Data>
 void BinaryTree<Data>::Node::BreadthTraverse (TraverseFun traverseFun) const
 {
-    Queue<Node> Q;
-    Q.Enqueue(*this);
+    QueueLst<const Node *> Q;
+    Q.Enqueue(this);
     while (!Q.Empty())
     {
-        Node curr = Q.Head();
+        const Node * curr = Q.Head();
 
         //Accoda figlio sx
-        if (curr.HasLeftChild())
+        if (curr->HasLeftChild())
         {
-            Q.Enqueue(curr.LeftChild());
+            Q.Enqueue(& (curr->LeftChild()));
         }
         //Accoda figlio dx
-        if (curr.HasRightChild())
+        if (curr->HasRightChild())
         {
-            Q.Enqueue(curr.RightChild());
+            Q.Enqueue(& (curr->RightChild()));
         }
         //visita curr
-        traverseFun(curr);
+        traverseFun(curr->Element ());
 
         Q.Dequeue();
     } 
@@ -164,7 +164,7 @@ void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 template <typename Data>
 void MutableBinaryTree<Data>::MutableNode::PreOrderMap (MapFun mapFun)
 {
-    mapFun(this->Element); //visita in preorder
+    mapFun(this->Element()); //visita in preorder
     
     if (this->HasLeftChild())
     {
@@ -188,7 +188,7 @@ void MutableBinaryTree<Data>::MutableNode::PostOrderMap (MapFun mapFun)
         this->RightChild().PostOrderMap(mapFun); //chiamata a destra
     }
     
-    mapFun(this->Element); //visita in postorder
+    mapFun(this->Element()); //visita in postorder
 }
 
 template <typename Data>
@@ -199,7 +199,7 @@ void MutableBinaryTree<Data>::MutableNode::InOrderMap (MapFun mapFun)
         this->LeftChild().InOrderMap(mapFun); //chiamata a sinistra
     }    
 
-    mapFun(this->Element); //visita in order
+    mapFun(this->Element()); //visita in order
 
     if (this->HasRightChild())
     {
@@ -210,28 +210,28 @@ void MutableBinaryTree<Data>::MutableNode::InOrderMap (MapFun mapFun)
 template <typename Data>
 void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
 {
-    Queue<MutableNode> Q;
-    Q.Enqueue(*this);
-    while (!Q.Empty())
-    {
-        MutableNode curr = Q.Head();
+    // QueueLst<MutableNode *> Q;
+    // Q.Enqueue(this);
+    // while (!Q.Empty())
+    // {
+    //     const MutableNode * curr = Q.Head();
 
-        //Accoda figlio sx
-        if (curr.HasLeftChild())
-        {
-            Q.Enqueue(curr.LeftChild());
-        }
-        //Accoda figlio dx
-        if (curr.HasRightChild())
-        {
-            Q.Enqueue(curr.RightChild());
-        }
-        //visita curr
-        mapFun(curr);
+    //     //Accoda figlio sx
+    //     if (curr->HasLeftChild())
+    //     {
+    //         Q.Enqueue((curr->LeftChild()));
+    //     }
+    //     //Accoda figlio dx
+    //     if (curr->HasRightChild())
+    //     {
+    //         Q.Enqueue((curr->RightChild()));
+    //     }
+    //     //visita curr
+    //     mapFun(curr->Element ());
 
-        Q.Dequeue();
-    } 
-}
+    //     Q.Dequeue();
+    // } 
+} 
 
 /* ************************************************************************** */
 /*  Mutable BinaryTree  */
