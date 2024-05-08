@@ -37,6 +37,8 @@ protected:
   protected:
 
     NodeLnk () = default;
+    NodeLnk (const NodeLnk &); //Copy constructor
+    NodeLnk (NodeLnk &&) noexcept; //Move constructor
 
   public:
     virtual ~NodeLnk () {if (this->HasLeftChild()) {delete this->Sx;} if (this->HasRightChild()) {delete this->Dx;}}
@@ -47,29 +49,8 @@ protected:
     inline bool HasLeftChild() const noexcept override {return this->Sx != nullptr;}
     inline bool HasRightChild() const noexcept override {return this->Dx != nullptr;} 
 
-    NodeLnk & LeftChild() override // (concrete function must throw std::out_of_range when not existent)
-    {
-      if (this->HasLeftChild())
-      {
-        return this->Sx;
-      } 
-      else 
-      {
-        throw std::out_of_range ("left child does not exist.");
-      }
-    } 
-
-    NodeLnk & RightChild() override // (concrete function must throw std::out_of_range when not existent)
-    {
-      if (this->HasRightChild())
-      {
-        return this->Dx;
-      } 
-      else 
-      {
-        throw std::out_of_range ("right child does not exist.");
-      }
-    } 
+    NodeLnk & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
+    NodeLnk & RightChild() override; // (concrete function must throw std::out_of_range when not existent)
 
   };
 
@@ -103,16 +84,16 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument) specifiers;
+  BinaryTreeLnk operator=(const BinaryTreeLnk &);
 
   // Move assignment
-  // type operator=(argument) specifiers;
+  BinaryTreeLnk operator=(BinaryTreeLnk &&) noexcept;
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
+  bool operator==(const BinaryTreeLnk &);
+  bool operator!=(const BinaryTreeLnk &);
 
   /* ************************************************************************ */
 
