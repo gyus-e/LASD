@@ -6,7 +6,7 @@ namespace lasd {
 
 template <typename Data>
 template <typename Accumulator>
-Accumulator TraversableContainer<Data>::Fold(FoldFun<Accumulator> & foldFun, const Accumulator & init) const
+Accumulator TraversableContainer<Data>::Fold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
     this->Traverse (
@@ -83,7 +83,7 @@ bool TraversableContainer<Data>::Exists(const Data & val) const noexcept
 
 template <typename Data>
 template <typename Accumulator>
-Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator> & foldFun, const Accumulator & init) const
+Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
     this->PreOrderTraverse (
@@ -101,10 +101,44 @@ Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator
 
 template <typename Data>
 template <typename Accumulator>
-Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator> & foldFun, const Accumulator & init) const
+Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
     this->PostOrderTraverse (
+        [&acc, foldFun] (const Data & dat)
+        {
+            acc = foldFun (dat, acc);
+        }
+    );
+    return acc;
+}
+
+/* ************************************************************************** */
+/*  InOrderTraversableContainer    */
+
+template <typename Data>
+template <typename Accumulator>
+Accumulator InOrderTraversableContainer<Data>::InOrderFold (FoldFun<Accumulator> foldFun, const Accumulator & init) const
+{
+    Accumulator acc = init;
+    this->InOrderTraverse (
+        [&acc, foldFun] (const Data & dat)
+        {
+            acc = foldFun (dat, acc);
+        }
+    );
+    return acc;
+}
+
+/* ************************************************************************** */
+/*  BreadthTraversableContainer    */
+
+template <typename Data>
+template <typename Accumulator>
+Accumulator BreadthTraversableContainer<Data>::BreadthFold (FoldFun<Accumulator> foldFun, const Accumulator & init) const
+{
+    Accumulator acc = init;
+    this->BreadthTraverse (
         [&acc, foldFun] (const Data & dat)
         {
             acc = foldFun (dat, acc);
