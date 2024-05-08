@@ -14,6 +14,8 @@
 #include "../queue/vec/queuevec.hpp"
 // #include "../queue/lst/queuelst.hpp"
 
+#include <stdexcept>
+
 /* ************************************************************************** */
 
 namespace lasd {
@@ -21,11 +23,11 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class BinaryTree {
-  // Must extend PreOrderTraversableContainer<Data>,
-  //             PostOrderTraversableContainer<Data>,
-  //             InOrderTraversableContainer<Data>,
-  //             BreadthTraversableContainer<Data>
+class BinaryTree : public virtual PreOrderTraversableContainer<Data>,
+                   public virtual PostOrderTraversableContainer<Data>,
+                   public virtual InOrderTraversableContainer<Data>,
+                   public virtual BreadthTraversableContainer<Data>
+{
 
 private:
 
@@ -37,102 +39,110 @@ protected:
 
 public:
 
-  struct Node {
+  using typename TraversableContainer<Data>::TraverseFun;
+
+  struct Node { //pure virtual, verrá implementata in binarytreelnk e binarytreevec
+  
+  private:
 
   protected:
-
+    
     // Comparison operators
-    // type operator==(argument) specifiers; // Comparison of abstract types is possible, but is not visible.
-    // type operator!=(argument) specifiers; // Comparison of abstract types is possible, but is not visible.
+    bool operator==(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+    bool operator!=(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+
+    //Auxiliary functions
+    void PreOrderTraverse (TraverseFun) const;
+    void PostOrderTraverse (TraverseFun) const;
+    void InOrderTraverse (TraverseFun) const;
+    void BreadthTraverse (TraverseFun) const;
 
   public:
 
-    // friend class BinaryTree<Data>;
+    friend class BinaryTree<Data>;
 
     /* ********************************************************************** */
 
     // Destructor
-    // ~Node() specifiers
+    virtual ~Node() = default;
 
     /* ********************************************************************** */
 
     // Copy assignment
-    // type operator=(argument); // Copy assignment of abstract types is not possible.
+    Node operator=(const Node &) = delete; // Copy assignment of abstract types is not possible.
 
     // Move assignment
-    // type operator=(argument); // Move assignment of abstract types is not possible.
+    Node operator=(Node &&) = delete; // Move assignment of abstract types is not possible.
 
     /* ********************************************************************** */
 
     // Specific member functions
 
-    // type Element() specifiers; // Immutable access to the element (concrete function should not throw exceptions)
+    virtual Data Element() const = 0; // Immutable access to the element (concrete function should not throw exceptions)
 
-    // type IsLeaf() specifiers; // (concrete function should not throw exceptions)
-    // type HasLeftChild() specifiers; // (concrete function should not throw exceptions)
-    // type HasRightChild() specifiers; // (concrete function should not throw exceptions)
+    virtual bool IsLeaf() const noexcept = 0; // (concrete function should not throw exceptions)
+    virtual bool HasLeftChild() const noexcept = 0; // (concrete function should not throw exceptions)
+    virtual bool HasRightChild() const noexcept = 0; // (concrete function should not throw exceptions)
 
-    // type LeftChild() specifiers; // (concrete function must throw std::out_of_range when not existent)
-    // type RightChild() specifiers; // (concrete function must throw std::out_of_range when not existent)
+    virtual Node LeftChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
+    virtual Node RightChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
 
   };
 
   /* ************************************************************************ */
 
   // Destructor
-  // ~BinaryTree() specifiers
+  virtual ~BinaryTree() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types is not possible.
+  BinaryTree operator=(const BinaryTree &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  // type operator=(argument); // Move assignment of abstract types is not possible.
+  BinaryTree operator=(BinaryTree &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract binary tree is possible.
-  // type operator!=(argument) specifiers; // Comparison of abstract binary tree is possible.
+  bool operator==(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
+  bool operator!=(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
 
   /* ************************************************************************ */
 
   // Specific member functions
 
-  // type Root() specifiers; // (concrete function must throw std::length_error when empty)
+  virtual Data Root() const = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from TraversableContainer)
 
-  // using typename TraversableContainer<Data>::TraverseFun;
-
-  // type Traverse(arguments) specifiers; // Override TraversableContainer member
+  void Traverse(TraverseFun) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderTraversableContainer)
 
-  // type PreOrderTraverse(arguments) specifiers; // Override PreOrderTraversableContainer member
+  void PreOrderTraverse(TraverseFun) const override; // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  // type PostOrderTraverse(arguments) specifiers; // Override PostOrderTraversableContainer member
+  void PostOrderTraverse(TraverseFun) const override; // Override PostOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from InOrderTraversableContainer)
 
-  // type InOrderTraverse(arguments) specifiers; // Override InOrderTraversableContainer member
+  void InOrderTraverse(TraverseFun) const override; // Override InOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from BreadthTraversableContainer)
 
-  // type BreadthTraverse(arguments) specifiers; // Override BreadthTraversableContainer member
+  void BreadthTraverse(TraverseFun) const override; // Override BreadthTraversableContainer member
 
 protected:
 
