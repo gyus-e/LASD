@@ -6,6 +6,7 @@
 
 #include "../stack.hpp"
 #include "../../list/list.hpp"
+#include <stdexcept>
 
 /* ************************************************************************** */
 
@@ -14,7 +15,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class StackLst {
+class StackLst : public virtual Stack<Data>, protected virtual List<Data> {
   // Must extend Stack<Data>,
   //             List<Data>
 
@@ -24,64 +25,64 @@ private:
 
 protected:
 
-  // using List<Data>::???;
+  using List<Data>::size;
 
   // ...
 
 public:
 
   // Default constructor
-  // StackLst() specifier;
+  StackLst() = default;
 
   /* ************************************************************************ */
 
   // Specific constructor
-  // StackLst(argument) specifiers; // A stack obtained from a TraversableContainer
-  // StackLst(argument) specifiers; // A stack obtained from a MappableContainer
+  StackLst (const TraversableContainer<Data> & cont) : List<Data> (cont) {} // A stack obtained from a TraversableContainer
+  StackLst (MappableContainer<Data> && cont) : List<Data> (std::move(cont)) {} // A stack obtained from a MappableContainer
 
   /* ************************************************************************ */
 
   // Copy constructor
-  // StackLst(argument);
+  StackLst(const StackLst & that) : List<Data> ((List<Data>)that) {}
 
   // Move constructor
-  // StackLst(argument);
+  StackLst(StackLst && that) noexcept : List<Data> (std::move((List<Data>)that)) {}
 
   /* ************************************************************************ */
 
   // Destructor
-  // ~StackLst() specifier;
+  virtual ~StackLst() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument);
+  inline StackLst operator=(const StackLst & that) {this->List<Data>::operator=((List<Data>)(that)); return *this;}
 
   // Move assignment
-  // type operator=(argument);
+  inline StackLst operator=(StackLst && that) {this->List<Data>::operator=(std::move((List<Data>)(that))); return *this;}
 
   /* ************************************************************************ */
 
   // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
+  inline bool operator==(const StackLst & that) const {return (List<Data>)(*this) == (List<Data>)(that);}
+  inline bool operator!=(const StackLst & that) const {return (List<Data>)(*this) != (List<Data>)(that);}
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from Stack)
 
-  // type Top() specifiers; // Override Stack member (non-mutable version; must throw std::length_error when empty)
-  // type Top() specifiers; // Override Stack member (non-mutable version; must throw std::length_error when empty)
-  // type Pop() specifiers; // Override Stack member (must throw std::length_error when empty)
-  // type TopNPop() specifiers; // Override Stack member (must throw std::length_error when empty)
-  // type Push(argument) specifiers; // Override Stack member (copy of the value)
-  // type Push(argument) specifiers; // Override Stack member (move of the value)
+  inline const Data & Top() const override; // Override Stack member (non-mutable version; must throw std::length_error when empty)
+  inline Data & Top() override; // Override Stack member (non-mutable version; must throw std::length_error when empty)
+  void Pop() override; // Override Stack member (must throw std::length_error when empty)
+  inline Data TopNPop() override; // Override Stack member (must throw std::length_error when empty)
+  void Push(const Data &) override; // Override Stack member (copy of the value)
+  void Push(Data &&) override; // Override Stack member (move of the value)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
 
-  // using List<Data>::Clear;
+  inline void Clear() override {this->List<Data>::Clear();}
 
 protected:
 
