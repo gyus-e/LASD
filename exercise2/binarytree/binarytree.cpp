@@ -159,5 +159,111 @@ void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 }
 
 /* ************************************************************************** */
+/*  Mutable Node  */
+
+template <typename Data>
+void MutableBinaryTree<Data>::MutableNode::PreOrderMap (MapFun mapFun)
+{
+    mapFun(this->Element); //visita in preorder
+    
+    if (this->HasLeftChild())
+    {
+        this->LeftChild().PreOrderMap(mapFun); //chiamata a sinistra
+    }    
+    if (this->HasRightChild())
+    {
+        this->RightChild().PreOrderMap(mapFun); //chiamata a destra
+    }
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::MutableNode::PostOrderMap (MapFun mapFun)
+{
+    if (this->HasLeftChild())
+    {
+        this->LeftChild().PostOrderMap(mapFun); //chiamata a sinistra
+    }    
+    if (this->HasRightChild())
+    {
+        this->RightChild().PostOrderMap(mapFun); //chiamata a destra
+    }
+    
+    mapFun(this->Element); //visita in postorder
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::MutableNode::InOrderMap (MapFun mapFun)
+{
+    if (this->HasLeftChild())
+    {
+        this->LeftChild().InOrderMap(mapFun); //chiamata a sinistra
+    }    
+
+    mapFun(this->Element); //visita in order
+
+    if (this->HasRightChild())
+    {
+        this->RightChild().InOrderMap(mapFun); //chiamata a destra
+    }
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
+{
+    Queue<MutableNode> Q;
+    Q.Enqueue(*this);
+    while (!Q.Empty())
+    {
+        MutableNode curr = Q.Head();
+
+        //Accoda figlio sx
+        if (curr.HasLeftChild())
+        {
+            Q.Enqueue(curr.LeftChild());
+        }
+        //Accoda figlio dx
+        if (curr.HasRightChild())
+        {
+            Q.Enqueue(curr.RightChild());
+        }
+        //visita curr
+        mapFun(curr);
+
+        Q.Dequeue();
+    } 
+}
+
+/* ************************************************************************** */
+/*  Mutable BinaryTree  */
+
+template <typename Data>
+void MutableBinaryTree<Data>::Map(MapFun mapFun)
+{
+    this->Root().InOrderMap(mapFun);
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::PreOrderMap(MapFun mapFun)
+{
+    this->Root().PreOrderMap(mapFun);
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::PostOrderMap(MapFun mapFun) 
+{
+    this->Root().PostOrderMap(mapFun);
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::InOrderMap(MapFun mapFun) 
+{
+    this->Root().InOrderMap(mapFun);
+}
+
+template <typename Data>
+void MutableBinaryTree<Data>::BreadthMap(MapFun mapFun) 
+{
+    this->Root().BreadthMap(mapFun);
+}
 
 }

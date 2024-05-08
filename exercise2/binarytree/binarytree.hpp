@@ -36,15 +36,13 @@ private:
 protected:
 
   // ...
+  using PreOrderTraversableContainer<Data>::size;
 
 public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
   struct Node { //pure virtual, verrá implementata in binarytreelnk e binarytreevec
-  
-  private:
-
   protected:
     
     // Comparison operators
@@ -58,7 +56,6 @@ public:
     void BreadthTraverse (TraverseFun) const;
 
   public:
-
     friend class BinaryTree<Data>;
 
     /* ********************************************************************** */
@@ -78,15 +75,14 @@ public:
 
     // Specific member functions
 
-    virtual Data Element() const = 0; // Immutable access to the element (concrete function should not throw exceptions)
+    virtual const Data & Element() const = 0; // Immutable access to the element (concrete function should not throw exceptions)
 
     virtual bool IsLeaf() const noexcept = 0; // (concrete function should not throw exceptions)
     virtual bool HasLeftChild() const noexcept = 0; // (concrete function should not throw exceptions)
     virtual bool HasRightChild() const noexcept = 0; // (concrete function should not throw exceptions)
 
-    virtual Node LeftChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
-    virtual Node RightChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
-
+    virtual const Node & LeftChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
+    virtual const Node & RightChild() const = 0; // (concrete function must throw std::out_of_range when not existent)
   };
 
   /* ************************************************************************ */
@@ -153,103 +149,109 @@ protected:
 /* ************************************************************************** */
 
 template <typename Data>
-class MutableBinaryTree {
-  // Must extend ClearableContainer,
-  //             BinaryTree<Data>,
-  //             PreOrderMappableContainer<Data>,
-  //             PostOrderMappableContainer<Data>,
-  //             InOrderMappableContainer<Data>,
-  //             BreadthMappableContainer<Data>
-
+class MutableBinaryTree : public virtual ClearableContainer,
+                          public virtual BinaryTree<Data>,
+                          public virtual PreOrderMappableContainer<Data>,
+                          public virtual PostOrderMappableContainer<Data>,
+                          public virtual InOrderMappableContainer<Data>,
+                          public virtual BreadthMappableContainer<Data>
+{
 private:
 
   // ...
 
 protected:
 
-  // ...
+  MutableBinaryTree() = default;
 
 public:
+  
+  using typename MappableContainer<Data>::MapFun;
 
-  struct MutableNode {
-    // Must extend Node
+  struct MutableNode : public virtual BinaryTree<Data>::Node {
+  public:
 
-    // friend class MutableBinaryTree<Data>;
+    friend class MutableBinaryTree<Data>;
 
     /* ********************************************************************** */
 
     // Destructor
-    // ~MutableNode() specifiers
+    virtual ~MutableNode() = default;
 
     /* ********************************************************************** */
 
     // Copy assignment
-    // type operator=(argument); // Copy assignment of abstract types is not possible.
+    MutableNode operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
 
     // Move assignment
-    // type operator=(argument); // Move assignment of abstract types is not possible.
+    MutableNode operator=(MutableNode &&) = delete; // Move assignment of abstract types is not possible.
 
     /* ********************************************************************** */
 
     // Specific member functions
 
-    // type Element() specifiers; // Mutable access to the element (concrete function should not throw exceptions)
+    virtual Data & Element() = 0; // Mutable access to the element (concrete function should not throw exceptions)
 
-    // type LeftChild() specifiers; // (concrete function must throw std::out_of_range when not existent)
-    // type RightChild() specifiers; // (concrete function must throw std::out_of_range when not existent)
-
+    virtual MutableNode & LeftChild() = 0; // (concrete function must throw std::out_of_range when not existent)
+    virtual MutableNode & RightChild() = 0; // (concrete function must throw std::out_of_range when not existent)
+  
+  protected:
+    MutableNode() = default;
+    // Auxiliary functions
+    void PreOrderMap (MapFun);
+    void PostOrderMap (MapFun);
+    void InOrderMap (MapFun);
+    void BreadthMap (MapFun);
   };
 
   /* ************************************************************************ */
 
   // Destructor
-  // ~MutableBinaryTree() specifiers
+  virtual ~MutableBinaryTree() = default;
 
   /* ************************************************************************ */
 
   // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types is not possible.
+  MutableNode operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  // type operator=(argument); // Move assignment of abstract types is not possible.
+  MutableNode operator=(MutableNode &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
   // Specific member functions
 
-  // type Root() specifiers; // (concrete function must throw std::length_error when empty)
+  virtual MutableNode Root() = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MappableContainer)
 
-  // using typename MappableContainer<Data>::MapFun;
-
-  // type Map(argument) specifiers; // Override MappableContainer member
+  void Map(MapFun) override; // Override MappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  // type PreOrderMap(argument) specifiers; // Override PreOrderMappableContainer member
+  void PreOrderMap(MapFun) override; // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  // type PostOrderMap(argument) specifiers; // Override PostOrderMappableContainer member
+  void PostOrderMap(MapFun) override; // Override PostOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from InOrderMappableContainer)
 
-  // type InOrderMap(arguments) specifiers; // Override InOrderMappableContainer member
+  void InOrderMap(MapFun) override; // Override InOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from BreadthMappableContainer)
 
-  // type BreadthMap(arguments) specifiers; // Override BreadthMappableContainer member
+  void BreadthMap(MapFun) override; // Override BreadthMappableContainer member
 
 protected:
 
