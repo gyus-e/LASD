@@ -278,7 +278,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void BreadthTraverse(TraverseFun) const = 0;
+  virtual void BreadthTraverse(TraverseFun) const = 0;
 
   template <typename Accumulator>
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
