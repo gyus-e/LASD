@@ -85,16 +85,31 @@ BinaryTreeLnk<Data>::~BinaryTreeLnk()
     }
 }
 
+//Copy constructor
+template <typename Data>
+BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
+{
+    this->root = new NodeLnk (that.root);
+}
+
 //Copy assignment
 template <typename Data>
 BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk & that)
 {
     this->root = new NodeLnk (that.root);
+    return *this;
+}
+
+//Move constructor
+template <typename Data>
+BinaryTreeLnk<Data>::BinaryTreeLnk (BinaryTreeLnk && that) noexcept
+{
+    std::swap (this->root, that.root);
 }
 
 //Move assignment
 template <typename Data>
-BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that) noexcept
+BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that)
 {
     std::swap (this->root, that.root);
     return *this;

@@ -71,10 +71,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  // BinaryTreeLnk(argument) specifiers;
+  BinaryTreeLnk(const BinaryTreeLnk &);
 
   // Move constructor
-  // BinaryTreeLnk(argument) specifiers;
+  BinaryTreeLnk(BinaryTreeLnk &&) noexcept;
 
   /* ************************************************************************ */
 
@@ -87,7 +87,7 @@ public:
   BinaryTreeLnk operator=(const BinaryTreeLnk &);
 
   // Move assignment
-  BinaryTreeLnk operator=(BinaryTreeLnk &&) noexcept;
+  BinaryTreeLnk operator=(BinaryTreeLnk &&);
 
   /* ************************************************************************ */
 
