@@ -131,31 +131,39 @@ bool BinaryTree<Data>::operator!=(const BinaryTree & that) const
 template <typename Data>
 void BinaryTree<Data>::Traverse(TraverseFun traverseFun) const
 {
-    this->Root().InOrderTraverse(traverseFun);
+    this->InOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 {
-    this->Root().PreOrderTraverse(traverseFun);
+    const Node * root = &(this->Root());
+    if (root)
+        this->Root().PreOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 {
-    this->Root().PostOrderTraverse(traverseFun);
+    const Node * root = &(this->Root());
+    if (root)
+        this->Root().PostOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::InOrderTraverse(TraverseFun traverseFun) const
 {
-    this->Root().InOrderTraverse(traverseFun);
+    const Node * root = &(this->Root());
+    if (root)
+        this->Root().InOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 {
-    this->Root().BreadthTraverse(traverseFun);
+    const Node * root = &(this->Root());
+    if (root)
+        this->Root().BreadthTraverse(traverseFun);
 }
 
 /* ************************************************************************** */
@@ -267,3 +275,17 @@ void MutableBinaryTree<Data>::BreadthMap(MapFun mapFun)
 }
 
 }
+
+/* ************************************************************************** */
+/*  BTPreOrderIterator  */
+
+// An iterator over a given binary tree
+// template <typename Data>
+// BTPreOrderIterator<Data>::BTPreOrderIterator(const BinaryTree<Data> & binTree)
+// {
+//     if (binTree.Size() != 0)
+//     {
+//         root = &binTree.Root();
+//         curr = root;
+//     }
+// }
