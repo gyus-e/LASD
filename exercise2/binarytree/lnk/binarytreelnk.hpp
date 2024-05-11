@@ -34,23 +34,27 @@ protected:
     NodeLnk * Sx = nullptr;
     NodeLnk * Dx = nullptr;
 
-  protected:
+  public:
+    friend class BinaryTreeLnk<Data>;
 
     NodeLnk () = default;
     NodeLnk (const NodeLnk &); //Copy constructor
     NodeLnk (NodeLnk &&) noexcept; //Move constructor
 
-  public:
-    virtual ~NodeLnk () {if (this->HasLeftChild()) {delete this->Sx;} if (this->HasRightChild()) {delete this->Dx;}}
+    virtual ~NodeLnk ();
 
     inline Data & Element() override {return this->elem;} 
+    inline const Data & Element() const override {return this->elem;} 
 
-    inline bool IsLeaf() const noexcept override {return this->Sx == nullptr == this->Dx;} 
+    inline bool IsLeaf() const noexcept override {return (this->Sx == nullptr) && (this->Dx == nullptr);} 
     inline bool HasLeftChild() const noexcept override {return this->Sx != nullptr;}
     inline bool HasRightChild() const noexcept override {return this->Dx != nullptr;} 
 
-    NodeLnk & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
-    NodeLnk & RightChild() override; // (concrete function must throw std::out_of_range when not existent)
+    MutableBinaryTree<Data>::MutableNode & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
+    const BinaryTree<Data>::Node & LeftChild() const override; // (concrete function must throw std::out_of_range when not existent)
+
+    MutableBinaryTree<Data>::MutableNode & RightChild() override; // (concrete function must throw std::out_of_range when not existent)    
+    const BinaryTree<Data>::Node & RightChild() const override; // (concrete function must throw std::out_of_range when not existent)
 
   };
 
@@ -99,13 +103,13 @@ public:
 
   // Specific member functions (inherited from BinaryTree)
 
-  const Data & Root() const override; // Override BinaryTree member (throw std::length_error when empty)
+  const BinaryTree<Data>::Node & Root() const override; // Override BinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MutableBinaryTree)
 
-  Data & Root() override; // Override MutableBinaryTree member (throw std::length_error when empty)
+  MutableBinaryTree<Data>::MutableNode & Root() override; // Override MutableBinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
