@@ -110,7 +110,7 @@ protected:
 public:
 
   // Destructor
-  virtual ~ForwardIterator() = default
+  virtual ~ForwardIterator() = default;
 
   /* ************************************************************************ */
 
@@ -172,7 +172,7 @@ public:
 
   // Specific member functions
 
-  virtual void Reset() = 0; // (concrete function should not throw exceptions)
+  virtual void Reset() noexcept = 0; // (concrete function should not throw exceptions)
 
 };
 
