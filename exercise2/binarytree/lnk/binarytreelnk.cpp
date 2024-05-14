@@ -122,12 +122,12 @@ BinaryTreeLnk<Data>::~BinaryTreeLnk()
 template <typename Data>
 BinaryTreeLnk<Data>::BinaryTreeLnk (const TraversableContainer<Data> & con)
 {
-    size = con.Size();
+    this->size = con.Size();
   
-    if (size > 0)
+    if (this->size > 0)
     {
         QueueLst<NodeLnk **> Q;
-        Q.Enqueue (&(root));
+        Q.Enqueue (&(this->root));
 
         con.Traverse (
             [&Q] (const Data & d)
@@ -141,8 +141,6 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (const TraversableContainer<Data> & con)
             }
         );
     }
-    
-    // std::cout<<"root of the tree: "<<this->root<<std::endl;
 }
 
 
@@ -151,31 +149,24 @@ template <typename Data>
 BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> & con)
 {
     this->size = con.Size();
-    // std::cout<<"size="<<this->size<<std::endl;
+  
     if (this->size > 0)
     {
         QueueLst<NodeLnk **> Q;
         Q.Enqueue (&(this->root));
 
-        // std::cout<<"root of the tree: "<<this->root<<std::endl;
-        // std::cout<<"Head of Q: "<<*(Q.Head())<<std::endl;
-
         con.Map (
-            [&Q] (const Data & d)
+            [&Q] (Data & d)
             {
                 NodeLnk ** temp = (Q.HeadNDequeue());
 
                 *temp = new NodeLnk (std::move(d));
-                // std::cout<<"Node created with value: "<<temp->elem<<std::endl;
 
                 Q.Enqueue (&((*temp)->Sx));
                 Q.Enqueue (&((*temp)->Dx));
             }
         );
-
-        // std::cout<<"root of the tree: "<<this->root<<std::endl;
     }
-
 }
 
 //Copy constructor
