@@ -102,7 +102,7 @@ void LinearContainer<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 {
     for (unsigned long i = 0; i < this->Size(); i++)
     {
-        traverseFun ((*this)[i]);
+        traverseFun (this->operator[](i));
     }
 }
 
@@ -115,7 +115,7 @@ void LinearContainer<Data>::PostOrderTraverse(TraverseFun traverseFun) const
         {
             return;
         }
-        traverseFun ((*this)[i]);
+        traverseFun (this->operator[](i));
     }
 }
 
