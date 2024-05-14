@@ -272,9 +272,9 @@ private:
 
 protected:
 
-  typename BinaryTree<Data>::Node * root = nullptr;
-  typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<typename BinaryTree<Data>::Node*> stk;
+  const typename BinaryTree<Data>::Node * root = nullptr;
+  const typename BinaryTree<Data>::Node * curr = nullptr;
+  StackVec<const typename BinaryTree<Data>::Node*> stk;
 
 public:
 
@@ -290,10 +290,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  BTPreOrderIterator(const BTPreOrderIterator & that) : root (that.root), curr (that.curr), stk (that.stk) {}
+  BTPreOrderIterator(const BTPreOrderIterator<Data> & that) : root (that.root), curr (that.curr), stk (that.stk) {}
 
   // Move constructor
-  BTPreOrderIterator(BTPreOrderIterator && that) noexcept
+  BTPreOrderIterator(BTPreOrderIterator<Data> && that) noexcept
   {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
@@ -308,7 +308,7 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTPreOrderIterator operator=(const BTPreOrderIterator & that)
+  BTPreOrderIterator operator=(const BTPreOrderIterator<Data> & that)
   {
     this->root = that.root;
     this->curr = that.curr;
@@ -318,24 +318,25 @@ public:
   }
 
   // Move assignment
-  BTPreOrderIterator operator=(BTPreOrderIterator && that) noexcept
+  BTPreOrderIterator operator=(BTPreOrderIterator<Data> && that) noexcept
   {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
     std::swap (this->stk, that.stk);
-    
+
     return *this;
   }
+
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BTPreOrderIterator & that) const
+  bool operator==(const BTPreOrderIterator<Data> & that) const
   {
     return (this->root == that.root) && (this->curr == that.curr) && (this->stk == that.stk);
   }
 
-  bool operator!=(const BTPreOrderIterator & that) const
+  bool operator!=(const BTPreOrderIterator<Data> & that) const
   {
     return !(this->operator==(that));
   }
@@ -493,9 +494,9 @@ private:
 
 protected:
 
-  typename BinaryTree<Data>::Node * root = nullptr;
-  typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<typename BinaryTree<Data>::Node*> stk;
+  const typename BinaryTree<Data>::Node * root = nullptr;
+  const typename BinaryTree<Data>::Node * curr = nullptr;
+  StackVec<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostLeaf()
   //Scendo preferibilmente a sinistra fino a trovare una foglia
@@ -503,10 +504,11 @@ protected:
   {
     if (this->curr == nullptr)
     {
-      throw std::out_of_range("from toLeftMostLeaf");
+      return;
+      // throw std::out_of_range("from toLeftMostLeaf");
     }
 
-    while (!this->curr->isLeaf())
+    while (!this->curr->IsLeaf())
     {
       //scendo a sinistra, se possibile
       if (this->curr->HasLeftChild())
@@ -623,10 +625,10 @@ public:
     if (!stk.Empty())
     {
       //il top dello stack è il fratello sinistro di curr, oppure il padre
-      typename BinaryTree<Data>::Node* top = this->stk.Top();
+      const typename BinaryTree<Data>::Node* top = this->stk.Top();
 
       //se top è il fratello sinistro di curr
-      if (top->HasRightChild() && this->curr != top->RightChild())
+      if (top->HasRightChild() && this->curr != &(top->RightChild()))
       {
         //curr si sposta sul fratello sinistro
         this->curr = & (top->RightChild());
@@ -750,26 +752,28 @@ private:
 
 protected:
   
-  typename BinaryTree<Data>::Node * root = nullptr;
-  typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<typename BinaryTree<Data>::Node*> stk;
+  const typename BinaryTree<Data>::Node * root = nullptr;
+  const typename BinaryTree<Data>::Node * curr = nullptr;
+  StackVec<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostNode ()
   {
     if (this->curr == nullptr)
     {
-      throw std::out_of_range("from toLeftMostNode");
+      return;
+      // throw std::out_of_range("from toLeftMostNode: curr is nullptr");
     }
     
     //scendo sempre a sinistra finché possibile
     while (this->curr->HasLeftChild())
     {
-      if (! this->curr->HasLeftChild())
+      if (this->curr->HasLeftChild())
       {
-        throw std::logic_error("from toLeftMostNode");
+        this->stk.Push(this->curr);
+        this->curr = & this->curr->LeftChild();
+        // throw std::logic_error("from toLeftMostNode: curr has no left child");
       }
-      this->stk.Push(this->curr);
-      this->curr = & this->curr->LeftChild();
+      
     }
 
     return;
@@ -996,9 +1000,9 @@ private:
 
 protected:
 
-  typename BinaryTree<Data>::Node * root = nullptr;
-  typename BinaryTree<Data>::Node * curr = nullptr;
-  QueueVec<typename BinaryTree<Data>::Node *> que;
+  const typename BinaryTree<Data>::Node * root = nullptr;
+  const typename BinaryTree<Data>::Node * curr = nullptr;
+  QueueVec<const typename BinaryTree<Data>::Node *> que;
 
 public:
 

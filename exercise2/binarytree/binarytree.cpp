@@ -119,6 +119,15 @@ void BinaryTree<Data>::Node::BreadthTraverse (TraverseFun traverseFun) const
 template <typename Data>
 bool BinaryTree<Data>::operator==(const BinaryTree & that) const
 {
+    if (this->Empty() && that.Empty ())
+    {
+        return true;
+    }
+    else if (this->Empty() || that.Empty())
+    {
+        return false;
+    }
+
     return this->Root() == that.Root();
 }
 
@@ -138,32 +147,32 @@ template <typename Data>
 void BinaryTree<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 {
     const Node * root = &(this->Root());
-    if (root)
-        this->Root().PreOrderTraverse(traverseFun);
+    if (root != nullptr)
+        root->PreOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 {
     const Node * root = &(this->Root());
-    if (root)
-        this->Root().PostOrderTraverse(traverseFun);
+    if (root != nullptr)
+        root->PostOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::InOrderTraverse(TraverseFun traverseFun) const
 {
     const Node * root = &(this->Root());
-    if (root)
-        this->Root().InOrderTraverse(traverseFun);
+    if (root != nullptr)
+        root->InOrderTraverse(traverseFun);
 }
 
 template <typename Data>
 void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 {
     const Node * root = &(this->Root());
-    if (root)
-        this->Root().BreadthTraverse(traverseFun);
+    if (root != nullptr)
+        root->BreadthTraverse(traverseFun);
 }
 
 /* ************************************************************************** */
@@ -218,27 +227,27 @@ void MutableBinaryTree<Data>::MutableNode::InOrderMap (MapFun mapFun)
 template <typename Data>
 void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
 {
-    // QueueLst<MutableNode *> Q;
-    // Q.Enqueue(this);
-    // while (!Q.Empty())
-    // {
-    //     const MutableNode * curr = Q.Head();
+    QueueLst<MutableNode *> Q;
+    Q.Enqueue(this);
+    while (!Q.Empty())
+    {
+        MutableNode * curr = Q.Head();
 
-    //     //Accoda figlio sx
-    //     if (curr->HasLeftChild())
-    //     {
-    //         Q.Enqueue((curr->LeftChild()));
-    //     }
-    //     //Accoda figlio dx
-    //     if (curr->HasRightChild())
-    //     {
-    //         Q.Enqueue((curr->RightChild()));
-    //     }
-    //     //visita curr
-    //     mapFun(curr->Element ());
+        //Accoda figlio sx
+        if (curr->HasLeftChild())
+        {
+            Q.Enqueue(&(curr->LeftChild()));
+        }
+        //Accoda figlio dx
+        if (curr->HasRightChild())
+        {
+            Q.Enqueue(&(curr->RightChild()));
+        }
+        //visita curr
+        mapFun(curr->Element ());
 
-    //     Q.Dequeue();
-    // } 
+        Q.Dequeue();
+    } 
 } 
 
 /* ************************************************************************** */
@@ -279,13 +288,38 @@ void MutableBinaryTree<Data>::BreadthMap(MapFun mapFun)
 /* ************************************************************************** */
 /*  BTPreOrderIterator  */
 
-// An iterator over a given binary tree
+// Copy assignment
 // template <typename Data>
-// BTPreOrderIterator<Data>::BTPreOrderIterator(const BinaryTree<Data> & binTree)
+// BTPreOrderIterator<Data> BTPreOrderIterator<Data>::operator=(const BTPreOrderIterator<Data> & that)
 // {
-//     if (binTree.Size() != 0)
-//     {
-//         root = &binTree.Root();
-//         curr = root;
-//     }
+// this->root = that.root;
+// this->curr = that.curr;
+// this->stk = that.stk;
+
+// return *this;
+// }
+
+// Move assignment
+// template <typename Data>
+// BTPreOrderIterator<Data> BTPreOrderIterator<Data>::operator=(BTPreOrderIterator<Data> && that) noexcept
+// {
+// std::swap (this->root, that.root);
+// std::swap (this->curr, that.curr);
+// std::swap (this->stk, that.stk);
+
+// return *this;
+// }
+
+
+// Comparison operators
+// template <typename Data>
+// bool BTPreOrderIterator<Data>::operator==(const BTPreOrderIterator<Data> & that) const
+// {
+// return (this->root == that.root) && (this->curr == that.curr) && (this->stk == that.stk);
+// }
+
+// template <typename Data>
+// bool BTPreOrderIterator<Data>::operator!=(const BTPreOrderIterator & that) const
+// {
+// return !(this->operator==(that));
 // }
