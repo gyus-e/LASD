@@ -140,7 +140,7 @@ bool BinaryTree<Data>::operator!=(const BinaryTree & that) const
 template <typename Data>
 void BinaryTree<Data>::Traverse(TraverseFun traverseFun) const
 {
-    this->InOrderTraverse(traverseFun);
+    this->BreadthTraverse(traverseFun);
 }
 
 template <typename Data>
@@ -256,7 +256,7 @@ void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
 template <typename Data>
 void MutableBinaryTree<Data>::Map(MapFun mapFun)
 {
-    this->Root().InOrderMap(mapFun);
+    this->Root().BreadthMap(mapFun);
 }
 
 template <typename Data>
