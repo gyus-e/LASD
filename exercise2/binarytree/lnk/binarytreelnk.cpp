@@ -134,7 +134,14 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (const TraversableContainer<Data> & con)
             {
                 NodeLnk ** temp = (Q.HeadNDequeue());
 
-                *temp = new NodeLnk (d);
+                try
+                {
+                    *temp = new NodeLnk (d);
+                }
+                catch (std::bad_alloc & exc)
+                {
+                    throw;
+                }
 
                 Q.Enqueue (&((*temp)->Sx));
                 Q.Enqueue (&((*temp)->Dx));
@@ -160,7 +167,14 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> & con)
             {
                 NodeLnk ** temp = (Q.HeadNDequeue());
 
-                *temp = new NodeLnk (std::move(d));
+                try
+                {
+                    *temp = new NodeLnk (std::move(d));
+                }
+                catch (std::bad_alloc & exc)
+                {
+                    throw;
+                }
 
                 Q.Enqueue (&((*temp)->Sx));
                 Q.Enqueue (&((*temp)->Dx));
@@ -173,7 +187,15 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> & con)
 template <typename Data>
 BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
 {
-    this->root = new NodeLnk (*that.root);
+    try
+    {     
+        this->root = new NodeLnk (*that.root);
+    }
+    catch(std::bad_alloc & e)
+    {
+        throw;
+    }
+    
     this->size = that.size;
 }
 
@@ -181,7 +203,15 @@ BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
 template <typename Data>
 BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk & that)
 {
-    this->root = new NodeLnk (*that.root);
+    try
+    {     
+        this->root = new NodeLnk (*that.root);
+    }
+    catch(std::bad_alloc & e)
+    {
+        throw;
+    }
+    
     this->size = that.size;
     return *this;
 }

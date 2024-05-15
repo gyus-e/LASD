@@ -69,17 +69,33 @@ BinaryTreeVec<Data>::BinaryTreeVec (const TraversableContainer<Data> & cont)
 
     if(this->size > 0) 
     {
-        this->vec = new Vector<NodeVec*>(this->size);
+        try
+        {
+            this->vec = new Vector<NodeVec*>(this->size);
+        }
+        catch(const std::bad_alloc & e)
+        {
+            throw;
+        }
+        
         
         unsigned long i = 0;
         cont.Traverse(
             [this, &i] (const Data & dat)
             {
-                NodeVec* node = new NodeVec(dat);
-                node->idx = i;
-                node->tree = this;
+                try
+                {
+                    NodeVec* node = new NodeVec(dat);
+                    node->idx = i;
+                    node->tree = this;
+                    
+                    this->vec->operator[](i) = node;
+                }
+                catch(const std::exception& e)
+                {
+                    throw;
+                }
 
-                this->vec->operator[](i) = node;
                 i++;
             }
         );
@@ -95,17 +111,33 @@ BinaryTreeVec<Data>::BinaryTreeVec (MappableContainer<Data> & cont)
 
     if(this->size > 0) 
     {
-        this->vec = new Vector<NodeVec*>(this->size);
+        try
+        {
+            this->vec = new Vector<NodeVec*>(this->size);
+        }
+        catch(const std::bad_alloc & e)
+        {
+            throw;
+        }
         
         unsigned long i = 0;
         cont.Traverse(
             [this, &i] (const Data & dat)
             {
-                NodeVec* node = new NodeVec(std::move(dat));
-                node->idx = i;
-                node->tree = this;
+                try
+                {
+                    NodeVec* node = new NodeVec(std::move(dat));
+                    node->idx = i;
+                    node->tree = this;
+                    
+                    this->vec->operator[](i) = node;
+                }
+                catch(const std::exception& e)
+                {
+                    throw;
+                }
+                
 
-                this->vec->operator[](i) = node;
                 i++;
             }
         );
@@ -138,7 +170,7 @@ BinaryTreeVec<Data>::BinaryTreeVec(const BinaryTreeVec & that)
                 }
             }
         }
-        catch (std::bad_alloc & exc)
+        catch (std::exception & exc)
         {
             throw;
         }
