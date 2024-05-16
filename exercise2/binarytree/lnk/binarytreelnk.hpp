@@ -35,8 +35,6 @@ protected:
     NodeLnk * Sx = nullptr;
     NodeLnk * Dx = nullptr;
 
-    void CreateTree(const TraversableContainer<Data> &);
-
   public:
     friend class BinaryTreeLnk<Data>;
 
@@ -45,6 +43,9 @@ protected:
     NodeLnk (Data && d) noexcept : elem (std::move(d)) {}
     NodeLnk (const NodeLnk &); //Copy constructor
     NodeLnk (NodeLnk &&) noexcept; //Move constructor
+
+    NodeLnk operator= (const NodeLnk &);
+    NodeLnk operator= (NodeLnk &&);
 
     virtual ~NodeLnk ();
 
@@ -55,12 +56,16 @@ protected:
     inline bool HasLeftChild() const noexcept override {return this->Sx != nullptr;}
     inline bool HasRightChild() const noexcept override {return this->Dx != nullptr;} 
 
-    typename MutableBinaryTree<Data>::MutableNode & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
-    const typename BinaryTree<Data>::Node & LeftChild() const override; // (concrete function must throw std::out_of_range when not existent)
+    NodeLnk & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
+    const NodeLnk & LeftChild() const override; // (concrete function must throw std::out_of_range when not existent)
 
-    typename MutableBinaryTree<Data>::MutableNode & RightChild() override; // (concrete function must throw std::out_of_range when not existent)    
-    const typename BinaryTree<Data>::Node & RightChild() const override; // (concrete function must throw std::out_of_range when not existent)
+    NodeLnk & RightChild() override; // (concrete function must throw std::out_of_range when not existent)    
+    const NodeLnk & RightChild() const override; // (concrete function must throw std::out_of_range when not existent)
 
+
+    //Auxiliary functions
+    inline NodeLnk ** SX () {return &(this->Sx);}
+    inline NodeLnk ** DX () {return &(this->Dx);}
   };
 
   using BinaryTree<Data>::size;

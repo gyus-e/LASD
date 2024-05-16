@@ -55,7 +55,49 @@ BinaryTreeLnk<Data>::NodeLnk::NodeLnk (NodeLnk && that) noexcept
 }
 
 template <typename Data>
-typename MutableBinaryTree<Data>::MutableNode & BinaryTreeLnk<Data>::NodeLnk::LeftChild() 
+typename BinaryTreeLnk<Data>::NodeLnk BinaryTreeLnk<Data>::NodeLnk::operator= (const NodeLnk & that)
+{
+    this->elem = that.elem;
+
+    if (that.HasLeftChild())
+    {
+        try 
+        {
+            this->Sx = new NodeLnk (*that.Sx);
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+    }
+
+    if (that.HasRightChild())
+    {
+        try 
+        {
+            this->Dx = new NodeLnk (*that.Dx);
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+    }
+
+    return *this;
+}
+
+template <typename Data>
+typename BinaryTreeLnk<Data>::NodeLnk BinaryTreeLnk<Data>::NodeLnk::operator= (NodeLnk && that)
+{
+    std::swap (this->elem, that.elem);
+    std::swap (this->Sx, that.Sx);
+    std::swap (this->Dx, that.Dx);
+
+    return *this;
+}
+
+template <typename Data>
+typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::LeftChild() 
 {
     if (this->HasLeftChild())
     {
@@ -68,7 +110,7 @@ typename MutableBinaryTree<Data>::MutableNode & BinaryTreeLnk<Data>::NodeLnk::Le
 } 
 
 template <typename Data>
-const typename BinaryTree<Data>::Node & BinaryTreeLnk<Data>::NodeLnk::LeftChild () const
+const typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::LeftChild () const
 {
     if (this->HasLeftChild())
     {
@@ -81,7 +123,7 @@ const typename BinaryTree<Data>::Node & BinaryTreeLnk<Data>::NodeLnk::LeftChild 
 } 
 
 template <typename Data>
-typename MutableBinaryTree<Data>::MutableNode & BinaryTreeLnk<Data>::NodeLnk::RightChild ()
+typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::RightChild ()
 {
     if (this->HasRightChild())
     {
@@ -94,7 +136,7 @@ typename MutableBinaryTree<Data>::MutableNode & BinaryTreeLnk<Data>::NodeLnk::Ri
 } 
 
 template <typename Data>
-const typename BinaryTree<Data>::Node & BinaryTreeLnk<Data>::NodeLnk::RightChild () const
+const typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::RightChild () const
 {
     if (this->HasRightChild())
     {
