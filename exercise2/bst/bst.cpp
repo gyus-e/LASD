@@ -70,11 +70,8 @@ void BST<Data>::RemoveMin() // (concrete function must throw std::length_error w
         throw std::length_error ("cannot remove min: BST is empty.");
     }
 
-    NodeLnk * pred = nullptr;
-    NodeLnk ** min = DetachMin(&(this->root), &pred);
-    delete *min;
-    *min = nullptr;
-    this->size--;
+    NodeLnk * min = DetachMin(this->root, nullptr); //restituisce puntatore al minimo dopo averlo staccato dall'albero
+    delete min;
     
     this->size--;
 }
@@ -110,14 +107,11 @@ void BST<Data>::RemoveMax() // (concrete function must throw std::length_error w
 {
     if (this->Empty())
     {
-        throw std::length_error ("cannot remove min: BST is empty.");
+        throw std::length_error ("cannot remove max: BST is empty.");
     }
 
-    NodeLnk * pred = nullptr;
-    NodeLnk ** max = DetachMax(&(this->root), &pred);
-    delete *max;
-    *max = nullptr;
-    this->size--;
+    NodeLnk * max = DetachMax(this->root, nullptr);
+    delete max;
 
     this->size--;
 }
@@ -157,7 +151,7 @@ void BST<Data>::RemovePredecessor(const Data & d) // (concrete function must thr
     {
         typename BinaryTreeLnk<Data>::NodeLnk ** predecessor = FindPointerToPredecessor(d, &(root));
         // std::cout<<"predecessor of "<<d<<" is "<<((*predecessor)->Element())<<std::endl;
-        *predecessor = Detach(predecessor);
+        delete Detach(predecessor);
         this->size--;
     }
     catch (std::exception & exc)
@@ -201,7 +195,7 @@ void BST<Data>::RemoveSuccessor(const Data & d) // (concrete function must throw
     try 
     {
         typename BinaryTreeLnk<Data>::NodeLnk ** successor = FindPointerToSuccessor(d, &root);
-        *successor = Detach(successor);
+        delete Detach(successor);
         this->size--;
         // typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(successor);
         // delete toDel;
@@ -286,13 +280,11 @@ void BST<Data>::Clear()
 /* ************************************************************************** */
 /*  Auxiliary functions    */
 
-template <typename Data>
-Data BST<Data>::DataNDelete(NodeLnk* curr) 
-{
-    Data data = curr->Element();
-    curr = Detach(curr);
-    return data;
-}
+// template <typename Data>
+// Data BST<Data>::DataNDelete(NodeLnk* curr) 
+// {
+//     
+// }
 
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
@@ -307,63 +299,50 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk
         if (!(*curr)->HasLeftChild())
         {
             // std::cout<<"curr->Dx="<<*((*curr)->DX())<<std::endl;
-            
-            // std::cout<<"skip2right"<<std::endl;
-            // *curr = Skip2Right(curr);
-            (*curr) = *((*curr)->DX());
-           
-        //    std::cout<<"curr="<<(*curr)<<std::endl;
+            *curr = (*curr)->Dx;
+            // std::cout<<"curr="<<(*curr)<<std::endl;
         }
         else if (!(*curr)->HasRightChild())
         {
             // std::cout<<"curr->Sx="<<*((*curr)->SX())<<std::endl;
-            
-            // std::cout<<"skip2left"<<std::endl;
-            // *curr = Skip2Left(curr);
-            (*curr) = *((*curr)->SX());
-           
-        //    std::cout<<"curr="<<(*curr)<<std::endl;
+            *curr = (*curr)->Sx;
+            // std::cout<<"curr="<<(*curr)<<std::endl;
         }
         else 
         {
-            ret = *(DetachMin(&((*curr)->Dx), curr));
-            (*curr)->elem = ret->elem;
+            ret = DetachMin((*curr)->Dx, *curr); //stacca il minimo e restituisci quello
+            (*curr)->elem = ret->elem; //sovrascrivi il valore corrente con quello del minimo
         }
     }
-    // std::cout<<"deleting value at address: "<<ret<<std::endl;
-    delete ret;
-    return *curr;
+    return ret; //restituisce puntatore al nodo staccato
 }
 
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMin(typename BinaryTreeLnk<Data>::NodeLnk ** curr, typename BinaryTreeLnk<Data>::NodeLnk ** pred)
+typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMin(typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr)
     {
-        if ((*curr)->HasLeftChild())
+        if (curr->HasLeftChild())
         {
-            return DetachMin (&((*curr)->Sx), curr);
+            return DetachMin (curr->Sx, curr);
         }
         else 
         {
-            std::swap (*curr, (*curr)->Dx);
-            // if ((*pred) == nullptr)
-            // {
-            //     this->root = (*curr)->Dx;
-            // }
-            // else // ((*pred) != nullptr)
-            // {
-            //     if ((*curr) == ((*pred)->Sx))
-            //     {
-            //         (*pred)->Sx = (*curr)->Dx;
-            //     }
-            //     else // if ((*curr) == ((*pred)->Dx))
-            //     {
-            //         (*pred)->Dx = (*curr)->Dx;
-            //     }
-            // }    
-            // // (*curr)->Dx = nullptr;
-            return curr;
+            NodeLnk * min = curr;
+
+            if (pred != nullptr)
+            {   
+                if (curr == (pred->Sx))
+                {
+                    pred->Sx = curr->Dx;
+                }
+                else
+                {
+                    pred->Dx = curr->Dx;
+                }
+            }
+            min->Dx = nullptr;
+            return min;
         }
     }
     else 
@@ -373,28 +352,31 @@ typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMin(typename BinaryTre
 }
 
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMax(typename BinaryTreeLnk<Data>::NodeLnk ** curr, typename BinaryTreeLnk<Data>::NodeLnk ** pred)
+typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMax(typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr)
     {
-        if ((*curr)->HasRightChild())
+        if (curr->HasRightChild())
         {
-            return DetachMax ((*curr)->DX(), curr);
+            return DetachMax (curr->Dx, curr);
         }
         else 
         {
-            if ((*pred) != nullptr)
-            {
-                if ((*curr) == *((*pred)->SX()))
+            NodeLnk * max = curr;
+
+            if (pred != nullptr)
+            {   
+                if (curr == (pred->Sx))
                 {
-                    *((*pred)->SX()) = *((*curr)->SX());
+                    pred->Sx = curr->Sx;
                 }
-                else // if ((*curr) == *((*pred)->DX()))
+                else 
                 {
-                    *((*pred)->DX()) = *((*curr)->SX());
+                    pred->Dx = curr->Sx;
                 }
             }
-            return curr;
+            max->Sx = nullptr;
+            return max;
         }
     }
     else 
@@ -403,27 +385,27 @@ typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMax(typename BinaryTre
     }
 }
 
-template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
-{
-    NodeLnk* temp = nullptr;
-    if(curr != nullptr) {
-        std::swap(temp, *((*curr)->SX()));
-        std::swap(temp, *curr);
-    }
-    return temp;
-}
+// template <typename Data>
+// typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
+// {
+//     NodeLnk* temp = nullptr;
+//     if(curr != nullptr) {
+//         std::swap(temp, *((*curr)->SX()));
+//         std::swap(temp, *curr);
+//     }
+//     return temp;
+// }
 
-template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
-{
-    NodeLnk* temp = nullptr;
-    if(curr != nullptr) {
-        std::swap(temp, *((*curr)->DX()));
-        std::swap(temp, *curr);
-    }
-    return temp;
-}
+// template <typename Data>
+// typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
+// {
+//     NodeLnk* temp = nullptr;
+//     if(curr != nullptr) {
+//         std::swap(temp, *((*curr)->DX()));
+//         std::swap(temp, *curr);
+//     }
+//     return temp;
+// }
 
 //mutable version
 template <typename Data>
@@ -726,7 +708,8 @@ bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
         else 
         {
             // std::cout<<std::endl<<"deleting value: "<<(*curr)->Element()<<" at address: "<<*curr<<std::endl;
-            *curr = Detach(curr);
+            NodeLnk * toDel = Detach(curr);
+            delete toDel;
             return true;
         }
     }

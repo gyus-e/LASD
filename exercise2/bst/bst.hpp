@@ -116,16 +116,16 @@ public:
 protected:
   // Auxiliary functions, if necessary!
 
-  Data DataNDelete(NodeLnk *);
+  // Data DataNDelete(NodeLnk *);
 
   typename BinaryTreeLnk<Data>::NodeLnk * Detach(typename BinaryTreeLnk<Data>::NodeLnk **);
   // void Detach(typename BinaryTreeLnk<Data>::NodeLnk **);
 
-  typename BinaryTreeLnk<Data>::NodeLnk ** DetachMin(typename BinaryTreeLnk<Data>::NodeLnk **, typename BinaryTreeLnk<Data>::NodeLnk **);
-  typename BinaryTreeLnk<Data>::NodeLnk ** DetachMax(typename BinaryTreeLnk<Data>::NodeLnk **, typename BinaryTreeLnk<Data>::NodeLnk **);
+  typename BinaryTreeLnk<Data>::NodeLnk * DetachMin(typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *);
+  typename BinaryTreeLnk<Data>::NodeLnk * DetachMax(typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *);
 
-  typename BinaryTreeLnk<Data>::NodeLnk * Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk **);
-  typename BinaryTreeLnk<Data>::NodeLnk * Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk **);
+  // typename BinaryTreeLnk<Data>::NodeLnk * Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk **);
+  // typename BinaryTreeLnk<Data>::NodeLnk * Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk **);
 
   typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToMin(typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
   const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToMin(const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
