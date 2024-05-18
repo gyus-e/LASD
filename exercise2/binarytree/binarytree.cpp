@@ -16,18 +16,18 @@ bool BinaryTree<Data>::Node::operator==(const Node & that) const
 
     if (this->HasLeftChild() && that.HasLeftChild())
     {
-        ret = that.LeftChild() == this->LeftChild(); //ricorsione Sx 
+        ret &= this->LeftChild().operator==(that.LeftChild()) ; //ricorsione Sx 
     }
-    else if (this->HasLeftChild() != that.HasLeftChild()) //se this ha figlio sx e that no, o viceversa
+    else if (this->HasLeftChild() || that.HasLeftChild()) //se this ha figlio sx e that no, o viceversa
     {
         return false;
     }
     
     if (this->HasRightChild() && that.HasRightChild())
     {
-        ret = that.RightChild() == this->RightChild(); //ricorsione Dx
+        ret &= this->RightChild().operator==(that.RightChild()); //ricorsione Dx
     }
-    else if (this->HasRightChild() != that.HasRightChild()) //se this ha figlio dx e that no, o viceversa
+    else if (this->HasRightChild() || that.HasRightChild()) //se this ha figlio dx e that no, o viceversa
     {
         return false;
     }
