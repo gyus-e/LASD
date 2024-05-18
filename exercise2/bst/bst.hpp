@@ -43,15 +43,15 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  BST(const BST<Data> & that) : BinaryTreeLnk<Data>((BinaryTreeLnk<Data>)that) {}
+  BST(const BST<Data> & that) : BinaryTreeLnk<Data>(that) {}
 
   // Move constructor
-  BST(BST<Data> && that) noexcept : BinaryTreeLnk<Data> (std::move((BinaryTreeLnk<Data>)that)) {}
+  BST(BST<Data> && that) noexcept : BinaryTreeLnk<Data> (std::move(that)) {}
 
   /* ************************************************************************ */
 
   // Destructor
-  ~BST() = default;
+  virtual ~BST() = default;
 
   /* ************************************************************************ */
 
@@ -116,15 +116,16 @@ public:
 protected:
   // Auxiliary functions, if necessary!
 
-  // type DataNDelete(argument) specifiers;
+  Data DataNDelete(NodeLnk *);
 
   typename BinaryTreeLnk<Data>::NodeLnk * Detach(typename BinaryTreeLnk<Data>::NodeLnk **);
+  // void Detach(typename BinaryTreeLnk<Data>::NodeLnk **);
 
-  typename BinaryTreeLnk<Data>::NodeLnk * DetachMin(typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *);
-  typename BinaryTreeLnk<Data>::NodeLnk * DetachMax(typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *);
+  typename BinaryTreeLnk<Data>::NodeLnk ** DetachMin(typename BinaryTreeLnk<Data>::NodeLnk **, typename BinaryTreeLnk<Data>::NodeLnk **);
+  typename BinaryTreeLnk<Data>::NodeLnk ** DetachMax(typename BinaryTreeLnk<Data>::NodeLnk **, typename BinaryTreeLnk<Data>::NodeLnk **);
 
-  // type Skip2Left(argument) specifiers;
-  // type Skip2Right(argument) specifiers;
+  typename BinaryTreeLnk<Data>::NodeLnk * Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk **);
+  typename BinaryTreeLnk<Data>::NodeLnk * Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk **);
 
   typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToMin(typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
   const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToMin(const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
@@ -135,11 +136,11 @@ protected:
   typename BinaryTreeLnk<Data>::NodeLnk * FindPointerTo(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
   const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerTo(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
 
-  typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToPredecessor(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
-  const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToPredecessor(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk *, const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
+  typename BinaryTreeLnk<Data>::NodeLnk ** FindPointerToPredecessor(const Data &, typename BinaryTreeLnk<Data>::NodeLnk **); //mutable version
+  const typename BinaryTreeLnk<Data>::NodeLnk * const * FindPointerToPredecessor(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk * const *) const; //unmutable version
 
-  typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToSuccessor(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *, typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
-  const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToSuccessor(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk *, const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
+  typename BinaryTreeLnk<Data>::NodeLnk ** FindPointerToSuccessor(const Data &, typename BinaryTreeLnk<Data>::NodeLnk **); //mutable version
+  const typename BinaryTreeLnk<Data>::NodeLnk * const * FindPointerToSuccessor(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk * const *) const; //unmutable version
   
   //...
 

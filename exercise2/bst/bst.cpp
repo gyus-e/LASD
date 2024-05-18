@@ -30,7 +30,7 @@ bool BST<Data>::operator==(const BST<Data> & that) const
 template <typename Data>
 bool BST<Data>::operator!=(const BST<Data> & that) const
 {
-    return ((BinaryTreeLnk<Data> *) this)->BinaryTreeLnk<Data>::operator!=((BinaryTreeLnk<Data>)that);
+    return !(this->operator==(that));
 }
 
 // Specific member functions
@@ -42,6 +42,7 @@ const Data & BST<Data>::Min() const // (concrete function must throw std::length
     {
         throw std::length_error ("no min: BST is empty.");
     }
+
     return FindPointerToMin(this->root)->Element();
 }
 
@@ -69,7 +70,12 @@ void BST<Data>::RemoveMin() // (concrete function must throw std::length_error w
         throw std::length_error ("cannot remove min: BST is empty.");
     }
 
-    delete (DetachMin(this->root, nullptr));
+    NodeLnk * pred = nullptr;
+    NodeLnk ** min = DetachMin(&(this->root), &pred);
+    delete *min;
+    *min = nullptr;
+    this->size--;
+    
     this->size--;
 }
 
@@ -107,19 +113,24 @@ void BST<Data>::RemoveMax() // (concrete function must throw std::length_error w
         throw std::length_error ("cannot remove min: BST is empty.");
     }
 
-    delete (DetachMax(this->root, nullptr));
+    NodeLnk * pred = nullptr;
+    NodeLnk ** max = DetachMax(&(this->root), &pred);
+    delete *max;
+    *max = nullptr;
+    this->size--;
+
     this->size--;
 }
 
 template <typename Data>
 const Data & BST<Data>::Predecessor (const Data & d) const // (concrete function must throw std::length_error when not found)
 {
-    const typename BinaryTreeLnk<Data>::NodeLnk * ret = this->FindPointerToPredecessor(d, this->root, nullptr);
-    if (ret == nullptr)
+    const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = FindPointerToPredecessor(d, &(root));
+    if (*ret == nullptr)
     {
         throw std::length_error("Predecessor not found.");
     }
-    return ret->Element();
+    return (*ret)->Element();
 }
 
 template <typename Data>
@@ -128,15 +139,13 @@ Data BST<Data>::PredecessorNRemove(const Data & d) // (concrete function must th
     Data ret;
     try 
     {
-        typename BinaryTreeLnk<Data>::NodeLnk * predecessor = FindPointerToPredecessor(d, this->root, nullptr);
-        typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(&predecessor);
-        ret = toDel->Element();
-        delete toDel;
+        ret = this->Predecessor(d);
+        this->RemovePredecessor(d);
     }
     catch (std::exception & exc)
     {
         std::cerr<<exc.what();
-        throw std::length_error("from RemovePredecessor: predecessor not found");
+        throw std::length_error("from PredecessorNRemove: predecessor not found");
     }
     return ret;
 }
@@ -146,9 +155,10 @@ void BST<Data>::RemovePredecessor(const Data & d) // (concrete function must thr
 {
     try 
     {
-        typename BinaryTreeLnk<Data>::NodeLnk * predecessor = FindPointerToPredecessor(d, this->root, nullptr);
-        typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(&predecessor);
-        delete toDel;
+        typename BinaryTreeLnk<Data>::NodeLnk ** predecessor = FindPointerToPredecessor(d, &(root));
+        // std::cout<<"predecessor of "<<d<<" is "<<((*predecessor)->Element())<<std::endl;
+        *predecessor = Detach(predecessor);
+        this->size--;
     }
     catch (std::exception & exc)
     {
@@ -160,12 +170,12 @@ void BST<Data>::RemovePredecessor(const Data & d) // (concrete function must thr
 template <typename Data>
 const Data & BST<Data>::Successor(const Data & d) const// (concrete function must throw std::length_error when not found)
 {
-    const typename BinaryTreeLnk<Data>::NodeLnk * ret = this->FindPointerToSuccessor (d, this->root, nullptr);
-    if (ret == nullptr)
+    const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = this->FindPointerToSuccessor (d, &root);
+    if (*ret == nullptr)
     {
         throw std::length_error("Successor not found.");
     }
-    return ret->Element();
+    return (*ret)->Element();
 }
 
 template <typename Data>
@@ -174,15 +184,13 @@ Data BST<Data>::SuccessorNRemove(const Data & d) // (concrete function must thro
     Data ret;
     try 
     {
-        typename BinaryTreeLnk<Data>::NodeLnk * successor = FindPointerToSuccessor(d, this->root, nullptr);
-        typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(&successor);
-        ret = toDel->Element();
-        delete toDel;
+        ret = this->Successor(d);
+        this->RemoveSuccessor(d);
     }
     catch (std::exception & exc)
     {
         std::cerr<<exc.what();
-        throw std::length_error("from PredecessorNRemove: predecessor not found");
+        throw std::length_error("from SuccessorNRemove: predecessor not found");
     }
     return ret;
 }
@@ -192,14 +200,16 @@ void BST<Data>::RemoveSuccessor(const Data & d) // (concrete function must throw
 {
     try 
     {
-        typename BinaryTreeLnk<Data>::NodeLnk ** successor = & FindPointerToSuccessor(d, this->root, nullptr);
-        typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(successor);
-        delete toDel;
+        typename BinaryTreeLnk<Data>::NodeLnk ** successor = FindPointerToSuccessor(d, &root);
+        *successor = Detach(successor);
+        this->size--;
+        // typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(successor);
+        // delete toDel;
     }
     catch (std::exception & exc)
     {
         std::cerr<<exc.what();
-        throw std::length_error("from PredecessorNRemove: predecessor not found");
+        throw std::length_error("from RemoveSuccessor: predecessor not found");
     }
 }
 
@@ -251,8 +261,8 @@ bool BST<Data>::Remove(const Data & d)
     bool ret = false;
     try 
     {
-        this->size--;
         ret = Remove (d, &(this->root));
+        this->size--;
     }
     catch (std::exception & e)
     {
@@ -275,100 +285,144 @@ void BST<Data>::Clear()
 
 /* ************************************************************************** */
 /*  Auxiliary functions    */
+
+template <typename Data>
+Data BST<Data>::DataNDelete(NodeLnk* curr) 
+{
+    Data data = curr->Element();
+    curr = Detach(curr);
+    return data;
+}
+
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
+// void BST<Data>::Detach(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    typename BinaryTreeLnk<Data>::NodeLnk * ret = (*curr);
-    if (! (*curr)->HasLeftChild())
+    // std::cout<<"detaching value at address: "<<*curr<<std::endl;
+
+    NodeLnk * ret = *curr;
+    
+    if (*curr != nullptr)
     {
-        *curr = &((*curr)->LeftChild());
+        if (!(*curr)->HasLeftChild())
+        {
+            // std::cout<<"curr->Dx="<<*((*curr)->DX())<<std::endl;
+            
+            // std::cout<<"skip2right"<<std::endl;
+            // *curr = Skip2Right(curr);
+            (*curr) = *((*curr)->DX());
+           
+        //    std::cout<<"curr="<<(*curr)<<std::endl;
+        }
+        else if (!(*curr)->HasRightChild())
+        {
+            // std::cout<<"curr->Sx="<<*((*curr)->SX())<<std::endl;
+            
+            // std::cout<<"skip2left"<<std::endl;
+            // *curr = Skip2Left(curr);
+            (*curr) = *((*curr)->SX());
+           
+        //    std::cout<<"curr="<<(*curr)<<std::endl;
+        }
+        else 
+        {
+            ret = *(DetachMin(&((*curr)->Dx), curr));
+            (*curr)->elem = ret->elem;
+        }
     }
-    else if (! (*curr)->HasRightChild())
+    // std::cout<<"deleting value at address: "<<ret<<std::endl;
+    delete ret;
+    return *curr;
+}
+
+template <typename Data>
+typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMin(typename BinaryTreeLnk<Data>::NodeLnk ** curr, typename BinaryTreeLnk<Data>::NodeLnk ** pred)
+{
+    if ((*curr) != nullptr)
     {
-        *curr = &((*curr)->RightChild());
+        if ((*curr)->HasLeftChild())
+        {
+            return DetachMin (&((*curr)->Sx), curr);
+        }
+        else 
+        {
+            std::swap (*curr, (*curr)->Dx);
+            // if ((*pred) == nullptr)
+            // {
+            //     this->root = (*curr)->Dx;
+            // }
+            // else // ((*pred) != nullptr)
+            // {
+            //     if ((*curr) == ((*pred)->Sx))
+            //     {
+            //         (*pred)->Sx = (*curr)->Dx;
+            //     }
+            //     else // if ((*curr) == ((*pred)->Dx))
+            //     {
+            //         (*pred)->Dx = (*curr)->Dx;
+            //     }
+            // }    
+            // // (*curr)->Dx = nullptr;
+            return curr;
+        }
     }
     else 
     {
-        ret = DetachMin(&((*curr)->RightChild()), *curr);
-        (*curr)->Element() = ret->Element();
-    }
-
-    return ret;
-}
-
-template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMin(typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
-{
-    if (curr == nullptr)
-    {
-        throw std::logic_error("from DetachMin: curr is nullptr");
-    }
-
-    if (curr->HasLeftChild())
-    {
-        return DetachMin(&(curr->LeftChild()), curr);
-    }
-
-    else //curr is min
-    {
-        if (curr->HasRightChild())
-        {
-            if (pred == nullptr) //curr is root
-            {
-                this->root = &(curr->RightChild());
-            }
-            else
-            {
-                if (pred->HasRightChild() && curr == &(pred->RightChild()))
-                {
-                    pred->RightChild() = curr->RightChild();
-                }
-                else if (pred->HasLeftChild() && curr == &(pred->LeftChild()))
-                {
-                    pred->LeftChild() = curr->RightChild();
-                }
-                else 
-                {
-                    throw std::logic_error("from DetachMin: something went wrong");
-                }
-            }
-        }    
-        return curr;
+        throw std::length_error ("from DetachMin: curr is nullptr");
     }
 }
 
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMax(typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
+typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::DetachMax(typename BinaryTreeLnk<Data>::NodeLnk ** curr, typename BinaryTreeLnk<Data>::NodeLnk ** pred)
 {
-    if (curr->HasRightChild())
+    if ((*curr) != nullptr)
     {
-        return DetachMax(&(curr->LeftChild()), curr);
+        if ((*curr)->HasRightChild())
+        {
+            return DetachMax ((*curr)->DX(), curr);
+        }
+        else 
+        {
+            if ((*pred) != nullptr)
+            {
+                if ((*curr) == *((*pred)->SX()))
+                {
+                    *((*pred)->SX()) = *((*curr)->SX());
+                }
+                else // if ((*curr) == *((*pred)->DX()))
+                {
+                    *((*pred)->DX()) = *((*curr)->SX());
+                }
+            }
+            return curr;
+        }
     }
-
-    //curr is max
-    if (curr->HasLeftChild())
+    else 
     {
-        if (pred == nullptr) //max is root
-        {
-            this->root = &(curr->LeftChild());
-        }
-        else
-        {
-            if (pred->HasRightChild() && curr == &(pred->RightChild()))
-            {
-                pred->RightChild() = curr->LeftChild();
-            }
-            else if (pred->HasLeftChild() && curr == &(pred->LeftChild()))
-            {
-                pred->LeftChild() = curr->LeftChild();
-            }
-            else 
-            {
-                throw std::logic_error("from DetachMax: something went wrong");
-            }
-        }
-    }    
-    return curr;
+        throw std::length_error ("from DetachMax: curr is nullptr");
+    }
+}
+
+template <typename Data>
+typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Left(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
+{
+    NodeLnk* temp = nullptr;
+    if(curr != nullptr) {
+        std::swap(temp, *((*curr)->SX()));
+        std::swap(temp, *curr);
+    }
+    return temp;
+}
+
+template <typename Data>
+typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Skip2Right(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
+{
+    NodeLnk* temp = nullptr;
+    if(curr != nullptr) {
+        std::swap(temp, *((*curr)->DX()));
+        std::swap(temp, *curr);
+    }
+    return temp;
 }
 
 //mutable version
@@ -479,177 +533,117 @@ const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerTo(const Dat
 
 //mutable version
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToPredecessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
+typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToPredecessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    if (curr->Element() == d)
-	{
-		if (curr->HasLeftChild())
-		{	
-            return FindPointerToMax (&(curr->LeftChild()));
-        }
-		else if ((pred != nullptr) && (pred->HasRightChild()) && (curr == &(pred->RightChild())))
-		{
-        	return pred;
-        }
-		else 
-		{
-        	return nullptr;
-        }
-    }
-	
-	else if ((curr->Element() < d) && (curr->HasRightChild()))
-	{
-		typename BinaryTreeLnk<Data>::NodeLnk * ret = FindPointerToPredecessor (d, &(curr->RightChild()), curr);
-
-		if (ret != nullptr)
-		{	
-            return ret;
-        }
-		else 
-		{
-        	return curr;
-        }
-    }
-	
-	else if ((curr->Element() > d) && (curr->HasLeftChild()))
-	{	
-        return FindPointerToPredecessor (d, &(curr->LeftChild()), curr);
-    }
-	else 
+    if ((*curr) != nullptr)
     {
-		return nullptr;
+        if ((*curr)->Element() >= d)
+        {
+            return FindPointerToPredecessor(d, (*curr)->SX());
+        }
+        else 
+        {
+            NodeLnk ** ret = FindPointerToPredecessor(d, (*curr)->DX());
+            if (ret == nullptr)
+            {
+                return curr;
+            }
+            else 
+            {
+                return ret;
+            }
+        }
+    }
+    else 
+    {
+        return nullptr;
     }
 }
 
 //unmutable version
 template <typename Data>
-const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToPredecessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * curr, const typename BinaryTreeLnk<Data>::NodeLnk * pred) const
+const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToPredecessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * const * curr) const
 {
-    if (curr->Element() == d)
-	{
-		if (curr->HasLeftChild())
-		{	
-            return FindPointerToMax (&(curr->LeftChild()));
+    if ((*curr) != nullptr)
+    {
+        if ((*curr)->Element() >= d)
+        {
+            return FindPointerToPredecessor(d, (*curr)->SX());
         }
-		else if ((pred != nullptr) && (pred->HasRightChild()) && (curr == &(pred->RightChild())))
-		{
-        	return pred;
-        }
-		else 
-		{
-        	return nullptr;
+        else 
+        {
+            const NodeLnk * const * ret = FindPointerToPredecessor(d, (*curr)->DX());
+            if (ret == nullptr)
+            {
+                return curr;
+            }
+            else 
+            {
+                return ret;
+            }
         }
     }
-	
-	else if ((curr->Element() < d) && (curr->HasRightChild()))
-	{
-		const typename BinaryTreeLnk<Data>::NodeLnk * ret = FindPointerToPredecessor (d, &(curr->RightChild()), curr);
-
-		if (ret != nullptr)
-        {
-			return ret;
-        }
-		else 
-        {
-			return curr;
-        }
-	}
-	
-	else if ((curr->Element() > d) && (curr->HasLeftChild()))
-	{	
-        return FindPointerToPredecessor (d, &(curr->LeftChild()), curr);
-    }
-	else 
-	{
-    	return nullptr;
+    else 
+    {
+        return nullptr;
     }
 }
 
 //mutable version
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToSuccessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk * curr, typename BinaryTreeLnk<Data>::NodeLnk * pred)
+typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToSuccessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    if (curr->Element() == d)
-	{
-		if (curr->HasRightChild())
-		{	
-            return FindPointerToMin (&(curr->RightChild()));
-        }
-		else if ((pred != nullptr) && (pred->HasLeftChild()) && (curr == &(pred->LeftChild())))
-		{
-        	return pred;
-        }
-		else 
-		{
-        	return nullptr;
-        }
-    }
-	
-	else if ((curr->Element() > d) && (curr->HasLeftChild()))
-	{
-		typename BinaryTreeLnk<Data>::NodeLnk * ret = FindPointerToSuccessor (d, &(curr->LeftChild()), curr);
-
-		if (ret != nullptr)
-        {
-			return ret;
-        }
-		else 
-		{
-        	return curr;
-        }
-    }
-	
-	else if ((curr->Element() < d) && (curr->HasRightChild()))
-	{
-    	return FindPointerToSuccessor (d, &(curr->RightChild()), curr);
-    }
-	else 
+    if ((*curr) != nullptr)
     {
-		return nullptr;
+        if ((*curr)->Element() <= d)
+        {
+            return FindPointerToSuccessor(d, (*curr)->DX());
+        }
+        else 
+        {
+            NodeLnk ** ret = FindPointerToSuccessor(d, (*curr)->SX());
+            if (ret == nullptr)
+            {
+                return curr;
+            }
+            else 
+            {
+                return ret;
+            }
+        }
+    }
+    else 
+    {
+        return nullptr;
     }
 }
 
 //unmutable version
 template <typename Data>
-const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToSuccessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * curr, const typename BinaryTreeLnk<Data>::NodeLnk * pred) const
+const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToSuccessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * const * curr) const
 {
-    if (curr->Element() == d)
-	{
-		if (curr->HasRightChild())
-		{	
-            return FindPointerToMin (&(curr->RightChild()));
-        }
-		else if ((pred != nullptr) && (pred->HasLeftChild()) && (curr == &(pred->LeftChild())))
-		{
-        	return pred;
-        }
-		else 
-		{
-        	return nullptr;
-        }
-    }
-	
-	else if ((curr->Element() > d) && (curr->HasLeftChild()))
-	{
-		const typename BinaryTreeLnk<Data>::NodeLnk * ret = FindPointerToSuccessor (d, &(curr->LeftChild()), curr);
-
-		if (ret != nullptr)
-        {
-			return ret;
-        }
-		else 
-		{
-        	return curr;
-        }
-    }
-	
-	else if ((curr->Element() < d) && (curr->HasRightChild()))
-	{
-    	return FindPointerToSuccessor (d, &(curr->RightChild()), curr);
-    }
-	else 
+    if ((*curr) != nullptr)
     {
-		return nullptr;
+        if ((*curr)->Element() <= d)
+        {
+            return FindPointerToSuccessor(d, (*curr)->DX());
+        }
+        else 
+        {
+            const NodeLnk * const * ret = FindPointerToSuccessor(d, (*curr)->SX());
+            if (ret == nullptr)
+            {
+                return curr;
+            }
+            else 
+            {
+                return ret;
+            }
+        }
+    }
+    else 
+    {
+        return nullptr;
     }
 }
 
@@ -719,26 +713,26 @@ bool BST<Data>::Insert(Data && d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 template <typename Data>
 bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    if ((*curr)->Element() == d)
+    if ((*curr) != nullptr)
     {
-        typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(curr);
-        delete toDel;
-        return true;
+        if ((*curr)->Element () < d)
+        {
+            return Remove (d, (*curr)->DX());
+        }
+        else if ((*curr)->Element () > d)
+        {
+            return Remove (d, (*curr)->SX());
+        }
+        else 
+        {
+            // std::cout<<std::endl<<"deleting value: "<<(*curr)->Element()<<" at address: "<<*curr<<std::endl;
+            *curr = Detach(curr);
+            return true;
+        }
     }
-
-    else if ((*curr)->Element() > d && (*curr)->HasLeftChild())
-    {
-        return Remove(d, (*curr)->SX());
-    }
-
-    else if ((*curr)->Element() < d && (*curr)->HasRightChild())
-    {
-        return Remove(d, (*curr)->DX());
-    }
-
     else 
     {
         return false;
-    }
+    } 
 }
 }
