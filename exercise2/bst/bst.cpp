@@ -47,7 +47,30 @@ BST<Data> BST<Data>::operator=(BST<Data> && that) noexcept
 template <typename Data>
 bool BST<Data>::operator==(const BST<Data> & that) const
 {
-    return ((BinaryTreeLnk<Data> *) this)->BinaryTreeLnk<Data>::operator==((BinaryTreeLnk<Data>)that);
+    // return ((BinaryTreeLnk<Data> *) this)->BinaryTreeLnk<Data>::operator==((BinaryTreeLnk<Data>)that);
+    if (this->Size() != that.Size())
+    {
+        return false;
+    }
+    
+    QueueLst<Data> Q;
+    this->InOrderTraverse(
+        [&Q](const Data & d)
+        {
+            Q.Enqueue(d);
+        }
+    );
+
+    bool ret = true;
+
+    that.InOrderTraverse(
+        [&Q, &ret](const Data & d)
+        {
+            ret = ret && (d == Q.HeadNDequeue());
+        }
+    );
+
+    return ret;
 }
 
 template <typename Data>
