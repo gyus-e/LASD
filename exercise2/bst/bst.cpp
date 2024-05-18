@@ -4,6 +4,29 @@
 namespace lasd {
 
 /* ************************************************************************** */
+//Specific constructor
+template <typename Data>
+BST<Data>::BST (const TraversableContainer<Data> & con)
+{
+    con.Traverse(
+        [this](const Data & d)
+        {
+            this->Insert(d);
+        }
+    );
+}
+
+template <typename Data>
+BST<Data>::BST (MappableContainer<Data> & con)
+{
+    con.Map(
+        [this](const Data & d)
+        {
+            this->Insert(std::move(d));
+        }
+    );
+}
+
 // Copy assignment
 template <typename Data>
 BST<Data> BST<Data>::operator=(const BST<Data> & that) 
