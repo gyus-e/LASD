@@ -12,8 +12,6 @@ BinaryTreeLnk<Data>::NodeLnk::~NodeLnk ()
     {
         delete this->Dx;
     }
-
-    // delete this;
 }
 
 template <typename Data>
@@ -321,7 +319,20 @@ void BinaryTreeLnk<Data>::Clear()
 template <typename Data>
 inline bool BinaryTreeLnk<Data>::Empty() const noexcept
 {
-    return this->root == nullptr;
+    //return this->root == nullptr && this->size == 0;
+
+    //versione debug
+    if (this->root == nullptr && this->size == 0)
+    {
+        return true;
+    }
+    else if (this->root == nullptr || this->size == 0)
+    {
+        std::cerr<<"SIZE ERROR:"<<std::endl<<"root="<<this->root<<std::endl<<"size="<<this->size<<std::endl;
+        return true;
+    }
+    else return false;
+    
 }
 /* ************************************************************************** */
 
