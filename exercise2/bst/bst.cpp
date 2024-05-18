@@ -306,12 +306,6 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk
 
     if ((*curr) != nullptr)
     {
-        // std::cout<<std::endl<<"detach node with value: "<<(*curr)->Element()<<std::endl<<" at address: "<<*curr<<std::endl;
-        // if ((*curr)->IsLeaf())
-        // {
-        //     ret = nullptr; //necessario?
-        // }
-        // else 
         if (!((*curr)->HasLeftChild()))
         {
             ret = (*curr)->Dx;
@@ -329,6 +323,7 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk
         (*curr)->Sx = nullptr;
         (*curr)->Dx = nullptr;
         delete (*curr);
+        *curr = nullptr;
     }
     return ret;
 }
@@ -734,6 +729,7 @@ bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
             try  
             {
                 // void * temp = *curr;
+                
                 *curr = Detach(curr); 
 
                 // std::cout<<std::endl<<"removed node at address "<<temp<<std::endl<<"now pointing to address: "<<*curr<<std::endl;
