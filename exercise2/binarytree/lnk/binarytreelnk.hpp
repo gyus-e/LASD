@@ -29,13 +29,12 @@ protected:
   struct NodeLnk : public virtual MutableBinaryTree<Data>::MutableNode 
   {
 
-  protected:
+  public:
 
     Data elem;
     NodeLnk * Sx = nullptr;
     NodeLnk * Dx = nullptr;
 
-  public:
     friend class BinaryTreeLnk<Data>;
 
     NodeLnk () = default;
@@ -65,7 +64,9 @@ protected:
 
     //Auxiliary functions
     inline NodeLnk ** SX () {return &(this->Sx);}
+    inline NodeLnk * const * SX () const {return &(this->Sx);}
     inline NodeLnk ** DX () {return &(this->Dx);}
+    inline NodeLnk * const * DX () const {return &(this->Dx);}
   };
 
   using BinaryTree<Data>::size;
