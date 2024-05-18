@@ -134,7 +134,7 @@ protected:
   const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerToMax(const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
 
   typename BinaryTreeLnk<Data>::NodeLnk * FindPointerTo(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *); //mutable version
-  const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerTo(const Data &, typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
+  const typename BinaryTreeLnk<Data>::NodeLnk * FindPointerTo(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk *) const; //unmutable version
 
   typename BinaryTreeLnk<Data>::NodeLnk ** FindPointerToPredecessor(const Data &, typename BinaryTreeLnk<Data>::NodeLnk **); //mutable version
   const typename BinaryTreeLnk<Data>::NodeLnk * const * FindPointerToPredecessor(const Data &, const typename BinaryTreeLnk<Data>::NodeLnk * const *) const; //unmutable version

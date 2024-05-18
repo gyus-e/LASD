@@ -150,8 +150,8 @@ void BST<Data>::RemovePredecessor(const Data & d) // (concrete function must thr
     try 
     {
         typename BinaryTreeLnk<Data>::NodeLnk ** predecessor = FindPointerToPredecessor(d, &(root));
-        // std::cout<<"predecessor of "<<d<<" is "<<((*predecessor)->Element())<<std::endl;
-        delete Detach(predecessor);
+        // delete 
+        *predecessor = Detach(predecessor);
         this->size--;
     }
     catch (std::exception & exc)
@@ -195,10 +195,9 @@ void BST<Data>::RemoveSuccessor(const Data & d) // (concrete function must throw
     try 
     {
         typename BinaryTreeLnk<Data>::NodeLnk ** successor = FindPointerToSuccessor(d, &root);
-        delete Detach(successor);
+        // delete 
+        *successor = Detach(successor);
         this->size--;
-        // typename BinaryTreeLnk<Data>::NodeLnk * toDel = Detach(successor);
-        // delete toDel;
     }
     catch (std::exception & exc)
     {
@@ -288,33 +287,37 @@ void BST<Data>::Clear()
 
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
-// void BST<Data>::Detach(typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    // std::cout<<"detaching value at address: "<<*curr<<std::endl;
-
-    NodeLnk * ret = *curr;
-    
-    if (*curr != nullptr)
+    if (curr == nullptr)
     {
-        if (!(*curr)->HasLeftChild())
+        throw std::logic_error("detach called on nullptr");
+    }
+
+    // std::cout<<"detaching value: "<<(*curr)->Element()<<" in address: "<<(*curr)<<std::endl;
+
+    NodeLnk *ret = nullptr; 
+
+    if ((*curr) != nullptr)
+    {
+        if (!((*curr)->HasLeftChild()))
         {
-            // std::cout<<"curr->Dx="<<*((*curr)->DX())<<std::endl;
-            *curr = (*curr)->Dx;
-            // std::cout<<"curr="<<(*curr)<<std::endl;
+            ret = (*curr)->Dx;
         }
-        else if (!(*curr)->HasRightChild())
+        else if (!((*curr)->HasRightChild()))
         {
-            // std::cout<<"curr->Sx="<<*((*curr)->SX())<<std::endl;
-            *curr = (*curr)->Sx;
-            // std::cout<<"curr="<<(*curr)<<std::endl;
+            ret = (*curr)->Sx;
         }
         else 
         {
-            ret = DetachMin((*curr)->Dx, *curr); //stacca il minimo e restituisci quello
-            (*curr)->elem = ret->elem; //sovrascrivi il valore corrente con quello del minimo
+            NodeLnk * min = DetachMin((*curr)->Dx, (*curr)); 
+            (*curr)->elem = min->elem; 
         }
+        
+        (*curr)->Sx = nullptr;
+        (*curr)->Dx = nullptr;
+        delete (*curr);
     }
-    return ret; //restituisce puntatore al nodo staccato
+    return ret;
 }
 
 template <typename Data>
@@ -467,50 +470,58 @@ const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMax (const
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerTo(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk * curr)
 {
-    if (curr->Element() == d)
+    if (curr != nullptr)
     {
-        return curr;
-    }
+        if (curr->Element() == d)
+        {
+            return curr;
+        }
 
-    else if (curr->HasLeftChild() && curr->Element() > d)
-    {
-        return this->FindPointerTo(d, curr->LeftChild());
-    }
+        else if (curr->HasLeftChild() && curr->Element() > d)
+        {
+            return this->FindPointerTo(d, curr->Sx);
+        }
 
-    else if (curr->HasRightChild() && curr->Element() < d)
-    {
-        return this->FindPointerTo(d, curr->RightChild());
-    }
+        else if (curr->HasRightChild() && curr->Element() < d)
+        {
+            return this->FindPointerTo(d, curr->Dx);
+        }
 
-    else 
-    {
-        return nullptr;
+        else 
+        {
+            return nullptr;
+        }
     }
+    return nullptr;
 }
 
 //unmutable version
 template <typename Data>
-const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerTo(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk * curr) const 
+const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerTo(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * curr) const 
 {
-    if (curr->Element() == d)
+    if (curr != nullptr)
     {
-        return curr;
-    }
+        if (curr->Element() == d)
+        {
+            return curr;
+        }
 
-    else if (curr->HasLeftChild() && curr->Element() > d)
-    {
-        return this->FindPointerTo(d, &(curr->LeftChild()));
-    }
+        else if (curr->HasLeftChild() && curr->Element() > d)
+        {
+            return this->FindPointerTo(d, curr->Sx);
+        }
 
-    else if (curr->HasRightChild() && curr->Element() < d)
-    {
-        return this->FindPointerTo(d, &(curr->RightChild()));
-    }
+        else if (curr->HasRightChild() && curr->Element() < d)
+        {
+            return this->FindPointerTo(d, curr->Dx);
+        }
 
-    else 
-    {
-        return nullptr;
+        else 
+        {
+            return nullptr;
+        }
     }
+    return nullptr;
 }
 
 //mutable version
@@ -697,20 +708,27 @@ bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
 {
     if ((*curr) != nullptr)
     {
-        if ((*curr)->Element () < d)
+        if ((*curr)->Element() < d)
         {
-            return Remove (d, (*curr)->DX());
+            return Remove (d, &((*curr)->Dx));
         }
-        else if ((*curr)->Element () > d)
+        else if ((*curr)->Element() > d)
         {
-            return Remove (d, (*curr)->SX());
+            return Remove (d, &((*curr)->Sx));
         }
-        else 
+        else //curr->Element() == d
         {
-            // std::cout<<std::endl<<"deleting value: "<<(*curr)->Element()<<" at address: "<<*curr<<std::endl;
-            NodeLnk * toDel = Detach(curr);
-            delete toDel;
-            return true;
+            // std::cout<<std::endl<<"removing value: "<<(*curr)->Element()<<" at address: "<<(*curr)<<std::endl;
+            try  
+            {
+                *curr = Detach(curr);
+            }
+            catch (std::exception & exc)
+            {
+                std::cerr<<exc.what();
+                return false;
+            }
+            return true;;
         }
     }
     else 
