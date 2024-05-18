@@ -222,8 +222,11 @@ bool BST<Data>::Insert(const Data & d)
     bool ret = false;
     try
     {
-        this->size++;
         ret = this->Insert (d, &(this->root));
+        if (ret)
+        {
+            this->size++;
+        }
     }
     catch (std::exception & e)
     {
@@ -238,8 +241,11 @@ bool BST<Data>::Insert(Data && d)
     bool ret = false;
     try
     {
-        this->size++;
         ret = this->Insert (std::move(d), &(this->root));
+        if (ret)
+        {
+            this->size++;
+        }
     }
     catch (std::exception & e)
     {
@@ -255,7 +261,10 @@ bool BST<Data>::Remove(const Data & d)
     try 
     {
         ret = Remove (d, &(this->root));
-        this->size--;
+        if (ret)
+        {
+            this->size--;
+        }
     }
     catch (std::exception & e)
     {
@@ -293,12 +302,16 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk
         throw std::logic_error("detach called on nullptr");
     }
 
-    // std::cout<<"detaching value: "<<(*curr)->Element()<<" in address: "<<(*curr)<<std::endl;
-
     NodeLnk *ret = nullptr; 
 
     if ((*curr) != nullptr)
     {
+        // std::cout<<std::endl<<"detach node with value: "<<(*curr)->Element()<<std::endl<<" at address: "<<*curr<<std::endl;
+        // if ((*curr)->IsLeaf())
+        // {
+        //     ret = nullptr; //necessario?
+        // }
+        // else 
         if (!((*curr)->HasLeftChild()))
         {
             ret = (*curr)->Dx;
@@ -718,10 +731,12 @@ bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
         }
         else //curr->Element() == d
         {
-            // std::cout<<std::endl<<"removing value: "<<(*curr)->Element()<<" at address: "<<(*curr)<<std::endl;
             try  
             {
-                *curr = Detach(curr);
+                // void * temp = *curr;
+                *curr = Detach(curr); 
+
+                // std::cout<<std::endl<<"removed node at address "<<temp<<std::endl<<"now pointing to address: "<<*curr<<std::endl;
             }
             catch (std::exception & exc)
             {
