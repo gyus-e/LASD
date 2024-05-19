@@ -3,6 +3,32 @@ namespace lasd {
 
 /* ************************************************************************** */
 template <typename Data>
+bool QueueVec<Data>::operator==(const QueueVec & that) const
+{
+    if (this->dim != that.dim)// || this->head != that.head || this->tail != that.tail)
+    {
+        return false;
+    }
+
+    for (unsigned long i = 0; i < this->dim; i++)
+    {
+        unsigned long thisCurr = (this->head + i) % this->size;
+        unsigned long thatCurr = (that.head + i) % that.size;
+        if (this->operator[](thisCurr) != that[thatCurr])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename Data>
+bool QueueVec<Data>::operator!=(const QueueVec & that) const
+{
+    return !this->operator==(that);
+}
+
+template <typename Data>
 inline const Data & QueueVec<Data>::Head() const 
 {
     if (this->Empty ())

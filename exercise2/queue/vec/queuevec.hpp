@@ -68,8 +68,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const QueueVec & that) const {return (Vector<Data>)(*this) == (Vector<Data>)(that) && this->dim == that.dim && this->head == that.head && this->tail == that.tail;}
-  bool operator!=(const QueueVec & that) const {return (Vector<Data>)(*this) != (Vector<Data>)(that) || this->dim != that.dim || this->head != that.head || this->tail != that.tail;}
+  bool operator==(const QueueVec & that) const; //{return (Vector<Data>)(*this) == (Vector<Data>)(that) && this->dim == that.dim && this->head == that.head && this->tail == that.tail;}
+  bool operator!=(const QueueVec & that) const; //{return (Vector<Data>)(*this) != (Vector<Data>)(that) || this->dim != that.dim || this->head != that.head || this->tail != that.tail;}
 
   /* ************************************************************************ */
 
