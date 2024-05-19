@@ -2,8 +2,72 @@
 namespace lasd {
 
 /* ************************************************************************** */
+// template <typename Data>
+// StackVec<Data>::StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (INIT_SIZE)
+// {
+//     this->size = cont.Size();
+//     cont.Traverse(
+//         [this](const Data & d)
+//         {
+//             this->Push(d);
+//         }
+//     );
+// }
 
-// ...
+// template <typename Data>
+// StackVec<Data>::StackVec(MappableContainer<Data> && cont) : Vector<Data> (INIT_SIZE)
+// {
+//     this->size = cont.Size();
+//     cont.Map(
+//         [this](const Data & d)
+//         {
+//             this->Push(std::move(d));
+//         }
+//     );
+// }
+
+// template <typename Data>
+// StackVec<Data>  StackVec<Data>::operator=(const StackVec & that)
+// {
+//     this->Vector<Data>::operator=(that);
+//     this->top = that.top;
+//     return *this;
+// }
+
+// template <typename Data>
+// StackVec<Data>  StackVec<Data>::operator=(StackVec && that)
+// {
+//     this->Vector<Data>::operator=(std::move(that));
+//     this->top = that.top;
+//     return *this;
+// }
+
+template <typename Data>
+bool StackVec<Data>::operator==(const StackVec & that) const
+{
+    if (this->top != that.top) 
+    {
+      return false;
+    }
+
+    //non riutilizzo l'operatore di uguaglianza di Vec perché interessano solo i valori inseriti nello stack
+    for (unsigned long i = 0; i < this->top; i++)
+    {
+      if (this->operator[](i) != that[i]) 
+      {
+        return false;
+      }
+    }
+
+    return true;
+}
+
+template <typename Data>
+bool StackVec<Data>::operator!=(const StackVec & that) const
+{
+    return !this->operator==(that);
+}
+
 template <typename Data>
 const Data & StackVec<Data>::Top() const
 {
