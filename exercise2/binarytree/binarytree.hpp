@@ -33,6 +33,8 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
+// protected:
+
   struct Node {
   protected:
     
@@ -78,6 +80,8 @@ public:
 
   /* ************************************************************************ */
   BinaryTree() = default;
+
+public:
   // Destructor
   virtual ~BinaryTree() = default;
 
@@ -150,14 +154,13 @@ class MutableBinaryTree : public virtual ClearableContainer,
 public: 
   
   using typename MappableContainer<Data>::MapFun;
+  MutableBinaryTree() = default;
 
 protected:
   using Container::size;
-  using typename BinaryTree<Data>::Node;
-public:
-  MutableBinaryTree() = default;
 
   using typename BinaryTree<Data>::Node;
+
   struct MutableNode : public virtual BinaryTree<Data>::Node {
     public:
     friend class MutableBinaryTree<Data>;

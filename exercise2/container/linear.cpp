@@ -42,6 +42,9 @@ inline const Data & LinearContainer<Data>::Front() const
     if (this->Empty()) 
     {
         throw std::length_error (EMPTY_CONTAINER_MSG);
+            //Errore del compilatore: 
+            //‘length_error’ is not a member of ‘std’
+        // std::__throw_length_error (EMPTY_CONTAINER_MSG);
     } 
     else
     {
@@ -157,7 +160,7 @@ void LinearContainer<Data>::swap(const unsigned long a, const unsigned long b)
     }
     else
     {
-        throw std::length_error ("cannot swap");
+        std::__throw_length_error ("");
     }
 }
 
