@@ -17,7 +17,7 @@ BST<Data>::BST (const TraversableContainer<Data> & con)
 }
 
 template <typename Data>
-BST<Data>::BST (MappableContainer<Data> & con)
+BST<Data>::BST (MappableContainer<Data> && con)
 {
     con.Map(
         [this](const Data & d)

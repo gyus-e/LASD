@@ -39,8 +39,8 @@ public:
   /* ************************************************************************ */
 
   // Specific constructor
-  StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), top(cont.Size()) {} // A stack obtained from a TraversableContainer
-  StackVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), top(cont.Size()) {} // A stack obtained from a MappableContainer
+  StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), top(cont.Size()) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A stack obtained from a TraversableContainer
+  StackVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), top(cont.Size()) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A stack obtained from a MappableContainer
 
   /* ************************************************************************ */
 

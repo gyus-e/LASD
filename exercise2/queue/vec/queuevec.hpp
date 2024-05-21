@@ -41,8 +41,8 @@ public:
   /* ************************************************************************ */
 
   // Specific constructor
-  QueueVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), dim(cont.Size()), head (0), tail (cont.Size()-1) {} // A queue obtained from a TraversableContainer
-  QueueVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), dim(cont.Size()), head (0), tail (cont.Size()-1) {} // A queue obtained from a MappableContainer
+  QueueVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), dim(cont.Size()), head (0), tail (cont.Size()-1) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A queue obtained from a TraversableContainer
+  QueueVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), dim(cont.Size()), head (0), tail (cont.Size()-1) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A queue obtained from a MappableContainer
 
   /* ************************************************************************ */
 

@@ -193,7 +193,7 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (const TraversableContainer<Data> & con)
 
 // A binary tree obtained from a MappableContainer
 template <typename Data>
-BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> & con)
+BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> && con)
 {
     this->size = con.Size();
   
