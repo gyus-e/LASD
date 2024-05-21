@@ -639,42 +639,23 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTInOrderMutableIterator operator=(const BTInOrderMutableIterator & that)
-  {
-    this->BTInOrderIterator<Data>::operator=(that);
-  }
+  BTInOrderMutableIterator operator=(const BTInOrderMutableIterator & that);
 
   // Move assignment
-  BTInOrderMutableIterator operator=(BTInOrderMutableIterator && that)
-  {
-    this->BTInOrderIterator<Data>::operator=(std::move(that));
-  }
+  BTInOrderMutableIterator operator=(BTInOrderMutableIterator && that);
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BTInOrderMutableIterator & that) const
-  {
-    return this->BTInOrderIterator<Data>::operator==((const BTInOrderIterator<Data> &) that);
-  }
+  bool operator==(const BTInOrderMutableIterator & that) const;
 
-  bool operator!=(const BTInOrderMutableIterator & that) const
-  {
-    return this->BTInOrderIterator<Data>::operator!=((const BTInOrderIterator<Data> &) that);
-  }
+  bool operator!=(const BTInOrderMutableIterator & that) const;
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
 
-  Data & operator*() override // (throw std::out_of_range when terminated)
-  {
-    if (this->Terminated())
-    {
-      throw std::out_of_range("from operator *");
-    }
-    return this->curr->Element();
-  }
+  Data & operator*() override; // (throw std::out_of_range when terminated)
 
 };
 
@@ -698,14 +679,8 @@ protected:
 public:
 
   // Specific constructors
-  BTBreadthIterator(const BinaryTree<Data> & binTree) // An iterator over a given binary tree
-  {
-    if (binTree.Size() != 0)
-    {
-        this->root = &binTree.Root();
-        this->curr = this->root;
-    }
-  }
+  BTBreadthIterator(const BinaryTree<Data> & binTree); // An iterator over a given binary tree
+
   /* ************************************************************************ */
 
   // Copy constructor
@@ -727,98 +702,37 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTBreadthIterator operator=(const BTBreadthIterator & that)
-  {
-    this->root = that.root;
-    this->curr = that.curr;
-    this->que = that.que;
-
-    return *this;
-  }
+  BTBreadthIterator operator=(const BTBreadthIterator & that);
 
   // Move assignment
-  BTBreadthIterator operator=(BTBreadthIterator && that) noexcept
-  {
-    std::swap (this->root, that.root);
-    std::swap (this->curr, that.curr);
-    std::swap (this->que, that.que);
-    
-    return *this;
-  }
+  BTBreadthIterator operator=(BTBreadthIterator && that) noexcept;
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BTBreadthIterator & that) const
-  {
-    return ((this->root == that.root) && (this->curr == that.curr) && (this->que == that.que));
-  }
+  bool operator==(const BTBreadthIterator & that) const;
 
-  bool operator!=(const BTBreadthIterator & that) const
-  {
-    return !(this->operator==(that));
-  }
+  bool operator!=(const BTBreadthIterator & that) const;
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from Iterator)
 
-  const Data & operator*() const override // (throw std::out_of_range when terminated)
-  {
-    if (this->Terminated())
-    {
-      throw std::out_of_range("from operator *");
-    }
-    return this->curr->Element();
-  }
+  const Data & operator*() const override; // (throw std::out_of_range when terminated)
 
-  bool Terminated() const noexcept override // (should not throw exceptions)
-  {
-    return (this->curr == nullptr);
-  }
+  bool Terminated() const noexcept override; // (should not throw exceptions)
+
   /* ************************************************************************ */
 
   // Specific member functions (inherited from ForwardIterator)
 
-  BTBreadthIterator & operator++() override // (throw std::out_of_range when terminated)
-  {
-    if (this->Terminated())
-    {
-      throw std::out_of_range("from operator++");
-    }
-    //accoda figlio sinistro
-    if (this->curr->HasLeftChild())
-    {
-      this->que.Enqueue(&(this->curr->LeftChild()));
-    }
-    //accoda figlio destro
-    if (this->curr->HasRightChild())
-    {
-      this->que.Enqueue(&(this->curr->RightChild()));
-    }
-
-    //visita testa della coda
-    if (!this->que.Empty())
-    {
-      this->curr = this->que.HeadNDequeue();
-    }
-    //se la coda è vuota l'iteratore è terminato
-    else 
-    {
-      this->curr = nullptr; 
-    }
-
-    return *this;
-  }
+  BTBreadthIterator & operator++() override; // (throw std::out_of_range when terminated)
+ 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from ResettableIterator)
 
-  void Reset() noexcept override // (should not throw exceptions)
-  {
-    this->que.Clear();
-    this->curr = this->root;
-  }
+  void Reset() noexcept override; // (should not throw exceptions)
 
 };
 

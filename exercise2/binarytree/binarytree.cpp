@@ -748,11 +748,150 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 /* ************************************************************************** */
 /*  BTInOrderMutableIterator  */
 
+  // Copy assignment
+  template <typename Data>
+  BTInOrderMutableIterator<Data> BTInOrderMutableIterator<Data>::operator=(const BTInOrderMutableIterator & that)
+  {
+    this->BTInOrderIterator<Data>::operator=(that);
+  }
+
+  // Move assignment
+  template <typename Data>
+  BTInOrderMutableIterator<Data> BTInOrderMutableIterator<Data>::operator=(BTInOrderMutableIterator<Data> && that)
+  {
+    this->BTInOrderIterator<Data>::operator=(std::move(that));
+  }
+
+  // Comparison operators
+  template <typename Data>
+  bool BTInOrderMutableIterator<Data>::operator==(const BTInOrderMutableIterator<Data> & that) const
+  {
+    return this->BTInOrderIterator<Data>::operator==((const BTInOrderIterator<Data> &) that);
+  }
+
+  template <typename Data>
+  bool BTInOrderMutableIterator<Data>::operator!=(const BTInOrderMutableIterator<Data> & that) const
+  {
+    return this->BTInOrderIterator<Data>::operator!=((const BTInOrderIterator<Data> &) that);
+  }
+
+  // Specific member functions (inherited from MutableIterator)
+
+  template <typename Data>
+  Data & BTInOrderMutableIterator<Data>::operator*() // (throw std::out_of_range when terminated)
+  {
+    if (this->Terminated())
+    {
+      throw std::out_of_range("from operator *");
+    }
+    return this->curr->Element();
+  }
 
 /* ************************************************************************** */
 /*  BTBreadthIterator  */
+  template <typename Data>
+  BTBreadthIterator<Data>::BTBreadthIterator (const BinaryTree<Data> & binTree) // An iterator over a given binary tree
+  {
+    if (binTree.Size() != 0)
+    {
+        this->root = &binTree.Root();
+        this->curr = this->root;
+    }
+  }
 
+  // Copy assignment
+  template <typename Data>
+  BTBreadthIterator<Data> BTBreadthIterator<Data>::operator=(const BTBreadthIterator & that)
+  {
+    this->root = that.root;
+    this->curr = that.curr;
+    this->que = that.que;
 
+    return *this;
+  }
+
+  // Move assignment
+  template <typename Data>
+  BTBreadthIterator<Data> BTBreadthIterator<Data>::operator=(BTBreadthIterator<Data> && that) noexcept
+  {
+    std::swap (this->root, that.root);
+    std::swap (this->curr, that.curr);
+    std::swap (this->que, that.que);
+    
+    return *this;
+  }
+
+  // Comparison operators
+  template <typename Data>
+  bool BTBreadthIterator<Data>::operator==(const BTBreadthIterator & that) const
+  {
+    return ((this->root == that.root) && (this->curr == that.curr) && (this->que == that.que));
+  }
+  
+  template <typename Data>
+  bool BTBreadthIterator<Data>::operator!=(const BTBreadthIterator & that) const
+  {
+    return !(this->operator==(that));
+  }
+
+  // Specific member functions (inherited from Iterator)
+  template <typename Data>
+  const Data & BTBreadthIterator<Data>::operator*() const // (throw std::out_of_range when terminated)
+  {
+    if (this->Terminated())
+    {
+      throw std::out_of_range("from operator *");
+    }
+    return this->curr->Element();
+  }
+
+  template <typename Data>
+  bool BTBreadthIterator<Data>::Terminated() const noexcept // (should not throw exceptions)
+  {
+    return (this->curr == nullptr);
+  }
+
+  // Specific member functions (inherited from ForwardIterator)
+  template <typename Data>
+  BTBreadthIterator<Data> & BTBreadthIterator<Data>::operator++() // (throw std::out_of_range when terminated)
+  {
+    if (this->Terminated())
+    {
+      throw std::out_of_range("from operator++");
+    }
+    //accoda figlio sinistro
+    if (this->curr->HasLeftChild())
+    {
+      this->que.Enqueue(&(this->curr->LeftChild()));
+    }
+    //accoda figlio destro
+    if (this->curr->HasRightChild())
+    {
+      this->que.Enqueue(&(this->curr->RightChild()));
+    }
+
+    //visita testa della coda
+    if (!this->que.Empty())
+    {
+      this->curr = this->que.HeadNDequeue();
+    }
+    //se la coda è vuota l'iteratore è terminato
+    else 
+    {
+      this->curr = nullptr; 
+    }
+
+    return *this;
+  }
+  
+  template <typename Data>
+  void BTBreadthIterator<Data>::Reset() noexcept // (should not throw exceptions)
+  {
+    this->que.Clear();
+    this->curr = this->root;
+  }
+
+  
 /* ************************************************************************** */
 /*  BTBreadthMutableIterator  */
 
