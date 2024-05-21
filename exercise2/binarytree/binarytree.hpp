@@ -86,7 +86,8 @@ public:
   };
 
   /* ************************************************************************ */
-
+  
+  BinaryTree() = default;
   // Destructor
   virtual ~BinaryTree() = default;
 
@@ -163,10 +164,11 @@ private:
 protected:
   using Container::size;
   using typename BinaryTree<Data>::Node;
-  MutableBinaryTree() = default;
 
 public:
   
+  MutableBinaryTree() = default;
+
   using typename MappableContainer<Data>::MapFun;
 
   struct MutableNode : public virtual BinaryTree<Data>::Node {
