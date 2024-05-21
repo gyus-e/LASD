@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 namespace lasd {
 
 /* ************************************************************************** */
@@ -160,7 +162,7 @@ void LinearContainer<Data>::swap(const unsigned long a, const unsigned long b)
     }
     else
     {
-        std::__throw_length_error ("");
+        throw std::length_error ("cannot swap");
     }
 }
 
