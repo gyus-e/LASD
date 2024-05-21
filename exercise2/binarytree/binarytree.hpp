@@ -29,11 +29,11 @@ class BinaryTree : public virtual PreOrderTraversableContainer<Data>,
                    public virtual InOrderTraversableContainer<Data>,
                    public virtual BreadthTraversableContainer<Data>
 {
+protected:
+  using Container::size;
+
 public:
-
   using typename TraversableContainer<Data>::TraverseFun;
-
-// protected:
 
   struct Node {
   protected:
@@ -102,7 +102,6 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions
-
   virtual const Node & Root() const = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
@@ -151,15 +150,14 @@ class MutableBinaryTree : public virtual ClearableContainer,
                           public virtual InOrderMappableContainer<Data>,
                           public virtual BreadthMappableContainer<Data>
 {
-public: 
-  
-  using typename MappableContainer<Data>::MapFun;
+protected:
+  using BinaryTree<Data>::size;
+  using typename BinaryTree<Data>::Node;
   MutableBinaryTree() = default;
 
-protected:
-  using Container::size;
+public:
 
-  using typename BinaryTree<Data>::Node;
+  using typename MappableContainer<Data>::MapFun;
 
   struct MutableNode : public virtual BinaryTree<Data>::Node {
     public:
@@ -217,6 +215,8 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions
+  
+  using BinaryTree<Data>::Root;
   virtual MutableNode & Root() = 0; // (concrete function must throw std::length_error when empty)
 
   /* ************************************************************************ */
