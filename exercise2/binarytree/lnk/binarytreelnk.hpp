@@ -19,13 +19,7 @@ namespace lasd {
 template <typename Data>
 class BinaryTreeLnk : public virtual MutableBinaryTree<Data>
 {
-
-private:
-
-  // ...
-
-protected:
-
+public:
   struct NodeLnk : public virtual MutableBinaryTree<Data>::MutableNode 
   {
 
@@ -69,11 +63,12 @@ protected:
     inline NodeLnk * const * DX () const {return &(this->Dx);}
   };
 
+  
+protected:
   using BinaryTree<Data>::size;
   NodeLnk * root = nullptr;
 
 public:
-
   // Default constructor
   BinaryTreeLnk() = default;
 

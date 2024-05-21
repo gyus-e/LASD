@@ -17,15 +17,7 @@ namespace lasd {
 
 template <typename Data>
 class BinaryTreeVec : public virtual MutableBinaryTree<Data> {
-
-private:
-
-  // ...
-
-protected:
-
-  // ...
-
+public:
   struct NodeVec : public virtual MutableBinaryTree<Data>::MutableNode
   {
 
@@ -66,6 +58,8 @@ protected:
     const typename BinaryTree<Data>::Node & RightChild() const override; // (concrete function must throw std::out_of_range when not existent)
   };
   
+  
+protected: 
   using MutableBinaryTree<Data>::size; //real size of the vector
   unsigned long dim = 0; //amount of nodes in the tree
   Vector<NodeVec *> * vec = nullptr;
