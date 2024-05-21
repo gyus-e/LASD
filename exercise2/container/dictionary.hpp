@@ -53,11 +53,11 @@ public:
   virtual bool Remove(const Data &) = 0;
 
   bool InsertAll(const TraversableContainer<Data> &); // Copy of the value; From TraversableContainer; True if all are inserted
-  bool InsertAll(MappableContainer<Data> &); // Move of the value; From MappableContainer; True if all are inserted
+  bool InsertAll(MappableContainer<Data> &&); // Move of the value; From MappableContainer; True if all are inserted
   bool RemoveAll(const TraversableContainer<Data> &); // From TraversableContainer; True if all are removed
 
   bool InsertSome(const TraversableContainer<Data> &); // Copy of the value; From TraversableContainer; True if some is inserted
-  bool InsertSome(MappableContainer<Data> &); // Move of the value; From MappableContainer; True if some is inserted
+  bool InsertSome(MappableContainer<Data> &&); // Move of the value; From MappableContainer; True if some is inserted
   bool RemoveSome(const TraversableContainer<Data> &); // From TraversableContainer; True if some is removed
 
 };

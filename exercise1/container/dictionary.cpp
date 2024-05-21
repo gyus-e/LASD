@@ -19,10 +19,10 @@ bool DictionaryContainer<Data>::InsertAll(const TraversableContainer<Data> & con
 
 // Move of the value; From MappableContainer; True if all are inserted
 template <typename Data>
-bool DictionaryContainer<Data>::InsertAll(MappableContainer<Data> & con)
+bool DictionaryContainer<Data>::InsertAll(MappableContainer<Data> && con)
 {
     bool inserted = true;
-    con->Map (
+    con.Map (
         [this, &inserted](Data && dat)
         {
             inserted &= this->Insert(std::move(dat)); 
@@ -60,10 +60,10 @@ bool DictionaryContainer<Data>::InsertSome(const TraversableContainer<Data> & co
 
 // Move of the value; From MappableContainer; True if some are inserted
 template <typename Data>
-bool DictionaryContainer<Data>::InsertSome(MappableContainer<Data> & con)
+bool DictionaryContainer<Data>::InsertSome(MappableContainer<Data> && con)
 {
     bool inserted = false;
-    con->Map (
+    con.Map (
         [this, &inserted](Data && dat)
         {
             inserted |= this->Insert(std::move(dat)); 

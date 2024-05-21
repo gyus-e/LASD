@@ -8,7 +8,7 @@
 #include "../container/mappable.hpp"
 
 #include "../iterator/iterator.hpp"
-
+//memory leak usando le varianti lst, testare!
 #include "../stack/vec/stackvec.hpp"
 #include "../stack/lst/stacklst.hpp"
 #include "../queue/vec/queuevec.hpp"
