@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 namespace lasd {
 
 /* ************************************************************************** */
@@ -44,9 +42,6 @@ inline const Data & LinearContainer<Data>::Front() const
     if (this->Empty()) 
     {
         throw std::length_error (EMPTY_CONTAINER_MSG);
-            //Errore del compilatore: 
-            //‘length_error’ is not a member of ‘std’
-        // std::__throw_length_error (EMPTY_CONTAINER_MSG);
     } 
     else
     {
