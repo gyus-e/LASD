@@ -774,42 +774,23 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTBreadthMutableIterator operator=(const BTBreadthMutableIterator & that)
-  {
-    this->BTBreadthIterator<Data>::operator=(that);
-  }
+  BTBreadthMutableIterator operator=(const BTBreadthMutableIterator & that);
 
   // Move assignment
-  BTBreadthMutableIterator operator=(BTBreadthMutableIterator && that)
-  {
-    this->BTBreadthIterator<Data>::operator=(std::move(that));
-  }
+  BTBreadthMutableIterator operator=(BTBreadthMutableIterator && that);
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BTBreadthMutableIterator & that) const
-  {
-    return this->BTInOrderIterator<Data>::operator==((const BTInOrderIterator<Data> &) that);
-  }
+  bool operator==(const BTBreadthMutableIterator & that) const;
 
-  bool operator!=(const BTBreadthMutableIterator & that) const
-  {
-    return this->BTInOrderIterator<Data>::operator!=((const BTInOrderIterator<Data> &) that);
-  }
+  bool operator!=(const BTBreadthMutableIterator & that) const;
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
 
-  Data & operator*() override // (throw std::out_of_range when terminated)
-  {
-    if (this->Terminated())
-    {
-      throw std::out_of_range("from operator *");
-    }
-    return this->curr->Element();
-  }
+  Data & operator*() override; // (throw std::out_of_range when terminated)
 };
 
 /* ************************************************************************** */

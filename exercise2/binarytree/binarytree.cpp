@@ -891,9 +891,44 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
     this->curr = this->root;
   }
 
-  
 /* ************************************************************************** */
 /*  BTBreadthMutableIterator  */
 
+  // Copy assignment
+  template <typename Data>
+  BTBreadthMutableIterator<Data> BTBreadthMutableIterator<Data>::operator=(const BTBreadthMutableIterator<Data> & that)
+  {
+    this->BTBreadthIterator<Data>::operator=(that);
+  }
 
+  // Move assignment
+  template <typename Data>
+  BTBreadthMutableIterator<Data> BTBreadthMutableIterator<Data>::operator=(BTBreadthMutableIterator<Data> && that)
+  {
+    this->BTBreadthIterator<Data>::operator=(std::move(that));
+  }
+
+  // Comparison operators
+  template <typename Data>
+  bool BTBreadthMutableIterator<Data>::operator==(const BTBreadthMutableIterator<Data> & that) const
+  {
+    return this->BTInOrderIterator<Data>::operator==((const BTInOrderIterator<Data> &) that);
+  }
+
+  template <typename Data>
+  bool BTBreadthMutableIterator<Data>::operator!=(const BTBreadthMutableIterator<Data> & that) const
+  {
+    return this->BTInOrderIterator<Data>::operator!=((const BTInOrderIterator<Data> &) that);
+  }
+
+  // Specific member functions (inherited from MutableIterator)
+  template <typename Data>
+  Data & BTBreadthMutableIterator<Data>::operator*() // (throw std::out_of_range when terminated)
+  {
+    if (this->Terminated())
+    {
+      throw std::out_of_range("from operator *");
+    }
+    return this->curr->Element();
+  }
 }
