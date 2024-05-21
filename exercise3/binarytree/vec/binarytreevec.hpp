@@ -79,7 +79,7 @@ public:
 
   // Specific constructors
   BinaryTreeVec(const TraversableContainer<Data> &); // A binary tree obtained from a TraversableContainer
-  BinaryTreeVec(MappableContainer<Data> &); // A binary tree obtained from a MappableContainer
+  BinaryTreeVec(MappableContainer<Data> &&); // A binary tree obtained from a MappableContainer
 
   /* ************************************************************************ */
 

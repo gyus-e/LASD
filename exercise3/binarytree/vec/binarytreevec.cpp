@@ -105,7 +105,7 @@ BinaryTreeVec<Data>::BinaryTreeVec (const TraversableContainer<Data> & cont)
 }
 
 template <typename Data>
-BinaryTreeVec<Data>::BinaryTreeVec (MappableContainer<Data> & cont)
+BinaryTreeVec<Data>::BinaryTreeVec (MappableContainer<Data> && cont)
 {
     this->size = cont.Size();
 

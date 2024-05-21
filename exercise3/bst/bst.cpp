@@ -17,7 +17,7 @@ BST<Data>::BST (const TraversableContainer<Data> & con)
 }
 
 template <typename Data>
-BST<Data>::BST (MappableContainer<Data> & con)
+BST<Data>::BST (MappableContainer<Data> && con)
 {
     con.Map(
         [this](const Data & d)
@@ -363,7 +363,9 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::Detach(typename BinaryTreeLnk
         else 
         {
             NodeLnk * min = DetachMin((*curr)->Dx, (*curr)); 
-            (*curr)->elem = min->elem; 
+            (*curr)->elem = min->elem;
+            delete min;
+            return *curr;
         }
         
         (*curr)->Sx = nullptr;
@@ -760,6 +762,11 @@ bool BST<Data>::Insert(Data && d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 template <typename Data>
 bool BST<Data>::Remove(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
+    if (this->Empty())
+    {
+        return false;
+    }
+
     if ((*curr) != nullptr)
     {
         if ((*curr)->Element() < d)

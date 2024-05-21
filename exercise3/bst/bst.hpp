@@ -38,7 +38,7 @@ public:
 
   // Specific constructors
   BST(const TraversableContainer<Data> & con); //: BinaryTreeLnk<Data>(con) {} // A bst obtained from a TraversableContainer
-  BST(MappableContainer<Data> & con); //: BinaryTreeLnk<Data>(std::move(con)) {} // A bst obtained from a MappableContainer
+  BST(MappableContainer<Data> && con); //: BinaryTreeLnk<Data>(std::move(con)) {} // A bst obtained from a MappableContainer
 
   /* ************************************************************************ */
 

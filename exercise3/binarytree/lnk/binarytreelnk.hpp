@@ -81,7 +81,7 @@ public:
 
   // Specific constructors
   BinaryTreeLnk(const TraversableContainer<Data> &); // A binary tree obtained from a TraversableContainer
-  BinaryTreeLnk(MappableContainer<Data> &); // A binary tree obtained from a MappableContainer
+  BinaryTreeLnk(MappableContainer<Data> &&); // A binary tree obtained from a MappableContainer
 
   /* ************************************************************************ */
 

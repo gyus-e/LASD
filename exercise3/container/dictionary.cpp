@@ -8,7 +8,7 @@ template <typename Data>
 bool DictionaryContainer<Data>::InsertAll(const TraversableContainer<Data> & con)
 {
     bool inserted = true;
-    con->Traverse (
+    con.Traverse (
         [this, &inserted](const Data & dat)
         {
             inserted &= this->Insert(dat);
@@ -19,10 +19,10 @@ bool DictionaryContainer<Data>::InsertAll(const TraversableContainer<Data> & con
 
 // Move of the value; From MappableContainer; True if all are inserted
 template <typename Data>
-bool DictionaryContainer<Data>::InsertAll(MappableContainer<Data> & con)
+bool DictionaryContainer<Data>::InsertAll(MappableContainer<Data> && con)
 {
     bool inserted = true;
-    con->Map (
+    con.Map (
         [this, &inserted](Data && dat)
         {
             inserted &= this->Insert(std::move(dat)); 
@@ -35,7 +35,7 @@ template <typename Data>
 bool DictionaryContainer<Data>::RemoveAll(const TraversableContainer<Data> & con)
 {
     bool removed = true;
-    con->Traverse (
+    con.Traverse (
         [this, &removed](const Data & dat)
         {
             removed &= this->Remove(dat);
@@ -49,7 +49,7 @@ template <typename Data>
 bool DictionaryContainer<Data>::InsertSome(const TraversableContainer<Data> & con)
 {
     bool inserted = false;
-    con->Traverse (
+    con.Traverse (
         [this, &inserted](const Data & dat)
         {
             inserted |= this->Insert(dat);
@@ -60,10 +60,10 @@ bool DictionaryContainer<Data>::InsertSome(const TraversableContainer<Data> & co
 
 // Move of the value; From MappableContainer; True if some are inserted
 template <typename Data>
-bool DictionaryContainer<Data>::InsertSome(MappableContainer<Data> & con)
+bool DictionaryContainer<Data>::InsertSome(MappableContainer<Data> && con)
 {
     bool inserted = false;
-    con->Map (
+    con.Map (
         [this, &inserted](Data && dat)
         {
             inserted |= this->Insert(std::move(dat)); 
@@ -76,7 +76,7 @@ template <typename Data>
 bool DictionaryContainer<Data>::RemoveSome(const TraversableContainer<Data> & con)
 {
     bool removed = false;
-    con->Traverse (
+    con.Traverse (
         [this, &removed](const Data & dat)
         {
             removed |= this->Remove(dat);
