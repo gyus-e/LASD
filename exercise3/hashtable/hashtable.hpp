@@ -5,6 +5,7 @@
 /* ************************************************************************** */
 
 #include <random>
+#include <string>
 
 /* ************************************************************************** */
 
@@ -21,51 +22,71 @@ class Hashable {
 
 public:
 
-  // type operator()(argument) specifiers; // (concrete function should not throw exceptions)
+  virtual unsigned long operator()(const Data &) const noexcept = 0; // (concrete function should not throw exceptions)
 
 };
 
 /* ************************************************************************** */
 
 template <typename Data>
-class HashTable {
-                  // Must extend ResizableContainer,
-                  //             DictionaryContainer<Data>
+class HashTable : public virtual ResizableContainer,
+                  public virtual DictionaryContainer<Data>
+{
 
 private:
 
-  // ...
-
 protected:
 
-  // using DictionaryContainer<Data>::???;
+  using DictionaryContainer<Data>::size;
+  unsigned long acoeff = 1;
+  unsigned long bcoeff = 0;
+  static const unsigned long prime = 1000000016531;
 
-  // ...
+  std::default_random_engine gen  = std::default_random_engine (std::random_device{}());
+  std::uniform_int_distribution <unsigned long> dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);
+  std::uniform_int_distribution <unsigned long> distb = std::uniform_int_distribution <unsigned long> (0, prime - 1);
+
+  static const Hashable<Data> enchash;
+
+  unsigned long tableSize = 128; //2^7
+
+
+  // Default constructor
+  HashTable();
+
+  // Copy constructor
+  HashTable(const HashTable &);
+
+  // Move constructor
+  HashTable(HashTable &&) noexcept;
 
 public:
 
   // Destructor
-  // ~HashTable() specifiers
+  virtual ~HashTable() = default;
 
   /* ************************************************************************ */
+protected:
 
   // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types should not be possible.
+  HashTable<Data> & operator=(const HashTable<Data> &); // Copy assignment of abstract types should not be possible.
 
   // Move assignment
-  // type operator=(argument); // Move assignment of abstract types should not be possible.
+  HashTable<Data> & operator=(HashTable<Data> &&) noexcept; // Move assignment of abstract types should not be possible.
 
   /* ************************************************************************ */
 
+public:
   // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract hashtable is possible but not required.
-  // type operator!=(argument) specifiers; // Comparison of abstract hashtable is possible but not required.
+  bool operator==(const HashTable &) const noexcept = delete; // Comparison of abstract hashtable is possible but not required.
+  bool operator!=(const HashTable &) const noexcept = delete; // Comparison of abstract hashtable is possible but not required.
 
 protected:
 
   // Auxiliary member functions
 
-  // type HashKey(argument) specifiers;
+  virtual inline unsigned long HashKey(const Data & dat) const noexcept;
+  virtual inline unsigned long HashKey(unsigned long key) const noexcept;
 
 };
 
