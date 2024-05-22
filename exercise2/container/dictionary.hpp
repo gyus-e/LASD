@@ -13,9 +13,9 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class DictionaryContainer : public virtual TestableContainer<Data>, public virtual TraversableContainer<Data>, public virtual MappableContainer<Data> {
+class DictionaryContainer : public virtual TestableContainer<Data> //, public virtual TraversableContainer<Data>, public virtual MappableContainer<Data>
   // Must extend TestableContainer<Data>
-
+{
 private:
 
   // ...
