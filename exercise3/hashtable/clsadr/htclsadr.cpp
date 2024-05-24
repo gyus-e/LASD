@@ -127,13 +127,13 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr& t
 template <typename Data>
 HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr&& that) noexcept 
 {
-    if (this != &that) 
-    {
-        std::swap(this->Table, that.Table);
-        std::swap(this->size, that.size);
-        std::swap(this->tableSize, that.tableSize);
-    }
-    return *this;
+    // if (this != &that) 
+    // {
+    //     std::swap(this->Table, that.Table);
+    //     std::swap(this->size, that.size);
+    //     std::swap(this->tableSize, that.tableSize);
+    // }
+    // return *this;
 }
 
 // Comparison operators
