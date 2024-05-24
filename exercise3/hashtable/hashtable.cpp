@@ -122,7 +122,7 @@ HashTable<Data> & HashTable<Data>::operator=(const HashTable<Data> & that)
     this->tableSize = that.tableSize;
     this->acoeff = that.acoeff;
     this->bcoeff = that.bcoeff;
-    this->tableSize = that.tableSize;
+    this->size = that.size;
     return *this;
 }
 
@@ -133,7 +133,7 @@ HashTable<Data> & HashTable<Data>::operator=(HashTable<Data> && that) noexcept
     std::swap(this->tableSize, that.tableSize);
     std::swap(this->acoeff, that.acoeff);
     std::swap(this->bcoeff, that.bcoeff);
-    std::swap(this->tableSize, that.tableSize);
+    std::swap(this->size, that.size);
     return *this;
 }
 

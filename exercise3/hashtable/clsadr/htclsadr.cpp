@@ -89,25 +89,16 @@ HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<
 
 // Copy constructor
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data> & that) : HashTable<Data> (that) //, Table (that.Table)
+HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data> & that) : HashTable<Data> (that), Table (that.Table)
 {
-    this->Table = that.Table;
-    // this->size = that.size;
-    // this->tableSize = that.tableSize;
 }
 
 // Move constructor
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(HashTableClsAdr<Data>&& that) noexcept //: HashTable<Data> (std::move (that)) //, Table (std::move (that.Table))
+HashTableClsAdr<Data>::HashTableClsAdr(HashTableClsAdr<Data>&& that) noexcept : HashTable<Data> (std::move (that)), Table (std::move (that.Table))
 {
-    std::cout<<"attempting swap"<<std::endl;
+    // std::cout<<"attempting swap"<<std::endl;
     //deadly signal
-
-    // std::swap(this->Table, that.Table); 
-    // this->Table.operator=(std::move(that.Table));
-    
-    // std::swap(this->size, that.size);
-    // std::swap(this->tableSize, that.tableSize);
 }
 
 // Copy assignment
@@ -127,13 +118,12 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr& t
 template <typename Data>
 HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr&& that) noexcept 
 {
-    // if (this != &that) 
-    // {
-    //     std::swap(this->Table, that.Table);
-    //     std::swap(this->size, that.size);
-    //     std::swap(this->tableSize, that.tableSize);
-    // }
-    // return *this;
+    if (this != &that) 
+    {
+        this->HashTable<Data>::operator=(std::move(that));
+        std::swap(this->Table, that.Table);
+    }
+    return *this;
 }
 
 // Comparison operators
@@ -214,6 +204,7 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize)
     //Arrotonda newSize alla prossima potenza di 2 
     unsigned long exp = ceil(log2(newSize));
     newSize = pow(2, exp);
+    std::cout<<"Attempting resize to "<<newSize<<std::endl;
     
     if (newSize == this->tableSize)
     {
@@ -242,15 +233,9 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize)
     );
     
     //ERRORE SOTTO!
-    //rivedere move constructor
+    //rivedere move constructor di vector
 
-    // this->Table = newTable.Table;
-    // std::swap (this->Table, newTable.Table);
-    // this->Table = std::move(newTable.Table); //rivedere move constructor?
-    // this->tableSize = newTable.tableSize;
-
-    // std::swap (*this, newTable);
-    // std::swap (this, &newTable);
+    std::swap (*this, newTable);
 
     std::cout<<"Resized to "<<this->tableSize<<std::endl;
 }
