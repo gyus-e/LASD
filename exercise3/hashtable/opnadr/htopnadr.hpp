@@ -5,7 +5,17 @@
 /* ************************************************************************** */
 
 #include "../hashtable.hpp"
-// #include ...
+#include "../../vector/vector.hpp"
+#include "../../list/list.hpp"
+
+#include "../../queue/lst/queuelst.hpp"
+#include "../../queue/vec/queuevec.hpp"
+
+#include "../../stack/lst/stacklst.hpp"
+#include "../../stack/vec/stackvec.hpp"
+
+#include "../../binarytree/lnk/binarytreelnk.hpp"
+#include "../../bst/bst.hpp"
 
 /* ************************************************************************** */
 
@@ -14,18 +24,19 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class HashTableOpnAdr {
-  // Must extend HashTable<Data>
+class HashTableOpnAdr : public virtual HashTable<Data>
+{
 
 private:
 
-  // ...
-
 protected:
 
-  // using HashTable<Data>::???;
+  enum class status {absent, present, deleted};
 
-  // ...
+  using HashTable<Data>::size;
+  unsigned long dim = 0;
+  Vector<Data> Table;
+  Vector<status> flag; 
 
 public:
 
@@ -72,7 +83,7 @@ public:
 
   // Specific member functions (inherited from DictionaryContainer)
 
-  // type Insert(argument) specifiers; // Override DictionaryContainer member (Copy of the value)
+  bool Insert(const Data &) override; // Override DictionaryContainer member (Copy of the value)
   // type Insert(argument) specifiers; // Override DictionaryContainer member (Move of the value)
   // type Remove(argument) specifiers; // Override DictionaryContainer member
 
