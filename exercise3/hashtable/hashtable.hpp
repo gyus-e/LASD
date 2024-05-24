@@ -86,7 +86,7 @@ protected:
   // Auxiliary member functions
 
   virtual inline unsigned long HashKey(const Data & dat) const noexcept;
-  virtual inline unsigned long HashKey(unsigned long key) const noexcept;
+  // virtual inline unsigned long HashKey(unsigned long key) const noexcept;
 
 };
 
