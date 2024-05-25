@@ -59,10 +59,10 @@ public:
     /* ********************************************************************** */
 
     // Copy assignment
-    Node operator=(const Node &) = delete; // Copy assignment of abstract types is not possible.
+    Node & operator=(const Node &) = delete; // Copy assignment of abstract types is not possible.
 
     // Move assignment
-    Node operator=(Node &&) = delete; // Move assignment of abstract types is not possible.
+    Node & operator=(Node &&) = delete; // Move assignment of abstract types is not possible.
 
     /* ********************************************************************** */
 
@@ -88,10 +88,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BinaryTree operator=(const BinaryTree &) = delete; // Copy assignment of abstract types is not possible.
+  BinaryTree & operator=(const BinaryTree &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  BinaryTree operator=(BinaryTree &&) = delete; // Move assignment of abstract types is not possible.
+  BinaryTree & operator=(BinaryTree &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -171,10 +171,10 @@ public:
     /* ********************************************************************** */
 
     // Copy assignment
-    MutableNode operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
+    MutableNode & operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
 
     // Move assignment
-    MutableNode operator=(MutableNode &&) noexcept = delete; // Move assignment of abstract types is not possible.
+    MutableNode & operator=(MutableNode &&) noexcept = delete; // Move assignment of abstract types is not possible.
 
     /* ********************************************************************** */
 
@@ -207,10 +207,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  MutableNode operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
+  MutableNode & operator=(const MutableNode &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  MutableNode operator=(MutableNode &&) = delete; // Move assignment of abstract types is not possible.
+  MutableNode & operator=(MutableNode &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -298,10 +298,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTPreOrderIterator operator=(const BTPreOrderIterator<Data> & that);
+  BTPreOrderIterator & operator=(const BTPreOrderIterator<Data> & that);
 
   // Move assignment
-  BTPreOrderIterator operator=(BTPreOrderIterator<Data> && that) noexcept;
+  BTPreOrderIterator & operator=(BTPreOrderIterator<Data> && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -368,10 +368,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTPreOrderMutableIterator operator=(const BTPreOrderMutableIterator & that);
+  BTPreOrderMutableIterator & operator=(const BTPreOrderMutableIterator & that);
 
   // Move assignment
-  BTPreOrderMutableIterator operator=(BTPreOrderMutableIterator && that);
+  BTPreOrderMutableIterator & operator=(BTPreOrderMutableIterator && that);
 
   /* ************************************************************************ */
 
@@ -431,10 +431,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTPostOrderIterator operator=(const BTPostOrderIterator & that);
+  BTPostOrderIterator & operator=(const BTPostOrderIterator & that);
 
   // Move assignment
-  BTPostOrderIterator operator=(BTPostOrderIterator && that) noexcept;
+  BTPostOrderIterator & operator=(BTPostOrderIterator && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -503,10 +503,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTPostOrderMutableIterator operator=(const BTPostOrderMutableIterator & that);
+  BTPostOrderMutableIterator & operator=(const BTPostOrderMutableIterator & that);
 
   // Move assignment
-  BTPostOrderMutableIterator operator=(BTPostOrderMutableIterator && that);
+  BTPostOrderMutableIterator & operator=(BTPostOrderMutableIterator && that);
 
   /* ************************************************************************ */
 
@@ -568,10 +568,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTInOrderIterator operator=(const BTInOrderIterator & that);
+  BTInOrderIterator & operator=(const BTInOrderIterator & that);
 
   // Move assignment
-  BTInOrderIterator operator=(BTInOrderIterator && that) noexcept;
+  BTInOrderIterator & operator=(BTInOrderIterator && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -639,10 +639,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTInOrderMutableIterator operator=(const BTInOrderMutableIterator & that);
+  BTInOrderMutableIterator & operator=(const BTInOrderMutableIterator & that);
 
   // Move assignment
-  BTInOrderMutableIterator operator=(BTInOrderMutableIterator && that);
+  BTInOrderMutableIterator & operator=(BTInOrderMutableIterator && that);
 
   /* ************************************************************************ */
 
@@ -702,10 +702,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTBreadthIterator operator=(const BTBreadthIterator & that);
+  BTBreadthIterator & operator=(const BTBreadthIterator & that);
 
   // Move assignment
-  BTBreadthIterator operator=(BTBreadthIterator && that) noexcept;
+  BTBreadthIterator & operator=(BTBreadthIterator && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -774,10 +774,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BTBreadthMutableIterator operator=(const BTBreadthMutableIterator & that);
+  BTBreadthMutableIterator & operator=(const BTBreadthMutableIterator & that);
 
   // Move assignment
-  BTBreadthMutableIterator operator=(BTBreadthMutableIterator && that);
+  BTBreadthMutableIterator & operator=(BTBreadthMutableIterator && that);
 
   /* ************************************************************************ */
 

@@ -43,8 +43,8 @@ protected:
     NodeLnk (const NodeLnk &); //Copy constructor
     NodeLnk (NodeLnk &&) noexcept; //Move constructor
 
-    NodeLnk operator= (const NodeLnk &);
-    NodeLnk operator= (NodeLnk &&);
+    NodeLnk & operator= (const NodeLnk &);
+    NodeLnk & operator= (NodeLnk &&);
 
     virtual ~NodeLnk ();
 
@@ -99,10 +99,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BinaryTreeLnk operator=(const BinaryTreeLnk &);
+  BinaryTreeLnk & operator=(const BinaryTreeLnk &);
 
   // Move assignment
-  BinaryTreeLnk operator=(BinaryTreeLnk &&);
+  BinaryTreeLnk & operator=(BinaryTreeLnk &&);
 
   /* ************************************************************************ */
 

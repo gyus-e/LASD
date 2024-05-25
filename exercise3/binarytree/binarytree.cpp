@@ -298,7 +298,7 @@ BTPreOrderIterator<Data>::BTPreOrderIterator (const BinaryTree<Data> & binTree)
 
 // Copy assignment
 template <typename Data>
-BTPreOrderIterator<Data> BTPreOrderIterator<Data>::operator=(const BTPreOrderIterator<Data> & that)
+BTPreOrderIterator<Data> & BTPreOrderIterator<Data>::operator=(const BTPreOrderIterator<Data> & that)
 {
     this->root = that.root;
     this->curr = that.curr;
@@ -309,7 +309,7 @@ BTPreOrderIterator<Data> BTPreOrderIterator<Data>::operator=(const BTPreOrderIte
 
 // Move assignment
 template <typename Data>
-BTPreOrderIterator<Data> BTPreOrderIterator<Data>::operator=(BTPreOrderIterator<Data> && that) noexcept
+BTPreOrderIterator<Data> & BTPreOrderIterator<Data>::operator=(BTPreOrderIterator<Data> && that) noexcept
 {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
@@ -393,14 +393,14 @@ void BTPreOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 
 // Copy assignment
 template <typename Data>
-BTPreOrderMutableIterator<Data>  BTPreOrderMutableIterator<Data>::operator=(const BTPreOrderMutableIterator & that)
+BTPreOrderMutableIterator<Data>  & BTPreOrderMutableIterator<Data>::operator=(const BTPreOrderMutableIterator & that)
 {
     this->BTPreOrderIterator<Data>::operator=(that);
 }
 
 // Move assignment
 template <typename Data>
-BTPreOrderMutableIterator<Data> BTPreOrderMutableIterator<Data>::operator=(BTPreOrderMutableIterator && that)
+BTPreOrderMutableIterator<Data> & BTPreOrderMutableIterator<Data>::operator=(BTPreOrderMutableIterator && that)
 {
     this->BTPreOrderIterator<Data>::operator=(std::move(that));
 }
@@ -471,7 +471,7 @@ BTPostOrderIterator<Data>::BTPostOrderIterator (const BinaryTree<Data> & binTree
 
 // Copy assignment
 template <typename Data>
-BTPostOrderIterator<Data> BTPostOrderIterator<Data>::operator=(const BTPostOrderIterator<Data> & that)
+BTPostOrderIterator<Data> & BTPostOrderIterator<Data>::operator=(const BTPostOrderIterator<Data> & that)
 {
     this->root = that.root;
     this->curr = that.curr;
@@ -482,7 +482,7 @@ BTPostOrderIterator<Data> BTPostOrderIterator<Data>::operator=(const BTPostOrder
 
 // Move assignment
 template <typename Data>
-BTPostOrderIterator<Data> BTPostOrderIterator<Data>::operator=(BTPostOrderIterator<Data> && that) noexcept
+BTPostOrderIterator<Data> & BTPostOrderIterator<Data>::operator=(BTPostOrderIterator<Data> && that) noexcept
 {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
@@ -578,14 +578,14 @@ void BTPostOrderIterator<Data>::Reset() noexcept // (should not throw exceptions
 
 // Copy assignment
 template <typename Data>
-BTPostOrderMutableIterator<Data>  BTPostOrderMutableIterator<Data>::operator=(const BTPostOrderMutableIterator & that)
+BTPostOrderMutableIterator<Data> & BTPostOrderMutableIterator<Data>::operator=(const BTPostOrderMutableIterator & that)
 {
     this->BTPostOrderIterator<Data>::operator=(that);
 }
 
 // Move assignment
 template <typename Data>
-BTPostOrderMutableIterator<Data> BTPostOrderMutableIterator<Data>::operator=(BTPostOrderMutableIterator && that)
+BTPostOrderMutableIterator<Data> & BTPostOrderMutableIterator<Data>::operator=(BTPostOrderMutableIterator && that)
 {
     this->BTPostOrderIterator<Data>::operator=(std::move(that));
 }
@@ -654,7 +654,7 @@ BTInOrderIterator<Data>::BTInOrderIterator(const BinaryTree<Data> & binTree) // 
 
 // Copy assignment
 template <typename Data>
-BTInOrderIterator<Data> BTInOrderIterator<Data>::operator=(const BTInOrderIterator<Data> & that)
+BTInOrderIterator<Data> & BTInOrderIterator<Data>::operator=(const BTInOrderIterator<Data> & that)
 {
     this->root = that.root;
     this->curr = that.curr;
@@ -665,7 +665,7 @@ BTInOrderIterator<Data> BTInOrderIterator<Data>::operator=(const BTInOrderIterat
 
 // Move assignment
 template <typename Data>
-BTInOrderIterator<Data> BTInOrderIterator<Data>::operator=(BTInOrderIterator<Data> && that) noexcept
+BTInOrderIterator<Data> & BTInOrderIterator<Data>::operator=(BTInOrderIterator<Data> && that) noexcept
 {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
@@ -750,14 +750,14 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 
   // Copy assignment
   template <typename Data>
-  BTInOrderMutableIterator<Data> BTInOrderMutableIterator<Data>::operator=(const BTInOrderMutableIterator & that)
+  BTInOrderMutableIterator<Data> & BTInOrderMutableIterator<Data>::operator=(const BTInOrderMutableIterator & that)
   {
     this->BTInOrderIterator<Data>::operator=(that);
   }
 
   // Move assignment
   template <typename Data>
-  BTInOrderMutableIterator<Data> BTInOrderMutableIterator<Data>::operator=(BTInOrderMutableIterator<Data> && that)
+  BTInOrderMutableIterator<Data> & BTInOrderMutableIterator<Data>::operator=(BTInOrderMutableIterator<Data> && that)
   {
     this->BTInOrderIterator<Data>::operator=(std::move(that));
   }
@@ -801,7 +801,7 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 
   // Copy assignment
   template <typename Data>
-  BTBreadthIterator<Data> BTBreadthIterator<Data>::operator=(const BTBreadthIterator & that)
+  BTBreadthIterator<Data> & BTBreadthIterator<Data>::operator=(const BTBreadthIterator & that)
   {
     this->root = that.root;
     this->curr = that.curr;
@@ -812,7 +812,7 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 
   // Move assignment
   template <typename Data>
-  BTBreadthIterator<Data> BTBreadthIterator<Data>::operator=(BTBreadthIterator<Data> && that) noexcept
+  BTBreadthIterator<Data> & BTBreadthIterator<Data>::operator=(BTBreadthIterator<Data> && that) noexcept
   {
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
@@ -896,14 +896,14 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
 
   // Copy assignment
   template <typename Data>
-  BTBreadthMutableIterator<Data> BTBreadthMutableIterator<Data>::operator=(const BTBreadthMutableIterator<Data> & that)
+  BTBreadthMutableIterator<Data> & BTBreadthMutableIterator<Data>::operator=(const BTBreadthMutableIterator<Data> & that)
   {
     this->BTBreadthIterator<Data>::operator=(that);
   }
 
   // Move assignment
   template <typename Data>
-  BTBreadthMutableIterator<Data> BTBreadthMutableIterator<Data>::operator=(BTBreadthMutableIterator<Data> && that)
+  BTBreadthMutableIterator<Data> & BTBreadthMutableIterator<Data>::operator=(BTBreadthMutableIterator<Data> && that)
   {
     this->BTBreadthIterator<Data>::operator=(std::move(that));
   }

@@ -29,7 +29,7 @@ BST<Data>::BST (MappableContainer<Data> && con)
 
 // Copy assignment
 template <typename Data>
-BST<Data> BST<Data>::operator=(const BST<Data> & that) 
+BST<Data> & BST<Data>::operator=(const BST<Data> & that) 
 {
     this->BinaryTreeLnk<Data>::operator=(that);
     return *this;
@@ -37,7 +37,7 @@ BST<Data> BST<Data>::operator=(const BST<Data> & that)
 
 // Move assignment
 template <typename Data>
-BST<Data> BST<Data>::operator=(BST<Data> && that) noexcept
+BST<Data> & BST<Data>::operator=(BST<Data> && that) noexcept
 {
     this->BinaryTreeLnk<Data>::operator=(std::move(that));
     return *this;

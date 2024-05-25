@@ -53,7 +53,7 @@ BinaryTreeLnk<Data>::NodeLnk::NodeLnk (NodeLnk && that) noexcept
 }
 
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk BinaryTreeLnk<Data>::NodeLnk::operator= (const NodeLnk & that)
+typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::operator= (const NodeLnk & that)
 {
     this->elem = that.elem;
 
@@ -85,7 +85,7 @@ typename BinaryTreeLnk<Data>::NodeLnk BinaryTreeLnk<Data>::NodeLnk::operator= (c
 }
 
 template <typename Data>
-typename BinaryTreeLnk<Data>::NodeLnk BinaryTreeLnk<Data>::NodeLnk::operator= (NodeLnk && that)
+typename BinaryTreeLnk<Data>::NodeLnk & BinaryTreeLnk<Data>::NodeLnk::operator= (NodeLnk && that)
 {
     std::swap (this->elem, that.elem);
     std::swap (this->Sx, that.Sx);
@@ -241,7 +241,7 @@ BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
 
 //Copy assignment
 template <typename Data>
-BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk & that)
+BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk & that)
 {
     try
     {     
@@ -266,7 +266,7 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (BinaryTreeLnk && that) noexcept
 
 //Move assignment
 template <typename Data>
-BinaryTreeLnk<Data> BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that)
+BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that)
 {
     std::swap (this->root, that.root);
     std::swap (this->size, that.size);

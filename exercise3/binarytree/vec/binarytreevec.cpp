@@ -201,7 +201,7 @@ BinaryTreeVec<Data>::~BinaryTreeVec()
 }
 
 template <typename Data>
-BinaryTreeVec<Data> BinaryTreeVec<Data>::operator=(const BinaryTreeVec & that)
+BinaryTreeVec<Data> & BinaryTreeVec<Data>::operator=(const BinaryTreeVec & that)
 {
     if (this->vec != nullptr)
     {
@@ -241,7 +241,7 @@ BinaryTreeVec<Data> BinaryTreeVec<Data>::operator=(const BinaryTreeVec & that)
 }
 
 template <typename Data>
-BinaryTreeVec<Data> BinaryTreeVec<Data>::operator=(BinaryTreeVec && that)
+BinaryTreeVec<Data> & BinaryTreeVec<Data>::operator=(BinaryTreeVec && that)
 {
     std::swap (this->vec, that.vec);
     std::swap (this->size, that.size);

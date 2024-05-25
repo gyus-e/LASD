@@ -56,10 +56,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BST operator=(const BST<Data> &);
+  BST & operator=(const BST<Data> &);
 
   // Move assignment
-  BST operator=(BST<Data> &&) noexcept;
+  BST & operator=(BST<Data> &&) noexcept;
 
   /* ************************************************************************ */
 

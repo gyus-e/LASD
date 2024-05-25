@@ -97,10 +97,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BinaryTreeVec operator=(const BinaryTreeVec &);
+  BinaryTreeVec & operator=(const BinaryTreeVec &);
 
   // Move assignment
-  BinaryTreeVec operator=(BinaryTreeVec &&);
+  BinaryTreeVec & operator=(BinaryTreeVec &&);
 
   /* ************************************************************************ */
 
