@@ -30,8 +30,8 @@ class HashTableClsAdr : public virtual HashTable<Data>
 private:
   
 protected:
-  #define LOAD_FACTOR_CLSADR 0.8
-  #define REDUCE_LOAD_FACTOR_CLSADR 0.2
+  #define LOAD_FACTOR_CLSADR 1.5
+  #define REDUCE_LOAD_FACTOR_CLSADR 0.5
 
   typedef BST<Data> BUCKET;
   // typedef List<Data> BUCKET;
