@@ -56,10 +56,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  inline StackLst operator=(const StackLst & that) {this->List<Data>::operator=((List<Data>)(that)); return *this;}
+  inline StackLst & operator=(const StackLst & that) {this->List<Data>::operator=((List<Data>)(that)); return *this;}
 
   // Move assignment
-  inline StackLst operator=(StackLst && that) {this->List<Data>::operator=(std::move((List<Data>)(that))); return *this;}
+  inline StackLst & operator=(StackLst && that) {this->List<Data>::operator=(std::move((List<Data>)(that))); return *this;}
 
   /* ************************************************************************ */
 

@@ -41,13 +41,13 @@ protected:
 
     // Specific constructors
     Node () = default;
-    Node (const Data & d) : elem (d) {}
-    Node (Data && d) {std::swap (this->elem, d);}
+    Node (const Data & d) : elem (d), next (nullptr) {}
+    Node (Data && d) : elem (std::move(d)), next (nullptr) {}
 
     /* ********************************************************************** */
 
     // Copy constructor
-    Node (const Node & );
+    Node (const Node &);
 
     // Move constructor
     Node (Node &&) noexcept;
@@ -104,10 +104,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  List operator=(const List<Data> &);
+  List & operator=(const List<Data> &);
 
   // Move assignment
-  List operator=(List<Data> &&);
+  List & operator=(List<Data> &&);
 
   /* ************************************************************************ */
 

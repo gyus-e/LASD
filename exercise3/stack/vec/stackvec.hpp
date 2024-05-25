@@ -58,10 +58,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  StackVec operator=(const StackVec & that) {this->Vector<Data>::operator=((Vector<Data>)(that)); this->top = that.top; return *this;}
+  StackVec & operator=(const StackVec & that) {this->Vector<Data>::operator=((Vector<Data>)(that)); this->top = that.top; return *this;}
 
   // Move assignment
-  StackVec operator=(StackVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap(this->top, that.top); return *this;}
+  StackVec & operator=(StackVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap(this->top, that.top); return *this;}
 
   /* ************************************************************************ */
 

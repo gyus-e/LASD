@@ -36,10 +36,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  LinearContainer operator=(const LinearContainer &) = delete; // Copy assignment of abstract types is not possible.
+  LinearContainer & operator=(const LinearContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  LinearContainer operator=(LinearContainer &&) = delete; // Move assignment of abstract types is not possible.
+  LinearContainer & operator=(LinearContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -125,10 +125,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  SortableLinearContainer operator=(const SortableLinearContainer &) = delete; // Copy assignment of abstract types is not possible.
+  SortableLinearContainer & operator=(const SortableLinearContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  SortableLinearContainer operator=(SortableLinearContainer &&) = delete; // Move assignment of abstract types is not be possible.
+  SortableLinearContainer & operator=(SortableLinearContainer &&) = delete; // Move assignment of abstract types is not be possible.
 
   /* ************************************************************************ */
 

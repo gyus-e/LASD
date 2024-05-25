@@ -37,10 +37,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  MappableContainer operator=(const MappableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  MappableContainer & operator=(const MappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  MappableContainer operator=(MappableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  MappableContainer & operator=(MappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -82,10 +82,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  PreOrderMappableContainer operator=(const PreOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  PreOrderMappableContainer & operator=(const PreOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  PreOrderMappableContainer operator=(PreOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  PreOrderMappableContainer & operator=(PreOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -133,10 +133,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  PostOrderMappableContainer operator=(const PostOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  PostOrderMappableContainer & operator=(const PostOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  PostOrderMappableContainer operator=(PostOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  PostOrderMappableContainer & operator=(PostOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -184,10 +184,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  InOrderMappableContainer operator=(const InOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  InOrderMappableContainer & operator=(const InOrderMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  InOrderMappableContainer operator=(InOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  InOrderMappableContainer & operator=(InOrderMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -235,10 +235,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BreadthMappableContainer operator=(const BreadthMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  BreadthMappableContainer & operator=(const BreadthMappableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  BreadthMappableContainer operator=(BreadthMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  BreadthMappableContainer & operator=(BreadthMappableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 

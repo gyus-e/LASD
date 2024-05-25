@@ -59,10 +59,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  Vector operator=(const Vector &);
+  Vector& operator=(const Vector &);
 
   // Move assignment
-  Vector operator=(Vector &&);
+  Vector& operator=(Vector &&);
 
   /* ************************************************************************ */
 

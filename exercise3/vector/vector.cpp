@@ -100,7 +100,7 @@ Vector<Data>::Vector (Vector && that) noexcept
 
 //move operator
 template<typename Data>
-Vector<Data> Vector<Data>::operator=(Vector && that)
+Vector<Data> & Vector<Data>::operator=(Vector && that)
 {
     std::swap (this->A, that.A);
     std::swap (this->size, that.size);
@@ -119,7 +119,7 @@ Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
 
 //copy operator
 template<typename Data>
-Vector<Data> Vector<Data>::operator=(const Vector & that)
+Vector<Data> & Vector<Data>::operator=(const Vector & that)
 {
     if (this->A != nullptr)
     {

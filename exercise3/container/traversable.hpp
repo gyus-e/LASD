@@ -37,10 +37,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  TraversableContainer operator=(const TraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  TraversableContainer & operator=(const TraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  TraversableContainer operator=(TraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  TraversableContainer & operator=(TraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -93,10 +93,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  PreOrderTraversableContainer operator=(const PreOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  PreOrderTraversableContainer & operator=(const PreOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  PreOrderTraversableContainer operator=(PreOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  PreOrderTraversableContainer & operator=(PreOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -149,10 +149,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  PostOrderTraversableContainer operator=(const PostOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  PostOrderTraversableContainer & operator=(const PostOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  PostOrderTraversableContainer operator=(PostOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  PostOrderTraversableContainer & operator=(PostOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -205,10 +205,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  InOrderTraversableContainer operator=(const InOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  InOrderTraversableContainer & operator=(const InOrderTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  InOrderTraversableContainer operator=(InOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  InOrderTraversableContainer & operator=(InOrderTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -261,10 +261,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BreadthTraversableContainer operator=(const BreadthTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  BreadthTraversableContainer & operator=(const BreadthTraversableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  BreadthTraversableContainer operator=(BreadthTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  BreadthTraversableContainer & operator=(BreadthTraversableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 

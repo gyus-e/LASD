@@ -32,10 +32,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  Queue operator=(const Queue &) = delete; // Copy assignment of abstract types is not possible.
+  Queue & operator=(const Queue &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  Queue operator=(Queue &&) noexcept = delete; // Move assignment of abstract types is not possible.
+  Queue & operator=(Queue &&) noexcept = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 

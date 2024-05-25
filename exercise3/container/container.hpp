@@ -36,10 +36,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  Container operator=(const Container &) = delete; // Copy assignment of abstract types is not possible.
+  Container & operator=(const Container &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  Container operator=(Container &&) = delete; // Move assignment of abstract types is not possible.
+  Container & operator=(Container &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -79,10 +79,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  ClearableContainer operator=(const ClearableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  ClearableContainer & operator=(const ClearableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  ClearableContainer operator=(ClearableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  ClearableContainer & operator=(ClearableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -119,10 +119,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  ResizableContainer operator=(const ResizableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  ResizableContainer & operator=(const ResizableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  ResizableContainer operator=(ResizableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  ResizableContainer & operator=(ResizableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 

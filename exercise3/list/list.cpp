@@ -19,6 +19,10 @@ List<Data>::Node::Node(const Node & that)
             throw;
         }
     }
+    else 
+    {
+        this->next = nullptr;
+    }
 }
 
 //move constructor
@@ -187,7 +191,7 @@ List<Data>::~List()
 
 // Copy assignment
 template <typename Data>
-List<Data> List<Data>::operator= (const List<Data> & that)
+List<Data> & List<Data>::operator= (const List<Data> & that)
 {
     if (this->head != nullptr)
     {
@@ -216,7 +220,7 @@ List<Data> List<Data>::operator= (const List<Data> & that)
 
 // Move assignment
 template <typename Data>
-List<Data> List<Data>::operator= (List<Data> && that)
+List<Data> & List<Data>::operator= (List<Data> && that)
 {
     std::swap (this->head, that.head);
     std::swap (this->tail, that.tail);

@@ -60,10 +60,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  QueueVec operator=(const QueueVec & that) {this->Vector<Data>::operator= ((Vector<Data>)(that)); this->dim = that.dim; this->head = that.head; this->tail = that.tail; return *this;}
+  QueueVec & operator=(const QueueVec & that) {this->Vector<Data>::operator= ((Vector<Data>)(that)); this->dim = that.dim; this->head = that.head; this->tail = that.tail; return *this;}
 
   // Move assignment
-  QueueVec operator=(QueueVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail); return *this;}
+  QueueVec & operator=(QueueVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail); return *this;}
 
   /* ************************************************************************ */
 

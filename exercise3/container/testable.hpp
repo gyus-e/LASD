@@ -33,10 +33,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  TestableContainer operator=(const TestableContainer &) = delete; // Copy assignment of abstract types is not possible.
+  TestableContainer & operator=(const TestableContainer &) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  TestableContainer operator=(TestableContainer &&) = delete; // Move assignment of abstract types is not possible.
+  TestableContainer & operator=(TestableContainer &&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
