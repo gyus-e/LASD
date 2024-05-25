@@ -36,6 +36,7 @@ class HashTable : public virtual ResizableContainer,
 private:
 
 protected:
+  #define INITIAL_SIZE (unsigned long) 128
 
   using DictionaryContainer<Data>::size;
   unsigned long acoeff = 1;
@@ -48,7 +49,7 @@ protected:
 
   static const Hashable<Data> enchash;
 
-  unsigned long tableSize = 128; //2^7
+  unsigned long tableSize = INITIAL_SIZE;
 
 
   // Default constructor

@@ -125,13 +125,13 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr<Data>&& 
 
 // Comparison operators
 template <typename Data>
-bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) 
+inline bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) const
 {
     return (this->Table == that.Table) && (this->size == that.size) && (this->tableSize == that.tableSize);
 }
 
 template <typename Data>
-bool HashTableClsAdr<Data>::operator!=(const HashTableClsAdr& that) 
+inline bool HashTableClsAdr<Data>::operator!=(const HashTableClsAdr& that) const
 {
     return !(this->operator==(that));
 }
@@ -143,7 +143,7 @@ bool HashTableClsAdr<Data>::Insert(const Data& data)
     if (Table[this->HashKey(data)].Insert(data)) 
     {
         this->size++;
-        if (this->size > (this->tableSize * LOAD_FACTOR)) 
+        if (this->size > (this->tableSize * LOAD_FACTOR_CLSADR)) 
         {
             this->Resize(this->tableSize * 2);
         }
@@ -161,7 +161,7 @@ bool HashTableClsAdr<Data>::Insert(Data&& data)
     {
         this->size++;
 
-        if (this->size > (this->tableSize * LOAD_FACTOR))
+        if (this->size > (this->tableSize * LOAD_FACTOR_CLSADR))
         {
             this->Resize(this->tableSize * 2);
         }
@@ -178,7 +178,7 @@ bool HashTableClsAdr<Data>::Remove(const Data& data)
     if (this->Table[this->HashKey(data)].Remove(data)) 
     {
         this->size--;
-        if ((this->size < (this->tableSize * REDUCE_LOAD_FACTOR)) && ((this->tableSize / 2) > INITIAL_SIZE)) 
+        if ((this->size < (this->tableSize * REDUCE_LOAD_FACTOR_CLSADR)) && ((this->tableSize / 2) > INITIAL_SIZE)) 
         {
             this->Resize(this->tableSize / 2);
         }
@@ -189,7 +189,7 @@ bool HashTableClsAdr<Data>::Remove(const Data& data)
 
 // Exists
 template <typename Data>
-bool HashTableClsAdr<Data>::Exists(const Data& data) const noexcept 
+inline bool HashTableClsAdr<Data>::Exists(const Data& data) const noexcept 
 {
     return Table[this->HashKey(data)].Exists(data);
 }

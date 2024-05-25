@@ -30,9 +30,8 @@ class HashTableClsAdr : public virtual HashTable<Data>
 private:
   
 protected:
-  #define INITIAL_SIZE (unsigned long) 128
-  #define LOAD_FACTOR 0.8
-  #define REDUCE_LOAD_FACTOR 0.2
+  #define LOAD_FACTOR_CLSADR 0.8
+  #define REDUCE_LOAD_FACTOR_CLSADR 0.2
 
   typedef BST<Data> BUCKET;
   // typedef List<Data> BUCKET;
@@ -71,16 +70,16 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  HashTableClsAdr & operator=(const HashTableClsAdr<Data> &);
+  HashTableClsAdr<Data> & operator=(const HashTableClsAdr<Data> &);
 
   // Move assignment
-  HashTableClsAdr & operator=(HashTableClsAdr<Data> &&) noexcept;
+  HashTableClsAdr<Data> & operator=(HashTableClsAdr<Data> &&) noexcept;
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const HashTableClsAdr &);
-  bool operator!=(const HashTableClsAdr &);
+  inline bool operator==(const HashTableClsAdr &) const;
+  inline bool operator!=(const HashTableClsAdr &) const;
 
   /* ************************************************************************ */
 
@@ -94,7 +93,7 @@ public:
 
   // Specific member functions (inherited from TestableContainer)
 
-  bool Exists(const Data &) const noexcept override; // Override TestableContainer member
+  inline bool Exists(const Data &) const noexcept override; // Override TestableContainer member
 
   /* ************************************************************************ */
 
