@@ -14,7 +14,7 @@ HashTableClsAdr<Data>::HashTableClsAdr() : Table (INITIAL_SIZE)
 
 // Specific constructor
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize) : Table (pow(2, ceil(log2(newSize))))
+HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize) : Table (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE))
 {
     this->tableSize = this->Table.Size();
 }
@@ -38,7 +38,7 @@ HashTableClsAdr<Data>::HashTableClsAdr(const TraversableContainer<Data>& contain
 
 // Constructor from TraversableContainer with specified tableSize
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, const TraversableContainer<Data>& container) : Table (pow(2, ceil(log2(newSize))))
+HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, const TraversableContainer<Data>& container) : Table ((std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)))
 {
     this->tableSize = this->Table.Size();
 
@@ -72,7 +72,7 @@ HashTableClsAdr<Data>::HashTableClsAdr(MappableContainer<Data>&& container) : Ta
 
 // Constructor from MappableContainer with specified tableSize
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<Data>&& container) : Table (pow(2, ceil(log2(newSize))))
+HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<Data>&& container) : Table ((std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)))
 {
     this->tableSize = this->Table.Size();
 
@@ -90,37 +90,34 @@ HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<
 // Copy constructor
 template <typename Data>
 HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data> & that) : HashTable<Data> (that), Table (that.Table)
-{
-}
+{}
 
 // Move constructor
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(HashTableClsAdr<Data>&& that) noexcept : HashTable<Data> (std::move (that)), Table (std::move (that.Table))
+HashTableClsAdr<Data>::HashTableClsAdr(HashTableClsAdr<Data>&& that) noexcept : HashTable<Data> (std::move (that))
 {
-    // std::cout<<"attempting swap"<<std::endl;
-    //deadly signal
+    std::swap ((this->Table), (that.Table));
 }
 
 // Copy assignment
 template <typename Data>
-HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr& that) 
+HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr<Data>& that) 
 {
     if (this != &that) 
     {
+        this->HashTable<Data>::operator=(that);
         this->Table = that.Table;
-        this->size = that.size;
-        this->tableSize = that.tableSize;
     }
     return *this;
 }
 
 // Move assignment
 template <typename Data>
-HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr&& that) noexcept 
+HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr<Data>&& that) noexcept 
 {
     if (this != &that) 
     {
-        this->HashTable<Data>::operator=(std::move(that));
+        this->HashTable<Data>::operator=(std::move(that));        
         std::swap(this->Table, that.Table);
     }
     return *this;
@@ -148,7 +145,7 @@ bool HashTableClsAdr<Data>::Insert(const Data& data)
         this->size++;
         if (this->size > (this->tableSize * LOAD_FACTOR)) 
         {
-            // this->Resize(this->tableSize * 2);
+            this->Resize(this->tableSize * 2);
         }
 
         return true;
@@ -166,7 +163,7 @@ bool HashTableClsAdr<Data>::Insert(Data&& data)
 
         if (this->size > (this->tableSize * LOAD_FACTOR))
         {
-            // this->Resize(this->tableSize * 2);
+            this->Resize(this->tableSize * 2);
         }
 
         return true;
@@ -201,11 +198,15 @@ bool HashTableClsAdr<Data>::Exists(const Data& data) const noexcept
 template <typename Data>
 void HashTableClsAdr<Data>::Resize(unsigned long newSize) 
 {    
-    //Arrotonda newSize alla prossima potenza di 2 
+    //Arrotonda newSize alla prossima potenza di 2
     unsigned long exp = ceil(log2(newSize));
     newSize = pow(2, exp);
-    std::cout<<"Attempting resize to "<<newSize<<std::endl;
-    
+    //Verifica che la dimensione minima sia rispettata
+    if (newSize < INITIAL_SIZE)
+    {
+        newSize = INITIAL_SIZE;
+    }
+    //Verifica che la resize vada effettuata davvero
     if (newSize == this->tableSize)
     {
         return;
@@ -231,23 +232,22 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize)
             }
         }
     );
-    
-    //ERRORE SOTTO!
-    //rivedere move constructor di vector
 
     std::swap (*this, newTable);
-
-    std::cout<<"Resized to "<<this->tableSize<<std::endl;
 }
 
 // Clear
 template <typename Data>
 void HashTableClsAdr<Data>::Clear() 
 {
+    unsigned long count = 0;
     Table.Map(
-        [](BUCKET & cont)
+        [&count](BUCKET & cont)
         {
-            cont.Clear();
+            if (!cont.Empty())
+            {    
+                cont.Clear();
+            }
         }
     );
     this->size = 0;

@@ -30,7 +30,7 @@ class HashTableClsAdr : public virtual HashTable<Data>
 private:
   
 protected:
-  #define INITIAL_SIZE 128
+  #define INITIAL_SIZE (unsigned long) 128
   #define LOAD_FACTOR 0.8
   #define REDUCE_LOAD_FACTOR 0.2
 
@@ -71,10 +71,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  HashTableClsAdr & operator=(const HashTableClsAdr &);
+  HashTableClsAdr & operator=(const HashTableClsAdr<Data> &);
 
   // Move assignment
-  HashTableClsAdr & operator=(HashTableClsAdr &&) noexcept;
+  HashTableClsAdr & operator=(HashTableClsAdr<Data> &&) noexcept;
 
   /* ************************************************************************ */
 
