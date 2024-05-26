@@ -278,6 +278,11 @@ List<Data> & List<Data>::operator= (List<Data> && that)
 template <typename Data>
 bool List<Data>::operator== (const List<Data> & that) const
 {
+    if (that.Empty())
+    {
+        return this->Empty();
+    }
+    
     return this->size == that.size && this->head->operator==(*(that.head));
 }
 
