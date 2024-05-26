@@ -239,8 +239,11 @@ List<Data> & List<Data>::operator= (const List<Data> & that)
       return *this;
     }
 
-    this->Clear();
-
+    if (!this->Empty())
+    {
+        this->Clear();
+    }
+    
     if (!that.Empty())
     {
         try 
