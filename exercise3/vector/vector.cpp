@@ -121,9 +121,6 @@ Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
 template<typename Data>
 Vector<Data> & Vector<Data>::operator=(const Vector & that)
 {
-    
-    std::cout<<"attempting vector::operator= (copy)"<<std::endl;
-
     if (!this->Empty())
     {
         this->Clear();
@@ -136,7 +133,6 @@ Vector<Data> & Vector<Data>::operator=(const Vector & that)
         this->size = NewVector->size;
     }
 
-    std::cout<<"vector::operator= done\n";
     return *this;
 }
 
