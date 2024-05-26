@@ -8,11 +8,12 @@ template <typename Data>
 List<Data>::Node::Node(const Node & that)
 {
     this->elem = that.elem;
+
     if (that.next != nullptr)
     {
         try
         {    
-            this->next = new Node (*that.next);
+            this->next = new Node (*(that.next));
         }
         catch (std::bad_alloc & exc)
         {
@@ -41,6 +42,43 @@ List<Data>::Node::~Node()
     {
         delete this->next;
     }
+}
+
+//copy assignment
+template <typename Data>
+List<Data>::Node & List<Data>::Node::operator=(const Node & that)
+{
+    if (this->next != nullptr)
+    {
+        delete this->next;
+    }
+
+    this->elem = that.elem;
+    this->next = nullptr;
+
+    if (that.next != nullptr)
+    {
+        try
+        {    
+            this->next = new Node (*(that.next));
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+    }
+
+    return *this;
+}
+
+//move assignment
+template <typename Data>
+List<Data>::Node & List<Data>::Node::operator=(Node && that)
+{
+    std::swap (this->elem, that.elem);
+    std::swap (this->next, that.next);
+
+    return *this;
 }
 
 //Comparison operators
@@ -152,22 +190,25 @@ List<Data>::List (MappableContainer<Data> && cont)
 template <typename Data>
 List<Data>::List (const List<Data> & that)
 {
-    try 
+    if (!that.Empty())
     {
-        this->head = new Node (*that.head);
-    }
-    catch (std::bad_alloc & exc)
-    {
-        throw;
-    }
+        try 
+        {
+            this->head = new Node (*(that.head));
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
 
-    this->tail = this->head;
-    while (this->tail->next != nullptr)
-    {
-        this->tail = this->tail->next;
-    }
+        this->tail = this->head;
+        while (this->tail->next != nullptr)
+        {
+            this->tail = this->tail->next;
+        }
 
-    this->size = that.size;
+        this->size = that.size;
+    }
 }
 
 // Move constructor
@@ -193,28 +234,32 @@ List<Data>::~List()
 template <typename Data>
 List<Data> & List<Data>::operator= (const List<Data> & that)
 {
-    if (this->head != nullptr)
+    if (this == &that) 
     {
-        this->Clear();
+      return *this;
     }
 
-    try 
-    {
-        this->head = new Node (*that.head);
-    }
-    catch (std::bad_alloc & exc)
-    {
-        throw;
-    }
+    this->Clear();
 
-    this->tail = this->head;
-    while (this->tail->next != nullptr)
+    if (!that.Empty())
     {
-        this->tail = this->tail->next;
+        try 
+        {
+            this->head = new Node (*that.head);
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+
+        this->tail = this->head;
+        while (this->tail->next != nullptr)
+        {
+            this->tail = this->tail->next;
+        }
+
+        this->size = that.size;
     }
-
-    this->size = that.size;
-
     return *this;
 }
 

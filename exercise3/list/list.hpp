@@ -52,6 +52,12 @@ protected:
     // Move constructor
     Node (Node &&) noexcept;
 
+    //Copy assignment
+    Node & operator= (const Node &);
+
+    //Move assignment
+    Node & operator= (Node &&);
+
     /* ********************************************************************** */
 
     // Destructor
