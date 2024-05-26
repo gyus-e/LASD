@@ -121,14 +121,22 @@ Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
 template<typename Data>
 Vector<Data> & Vector<Data>::operator=(const Vector & that)
 {
-    if (this->A != nullptr)
+    
+    std::cout<<"attempting vector::operator= (copy)"<<std::endl;
+
+    if (!this->Empty())
     {
-        delete this->A;
+        this->Clear();
     }
 
-    Vector<Data> * NewVector = new Vector<Data> (that);
-    this->A = NewVector->A;
-    this->size = NewVector->size;
+    if (!that.Empty())
+    {
+        Vector<Data> * NewVector = new Vector<Data> (that);
+        this->A = NewVector->A;
+        this->size = NewVector->size;
+    }
+
+    std::cout<<"vector::operator= done\n";
     return *this;
 }
 
