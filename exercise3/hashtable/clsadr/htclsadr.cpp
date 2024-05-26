@@ -81,7 +81,7 @@ HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<
         container.Map(
             [this](Data&& elem) 
             {
-            this->Insert(std::move(elem));
+                this->Insert(std::move(elem));
             }
         );
     }
