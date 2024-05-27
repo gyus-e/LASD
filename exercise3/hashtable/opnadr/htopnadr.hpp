@@ -30,7 +30,7 @@ class HashTableOpnAdr : public virtual HashTable<Data>
 private:
 
 protected:
-  #define LOAD_FACTOR_OPNADR 0.66
+  #define LOAD_FACTOR_OPNADR 0.5
   #define REDUCE_LOAD_FACTOR_OPNADR 0.2
 
   enum class status {free, inserted, deleted};
@@ -42,12 +42,12 @@ protected:
 
 
   //per doppio hashing
-  unsigned long acoeff2 = 1;
-  unsigned long bcoeff2 = 0;
-  static const unsigned long prime2 = 4294967291;
-  std::default_random_engine gen2  = std::default_random_engine (std::random_device{}());
-  std::uniform_int_distribution <unsigned long> dista2 = std::uniform_int_distribution <unsigned long> (1, prime2 - 1);
-  std::uniform_int_distribution <unsigned long> distb2 = std::uniform_int_distribution <unsigned long> (0, prime2 - 1);
+  // unsigned long acoeff2 = 1;
+  // unsigned long bcoeff2 = 0;
+  // static const unsigned long prime2 = 2184872057;
+  // std::default_random_engine gen2  = std::default_random_engine (std::random_device{}());
+  // std::uniform_int_distribution <unsigned long> dista2 = std::uniform_int_distribution <unsigned long> (1, prime2 - 1);
+  // std::uniform_int_distribution <unsigned long> distb2 = std::uniform_int_distribution <unsigned long> (0, prime2 - 1);
 
 public:
 
@@ -119,15 +119,18 @@ public:
 protected:
 
   // Auxiliary member functions
-
-  unsigned long HashKey(const Data &, const unsigned long) const;
-  unsigned long HashKey2 (const Data &) const;
+  using HashTable<Data>::enchash;
+  using HashTable<Data>::HashKey;
+  unsigned long HashKey (const Data &, const unsigned long) const;
+  unsigned long coprimeF (const Data & dat) const;
+  // unsigned long HashKey2 (const Data &) const;
 
   // type Find(argument) specifiers;
   // type FindEmpty(argument) specifiers;
   // type Remove(argument) specifiers;
   void GarbageCollect ();
   void InitFlag ();
+  // void InitCoeffs ();
 };
 
 /* ************************************************************************** */

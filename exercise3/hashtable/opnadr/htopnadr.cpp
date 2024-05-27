@@ -7,9 +7,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr () : Table (INITIAL_SIZE), flag (INITIAL_
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    // InitCoeffs();
 }
 
 // Specific constructor
@@ -20,9 +18,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize) :
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    // InitCoeffs();
 }
 
 // Constructor from TraversableContainer
@@ -31,9 +27,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(const TraversableContainer<Data>& contain
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -53,10 +47,9 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, const TraversableC
     flag (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)) 
 {
     this->tableSize = this->Table.Size();
-    InitFlag();
     
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    InitFlag();
+    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -75,9 +68,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(MappableContainer<Data> && container) : T
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -98,9 +89,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    
-    acoeff2 = dista2(gen2);
-    bcoeff2 = distb2(gen2);
+    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -117,9 +106,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<
 template <typename Data>
 HashTableOpnAdr<Data>::HashTableOpnAdr(const HashTableOpnAdr<Data> & that) : HashTable<Data> (that), Table (that.Table), flag (that.flag)
 {
-    //non copio i coefficienti perché la nuova hashtable dovrá avenre di diversi
-    // this->acoeff2 = that.acoeff2;
-    // this->bcoeff2 = that.bcoeff2;
+    // InitCoeffs();
 } 
 
 // Move constructor
@@ -129,8 +116,8 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(HashTableOpnAdr<Data>&& that) noexcept : 
     std::swap ((this->Table), (that.Table));
     std::swap ((this->flag), (that.flag));
 
-    std::swap (this->acoeff2, that.acoeff2);
-    std::swap (this->bcoeff2, that.bcoeff2);
+    // std::swap (this->acoeff2, that.acoeff2);
+    // std::swap (this->bcoeff2, that.bcoeff2);
 }
 
 // Copy assignment
@@ -143,8 +130,7 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(const HashTableOpnAdr<Da
         this->Table = that.Table;
         this->flag = that.flag;
         
-        this->acoeff2 = that.acoeff2;
-        this->bcoeff2 = that.bcoeff2;
+        // this->InitCoeffs();
     }
     return *this;
 }
@@ -159,8 +145,8 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(HashTableOpnAdr<Data>&& 
         std::swap(this->Table, that.Table);
         std::swap(this->flag, that.flag);
 
-        std::swap (this->acoeff2, that.acoeff2);
-        std::swap (this->bcoeff2, that.bcoeff2);
+        // std::swap (this->acoeff2, that.acoeff2);
+        // std::swap (this->bcoeff2, that.bcoeff2);
     }
     return *this;
 }
@@ -202,6 +188,7 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
     if ((this->size + 1) >= (double)this->tableSize * LOAD_FACTOR_OPNADR) 
     {
         this->Resize(this->tableSize * 2);
+        // std::cout<<"Resized to "<<this->tableSize<<std::endl;
     }
 
     bool replace = false;
@@ -213,9 +200,15 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
         {
             if (replace)
             {
+                // std::cout<<"Inserted element found again, setting as deleted"<<std::endl;
                 this->flag[index] = status::deleted;
                 this->size--;
             }
+            else 
+            {
+                // std::cout<<"Element is already present"<<std::endl;
+            }
+
             return false; // Giá presente, anche se è stato sostituito
         }
 
@@ -223,10 +216,17 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
         {
             if (!replace)
             {
+                // std::cout<<"inserting in free slot"<<std::endl;
                 this->Table[index] = dat;
                 this->flag[index] = status::inserted;
                 this->size++;
             }
+
+            else 
+            {
+                // std::cout<<"found free slot, but element was already inserted: return"<<std::endl;
+            }
+
             return true;
         }
 
@@ -234,6 +234,7 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
         {
             if (!replace)
             {
+                // std::cout<<"inserting element in deleted slot"<<std::endl;
                 this->Table[index] = dat;
                 this->flag[index] = status::inserted;
                 this->size++;
@@ -243,12 +244,14 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
             }
             else 
             {
+                // std::cout<<"found deleted slot, but element was already inserted: return"<<std::endl;
                 return true;
             }
         }
     }
 
     //error: table overflow
+    // std::cout<<"Out of the for loop without return: error?"<<std::endl;
     throw (std::runtime_error ("Table overflow"));
 }
 
@@ -384,7 +387,6 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
 
     //serve una nuova HashTable perché vogliamo anche una nuova funzione HashKey
     HashTableOpnAdr<Data> newTable(newSize); 
-    
     for (unsigned long i = 0; i < this->tableSize; i++)
     {
         if (this->flag[i] == status::inserted)
@@ -398,6 +400,7 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
                 {
                     newTable.Table[idx] = dat;
                     newTable.flag[idx] = status::inserted;
+                    newTable.size++;
                     break;
                 }
             }
@@ -423,15 +426,22 @@ unsigned long HashTableOpnAdr<Data>::HashKey(const Data & dat, const unsigned lo
 {
         // return HashKey(dat) + (i*i); //probing quadratico, conviene se si usano numeri primi per tablesize
         
-        return (this->HashTable<Data>::HashKey(dat) + i*(this->HashKey2(dat))) % this->tableSize; //doppio hashing
+        return (this->HashKey(dat) + i*(this->coprimeF(dat))) % this->tableSize; //doppio hashing
 }
 
 //Deve produrre sempre numeri dispari (coprimi con tableSize)
 template <typename Data>
-unsigned long HashTableOpnAdr<Data>::HashKey2(const Data & dat) const
+unsigned long HashTableOpnAdr<Data>::coprimeF (const Data & dat) const 
 {
-    return (((acoeff2 * this->HashTable<Data>::enchash(dat) + bcoeff2) % prime2) * 2) + 1;
+    // return (HashKey2(dat) * 2) + 1; //doppio hashing
+    return (this->enchash(dat) * 2 + 1) % this->tableSize;
 }
+
+// template <typename Data>
+// unsigned long HashTableOpnAdr<Data>::HashKey2(const Data & dat) const
+// {
+//     return ((((acoeff2 * enchash(dat))) + (bcoeff2)) % prime2) % this->tableSize;
+// }
 
 template <typename Data>
 void HashTableOpnAdr<Data>::GarbageCollect ()
@@ -452,6 +462,13 @@ void HashTableOpnAdr<Data>::InitFlag ()
         }
     );
 }
+
+// template <typename Data>
+// void HashTableOpnAdr<Data>::InitCoeffs ()
+// {
+//     this->acoeff2 = this->dista2(gen2);
+//     this->bcoeff2 = this->distb2(gen2);
+// }
 /* ************************************************************************** */
 
 }
