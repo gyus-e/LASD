@@ -93,12 +93,21 @@ HashTable<Data>::HashTable(const HashTable<Data> & that)
 {
     this->tableSize = that.tableSize;
     this->size = that.size;
-    this->acoeff = that.acoeff;
-    this->bcoeff = that.bcoeff;
+
+    // this->acoeff = that.acoeff;
+    // this->bcoeff = that.bcoeff;
     // this->gen = that.gen;
     // this->dista = that.dista;
     // this->distb = that.distb;
     // this->enchash = that.enchash;
+
+    //genero nuovi coefficienti
+    gen  = std::default_random_engine (std::random_device{}());
+    dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);
+    distb = std::uniform_int_distribution <unsigned long> (0, prime - 1);
+
+    this->acoeff = dista(gen);
+    this->bcoeff = distb(gen);
 }
 
 // Move constructor
@@ -109,9 +118,9 @@ HashTable<Data>::HashTable(HashTable<Data> && that) noexcept
     std::swap(this->size, that.size);
     std::swap(this->acoeff, that.acoeff);
     std::swap(this->bcoeff, that.bcoeff);
-    // std::swap(this->gen, that.gen);
-    // std::swap (this->dista, that.dista);
-    // std::swap (this->distb, that.distb);
+    std::swap(this->gen, that.gen);
+    std::swap (this->dista, that.dista);
+    std::swap (this->distb, that.distb);
     // std::swap (this->enchash, that.enchash);
 }
 
@@ -120,8 +129,13 @@ template <typename Data>
 HashTable<Data> & HashTable<Data>::operator=(const HashTable<Data> & that)
 {
     this->tableSize = that.tableSize;
-    this->acoeff = that.acoeff;
-    this->bcoeff = that.bcoeff;
+    // this->acoeff = that.acoeff;
+    // this->bcoeff = that.bcoeff;
+
+    //genero nuovi coefficienti
+    this->acoeff = dista(gen);
+    this->bcoeff = distb(gen);
+    
     this->size = that.size;
     return *this;
 }
@@ -141,7 +155,7 @@ template <typename Data>
 inline unsigned long HashTable<Data>::HashKey(const Data & dat) const noexcept
 {
     // return HashKey(enchash(dat));
-    return ((acoeff * enchash(dat) + bcoeff) % prime) % tableSize;
+    return ((((acoeff * enchash(dat))) + (bcoeff)) % prime) % tableSize;
 }
 
 // template <typename Data>
