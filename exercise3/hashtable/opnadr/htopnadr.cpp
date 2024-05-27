@@ -196,6 +196,9 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
     {
         unsigned long index = this->HashTableOpnAdr<Data>::HashKey(dat, i);
 
+        // std::cout<<(index >= this->tableSize ? "index out of range!\n" : "");
+        // std::cout<<(this->tableSize == this->Table.Size() ? "" : "ERROR: SIZES DO NOT MATCH\n");
+
         if (this->flag[index] == status::inserted && this->Table[index] == dat) 
         {
             if (replace)
@@ -268,6 +271,8 @@ bool HashTableOpnAdr<Data>::Insert (Data && dat)
     for (unsigned long i = 0; i < this->tableSize; i++)
     {
         unsigned long index = this->HashTableOpnAdr<Data>::HashKey(dat, i);
+
+        // std::cout<<"index "<<index<<(index >= this->tableSize ? " out of range!\n" : "\n");
 
         if (this->flag[index] == status::inserted && this->Table[index] == dat) 
         {
@@ -414,7 +419,12 @@ template <typename Data>
 void HashTableOpnAdr<Data>::Clear()
 {
     this->Table.Clear();
+    this->Table.Resize(INITIAL_SIZE);
+    this->tableSize = this->Table.Size();
+
+    this->flag.Resize(INITIAL_SIZE);
     this->InitFlag();
+
     this->size = 0;
 } 
 
