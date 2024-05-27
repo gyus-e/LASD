@@ -9,7 +9,6 @@
 
 #include "../iterator/iterator.hpp"
 
-//memory leak usando le varianti lst, testare!
 #include "../stack/vec/stackvec.hpp"
 #include "../stack/lst/stacklst.hpp"
 #include "../queue/vec/queuevec.hpp"
@@ -270,7 +269,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<const typename BinaryTree<Data>::Node*> stk;
+  StackLst<const typename BinaryTree<Data>::Node*> stk;
 
 public:
 
@@ -401,7 +400,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<const typename BinaryTree<Data>::Node*> stk;
+  StackLst<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostLeaf();
 
@@ -538,7 +537,7 @@ protected:
   
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackVec<const typename BinaryTree<Data>::Node*> stk;
+  StackLst<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostNode ();
 
@@ -674,7 +673,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  QueueVec<const typename BinaryTree<Data>::Node *> que;
+  QueueLst<const typename BinaryTree<Data>::Node *> que;
 
 public:
 
