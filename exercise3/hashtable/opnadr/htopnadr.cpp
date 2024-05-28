@@ -371,17 +371,29 @@ bool HashTableOpnAdr<Data>::Exists (const Data & dat) const noexcept
 template <typename Data>
 void HashTableOpnAdr<Data>::Resize(unsigned long newSize) 
 {    
+    //se la resize è a 0, fa una clear
+    if (newSize == 0)
+    {
+        this->Clear();
+        return;
+    }    
+
     //Arrotonda newSize alla prossima potenza di 2
     unsigned long exp = ceil(log2(newSize));
     newSize = pow(2, exp);
     //Verifica che la dimensione minima sia rispettata
     newSize = std::max(newSize, INITIAL_SIZE);
 
+    //Verifica che la dimensione massima sia rispettata
+    newSize = std::min(newSize, MAX_SIZE);
+
+
     //Verifica che la resize vada effettuata davvero
-    if (newSize == this->tableSize)
-    {
-        return;
-    }
+    //(no, perché potrei voler usare resize solo per fare rehashing)
+    // if (newSize == this->tableSize)
+    // {
+    //     return;
+    // }
 
     //Evita che la resize venga fatta a una dimensione non valida (vogliamo che il numero di elementi sia sempre inferiore a tableSize * LOAD_FACTOR)
     if (this->size >= newSize * LOAD_FACTOR_OPNADR) 
@@ -418,14 +430,19 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
 template <typename Data>
 void HashTableOpnAdr<Data>::Clear()
 {
-    this->Table.Clear();
-    this->Table.Resize(INITIAL_SIZE);
-    this->tableSize = this->Table.Size();
+    //modo molto semplice: allocare una nuova hashtable a initial size e fare lo swap
+    HashTableOpnAdr<Data> clearTable (INITIAL_SIZE);
+    std::swap (*this, clearTable);
 
-    this->flag.Resize(INITIAL_SIZE);
-    this->InitFlag();
+    //modo vecchio
+    // this->Table.Clear();
+    // this->Table.Resize(INITIAL_SIZE);
+    // this->tableSize = this->Table.Size();
 
-    this->size = 0;
+    // this->flag.Resize(INITIAL_SIZE);
+    // this->InitFlag();
+
+    // this->size = 0;
 } 
 
 /* ************************************************************************** */
@@ -454,9 +471,9 @@ unsigned long HashTableOpnAdr<Data>::coprimeF (const Data & dat) const
 // }
 
 template <typename Data>
-void HashTableOpnAdr<Data>::GarbageCollect ()
+inline void HashTableOpnAdr<Data>::GarbageCollect ()
 {
-    if ((this->size) <= (double)this->tableSize * REDUCE_LOAD_FACTOR_OPNADR) 
+    if ((this->size) < (double)this->tableSize * REDUCE_LOAD_FACTOR_OPNADR) 
     {
         this->Resize(this->tableSize / 2); //la resize va a inserire nella nuova tabella solo gli elementi con status inserted
     }
