@@ -33,6 +33,8 @@ protected:
   #define LOAD_FACTOR_OPNADR 0.5
   #define REDUCE_LOAD_FACTOR_OPNADR 0.2
 
+  #define MAX_SIZE (unsigned long) 2147483648 //2^31
+
   enum class status {free, inserted, deleted};
 
   using HashTable<Data>::tableSize; //size of the Table
@@ -42,12 +44,9 @@ protected:
 
 
   //per doppio hashing
-  // unsigned long acoeff2 = 1;
-  // unsigned long bcoeff2 = 0;
-  // static const unsigned long prime2 = 2184872057;
-  // std::default_random_engine gen2  = std::default_random_engine (std::random_device{}());
-  // std::uniform_int_distribution <unsigned long> dista2 = std::uniform_int_distribution <unsigned long> (1, prime2 - 1);
-  // std::uniform_int_distribution <unsigned long> distb2 = std::uniform_int_distribution <unsigned long> (0, prime2 - 1);
+  // using HashTable<Data>::gen;
+  // using HashTable<Data>::prime;
+  // std::uniform_int_distribution <unsigned long> dist2 = std::uniform_int_distribution <unsigned long> (1, prime - 1);
 
 public:
 
@@ -127,8 +126,15 @@ protected:
 
   // type Find(argument) specifiers;
   // type FindEmpty(argument) specifiers;
-  // type Remove(argument) specifiers;
-  void GarbageCollect ();
+  
+  // type Remove(Data toRemove, unsigned long indiceProbing) specifiers; 
+      /*
+      cancella un dato partendo da un certo indice di probing in poi
+      posso chiamare la remove col parametro di probing, partendo da 0
+      posso chiamarla nella insert: se inserisco un dato in una cella deleted, poi chiamo la remove dall'indice di probing successivo
+      */
+
+  inline void GarbageCollect ();
   void InitFlag ();
   // void InitCoeffs ();
 };
