@@ -7,7 +7,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr () : Table (INITIAL_SIZE), flag (INITIAL_
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    // InitCoeffs();
 }
 
 // Specific constructor
@@ -18,7 +17,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize) :
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    // InitCoeffs();
 }
 
 // Constructor from TraversableContainer
@@ -27,7 +25,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(const TraversableContainer<Data>& contain
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -49,7 +46,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, const TraversableC
     this->tableSize = this->Table.Size();
     
     InitFlag();
-    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -68,7 +64,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(MappableContainer<Data> && container) : T
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -89,7 +84,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<
 {
     this->tableSize = this->Table.Size();
     InitFlag();
-    // InitCoeffs();
 
     if (!container.Empty())
     {
@@ -106,7 +100,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<
 template <typename Data>
 HashTableOpnAdr<Data>::HashTableOpnAdr(const HashTableOpnAdr<Data> & that) : HashTable<Data> (that), Table (that.Table), flag (that.flag)
 {
-    // InitCoeffs();
 } 
 
 // Move constructor
@@ -115,9 +108,6 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(HashTableOpnAdr<Data>&& that) noexcept : 
 {
     std::swap ((this->Table), (that.Table));
     std::swap ((this->flag), (that.flag));
-
-    // std::swap (this->acoeff2, that.acoeff2);
-    // std::swap (this->bcoeff2, that.bcoeff2);
 }
 
 // Copy assignment
@@ -129,8 +119,6 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(const HashTableOpnAdr<Da
         this->HashTable<Data>::operator=(that);
         this->Table = that.Table;
         this->flag = that.flag;
-        
-        // this->InitCoeffs();
     }
     return *this;
 }
@@ -144,9 +132,6 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(HashTableOpnAdr<Data>&& 
         this->HashTable<Data>::operator=(std::move(that));        
         std::swap(this->Table, that.Table);
         std::swap(this->flag, that.flag);
-
-        // std::swap (this->acoeff2, that.acoeff2);
-        // std::swap (this->bcoeff2, that.bcoeff2);
     }
     return *this;
 }
@@ -227,7 +212,7 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
 
             else 
             {
-                // std::cout<<"found free slot, but element was already inserted: return"<<std::endl;
+                // std::cout<<"found free slot, but element was already inserted"<<std::endl;
             }
 
             return true;
@@ -247,7 +232,7 @@ bool HashTableOpnAdr<Data>::Insert (const Data & dat)
             }
             else 
             {
-                // std::cout<<"found deleted slot, but element was already inserted: return"<<std::endl;
+                // std::cout<<"found deleted slot, but element was already inserted"<<std::endl;
                 return true;
             }
         }
@@ -332,10 +317,10 @@ bool HashTableOpnAdr<Data>::Remove (const Data & dat)
             return true;
         }
 
-        else if (this->flag[index] == status::free)
-        {
-            return false;
-        }
+        // else if (this->flag[index] == status::free)
+        // {
+        //     return false;
+        // }
 
         // else if (this->flag[index] == status::deleted) 
         // {
@@ -354,15 +339,15 @@ bool HashTableOpnAdr<Data>::Exists (const Data & dat) const noexcept
     {
         unsigned long index = this->HashTableOpnAdr<Data>::HashKey(dat, i);
 
-        if (this->flag[index] != status::inserted) //se siamo in una casella vuota o cancellata, vuol dire che il valore non è stato inserito
-        {
-            return false;
-        }
-
-        else if (this->Table[index] == dat) //&& this->flag[index] == status::inserted
+        if (this->flag[index] == status::inserted && this->Table[index] == dat)
         {
             return true;
         }
+        
+        // else if (this->flag[index] == status::free) //se siamo in una casella vuota, vuol dire che il valore non è stato inserito
+        // {
+        //     return false;
+        // }
     } 
     return false;
 } 
@@ -383,7 +368,6 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
     newSize = pow(2, exp);
     //Verifica che la dimensione minima sia rispettata
     newSize = std::max(newSize, INITIAL_SIZE);
-
     //Verifica che la dimensione massima sia rispettata
     newSize = std::min(newSize, MAX_SIZE);
 
@@ -413,14 +397,29 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
             for (unsigned long k = 0; k < newTable.tableSize; k++)
             {
                 unsigned long idx = newTable.HashKey(dat, k);
-                if (newTable.flag[idx] != status::inserted)
+                if (newTable.flag[idx] == status::free)
                 {
                     newTable.Table[idx] = dat;
                     newTable.flag[idx] = status::inserted;
                     newTable.size++;
                     break;
                 }
-            }
+
+                // else if (newTable.flag[idx] == status::deleted)
+                // {
+                //     // non succede mai
+                // }
+                else if (newTable.flag[idx] == status::inserted)
+                {
+                    if (dat == newTable.Table[idx])
+                    {
+                        //ho fatto il giro
+                        break;
+                    }
+                    
+                    // continua col probing 
+                }
+            }   
         }
     }
     std::swap (*this, newTable);
