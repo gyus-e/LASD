@@ -113,7 +113,7 @@ protected:
   using HashTable<Data>::enchash;
   using HashTable<Data>::HashKey;
   unsigned long HashKey (const Data &, const unsigned long) const;
-  unsigned long coprimeFun (const Data & dat) const;
+  unsigned long coprimeFun (const Data &) const;
 
   // type Find(argument) specifiers;
   // type FindEmpty(argument) specifiers;
