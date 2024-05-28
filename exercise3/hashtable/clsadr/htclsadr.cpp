@@ -197,15 +197,20 @@ inline bool HashTableClsAdr<Data>::Exists(const Data& data) const noexcept
 // Resize
 template <typename Data>
 void HashTableClsAdr<Data>::Resize(unsigned long newSize) 
-{    
+{   
+    //se la resize è a 0, fa una clear
+    if (newSize == 0)
+    {
+        this->Clear();
+        return;
+    }
+
     //Arrotonda newSize alla prossima potenza di 2
     unsigned long exp = ceil(log2(newSize));
     newSize = pow(2, exp);
     //Verifica che la dimensione minima sia rispettata
-    if (newSize < INITIAL_SIZE)
-    {
-        newSize = INITIAL_SIZE;
-    }
+    newSize = std::max(newSize, INITIAL_SIZE);
+
     //Verifica che la resize vada effettuata davvero
     if (newSize == this->tableSize)
     {
