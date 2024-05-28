@@ -34,7 +34,7 @@ protected:
 
   struct Node {
 
-    Data elem;
+    Data elem {};
     Node * next = nullptr;
 
     /* ********************************************************************** */

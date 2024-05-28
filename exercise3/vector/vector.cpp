@@ -12,7 +12,7 @@ Vector<Data>::Vector (unsigned long sz)
     {
         try 
         {
-            this->A = new Data [sz];
+            this->A = new Data [sz] {};
         }
         catch (std::bad_alloc & exc)
         {
