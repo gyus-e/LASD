@@ -128,9 +128,12 @@ Vector<Data> & Vector<Data>::operator=(const Vector & that)
 
     if (!that.Empty())
     {
-        Vector<Data> * NewVector = new Vector<Data> (that);
-        this->A = NewVector->A;
-        this->size = NewVector->size;
+        this->A = new Data [that.size];
+        this->size = that.size;
+        for (unsigned long i = 0; i < this->size; i++) 
+        {
+            this->A[i] = that.A[i];
+    }
     }
 
     return *this;
