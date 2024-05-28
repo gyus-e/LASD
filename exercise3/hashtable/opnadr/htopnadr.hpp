@@ -31,9 +31,7 @@ private:
 
 protected:
   #define LOAD_FACTOR_OPNADR 0.5
-  #define REDUCE_LOAD_FACTOR_OPNADR 0.2
-
-  #define MAX_SIZE (unsigned long) 2147483648 //2^31
+  #define REDUCE_LOAD_FACTOR_OPNADR 0.1
 
   enum class status {free, inserted, deleted};
 
@@ -41,12 +39,6 @@ protected:
   using HashTable<Data>::size; //number of elements
   Vector<Data> Table;
   Vector<status> flag; 
-
-
-  //per doppio hashing
-  // using HashTable<Data>::gen;
-  // using HashTable<Data>::prime;
-  // std::uniform_int_distribution <unsigned long> dist2 = std::uniform_int_distribution <unsigned long> (1, prime - 1);
 
 public:
 
@@ -121,8 +113,7 @@ protected:
   using HashTable<Data>::enchash;
   using HashTable<Data>::HashKey;
   unsigned long HashKey (const Data &, const unsigned long) const;
-  unsigned long coprimeF (const Data & dat) const;
-  // unsigned long HashKey2 (const Data &) const;
+  unsigned long coprimeFun (const Data & dat) const;
 
   // type Find(argument) specifiers;
   // type FindEmpty(argument) specifiers;
