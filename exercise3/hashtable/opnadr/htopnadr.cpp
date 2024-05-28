@@ -170,135 +170,70 @@ bool HashTableOpnAdr<Data>::operator!=(const HashTableOpnAdr& that) const
 template <typename Data>
 bool HashTableOpnAdr<Data>::Insert (const Data & dat)
 {
+    if (this->Exists(dat))
+    {
+        return false;
+    }
+
     if ((this->size + 1) >= (double)this->tableSize * LOAD_FACTOR_OPNADR) 
     {
         this->Resize(this->tableSize * 2);
         // std::cout<<"Resized to "<<this->tableSize<<std::endl;
     }
 
-    bool replace = false;
-    for (unsigned long i = 0; i < this->tableSize; i++)
+    unsigned long i = 0;
+    do
     {
-        unsigned long index = this->HashTableOpnAdr<Data>::HashKey(dat, i);
-
-        // std::cout<<(index >= this->tableSize ? "index out of range!\n" : "");
-        // std::cout<<(this->tableSize == this->Table.Size() ? "" : "ERROR: SIZES DO NOT MATCH\n");
-
-        if (this->flag[index] == status::inserted && this->Table[index] == dat) 
+        unsigned long idx = this->HashKey(dat, i);
+        if (this->flag[idx] != status::inserted)
         {
-            if (replace)
-            {
-                // std::cout<<"Inserted element found again, setting as deleted"<<std::endl;
-                this->flag[index] = status::deleted;
-                this->size--;
-            }
-            else 
-            {
-                // std::cout<<"Element is already present"<<std::endl;
-            }
-
-            return false; // Giá presente, anche se è stato sostituito
-        }
-
-        else if (this->flag[index] == status::free)  
-        {
-            if (!replace)
-            {
-                // std::cout<<"inserting in free slot"<<std::endl;
-                this->Table[index] = dat;
-                this->flag[index] = status::inserted;
-                this->size++;
-            }
-
-            else 
-            {
-                // std::cout<<"found free slot, but element was already inserted"<<std::endl;
-            }
-
+            this->Table[idx] = dat;
+            this->flag[idx] = status::inserted;
+            this->size++;
             return true;
         }
-
-        else if (this->flag[index] == status::deleted)
+        else 
         {
-            if (!replace)
-            {
-                // std::cout<<"inserting element in deleted slot"<<std::endl;
-                this->Table[index] = dat;
-                this->flag[index] = status::inserted;
-                this->size++;
-
-                //ma devo continuare col probing per vedere se era giá presente in sequenze successive
-                replace = true;
-            }
-            else 
-            {
-                // std::cout<<"found deleted slot, but element was already inserted"<<std::endl;
-                return true;
-            }
+            i++;
         }
-    }
+    } while (i < this->tableSize);
 
-    //error: table overflow
-    // std::cout<<"Out of the for loop without return: error?"<<std::endl;
-    throw (std::runtime_error ("Table overflow"));
+    return false;
 }
 
 // Insert (move)
 template <typename Data>
 bool HashTableOpnAdr<Data>::Insert (Data && dat)
 {
+    if (this->Exists(dat))
+    {
+        return false;
+    }
+
     if ((this->size + 1) >= (double)this->tableSize * LOAD_FACTOR_OPNADR) 
     {
         this->Resize(this->tableSize * 2);
+        // std::cout<<"Resized to "<<this->tableSize<<std::endl;
     }
-    
-    bool replace = false;
-    for (unsigned long i = 0; i < this->tableSize; i++)
+
+    unsigned long i = 0;
+    do
     {
-        unsigned long index = this->HashTableOpnAdr<Data>::HashKey(dat, i);
-
-        // std::cout<<"index "<<index<<(index >= this->tableSize ? " out of range!\n" : "\n");
-
-        if (this->flag[index] == status::inserted && this->Table[index] == dat) 
+        unsigned long idx = this->HashKey(dat, i);
+        if (this->flag[idx] != status::inserted)
         {
-            if (replace)
-            {
-                this->flag[index] = status::deleted;
-                this->size--;
-            }
-            return false; // Giá presente, anche se è stato sostituito
-        }
-
-        else if (this->flag[index] == status::free)  
-        {
-            if (!replace)
-            {
-                this->Table[index] = dat;
-                this->flag[index] = status::inserted;
-                this->size++;
-            }
+            this->Table[idx] = std::move(dat);
+            this->flag[idx] = status::inserted;
+            this->size++;
             return true;
         }
-
-        else if (this->flag[index] == status::deleted)
+        else 
         {
-            if (! replace)
-            {
-                this->Table[index] = std::move(dat);
-                this->flag[index] = status::inserted;
-                this->size++;
-
-                //ma devo continuare col probing per vedere se era giá presente in sequenze successive
-                replace = true;
-            }
-            else 
-            {
-                return true;
-            }
+            i++;
         }
-    }
-    //error: table overflow
-    throw (std::runtime_error("Table overflow"));
+    } while (i < this->tableSize);
+
+    return false;
 }
 
 //Remove
