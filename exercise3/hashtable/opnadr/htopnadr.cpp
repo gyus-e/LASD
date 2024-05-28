@@ -373,11 +373,11 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
 
 
     //Verifica che la resize vada effettuata davvero
-    //(no, perché potrei voler usare resize solo per fare rehashing)
-    // if (newSize == this->tableSize)
-    // {
-    //     return;
-    // }
+    //(NB: ma potrei voler usare resize solo per fare rehashing)
+    if (newSize == this->tableSize)
+    {
+        return;
+    }
 
     //Evita che la resize venga fatta a una dimensione non valida (vogliamo che il numero di elementi sia sempre inferiore a tableSize * LOAD_FACTOR)
     if (this->size >= newSize * LOAD_FACTOR_OPNADR) 
@@ -452,22 +452,15 @@ unsigned long HashTableOpnAdr<Data>::HashKey(const Data & dat, const unsigned lo
 {
         // return HashKey(dat) + (i*i); //probing quadratico, conviene se si usano numeri primi per tablesize
         
-        return (this->HashKey(dat) + i*(this->coprimeF(dat))) % this->tableSize; //doppio hashing
+        return (this->HashKey(dat) + ((i * this->coprimeFun(dat)) % this->tableSize)) % this->tableSize; //doppio hashing
 }
 
 //Deve produrre sempre numeri dispari (coprimi con tableSize)
 template <typename Data>
-unsigned long HashTableOpnAdr<Data>::coprimeF (const Data & dat) const 
+unsigned long HashTableOpnAdr<Data>::coprimeFun (const Data & dat) const 
 {
-    // return (HashKey2(dat) * 2) + 1; //doppio hashing
-    return (this->enchash(dat) * 2 + 1) % this->tableSize;
+    return ((this->enchash(dat) % this->prime) * 2 + 1) % this->tableSize;
 }
-
-// template <typename Data>
-// unsigned long HashTableOpnAdr<Data>::HashKey2(const Data & dat) const
-// {
-//     return ((((acoeff2 * enchash(dat))) + (bcoeff2)) % prime2) % this->tableSize;
-// }
 
 template <typename Data>
 inline void HashTableOpnAdr<Data>::GarbageCollect ()
@@ -489,12 +482,6 @@ void HashTableOpnAdr<Data>::InitFlag ()
     );
 }
 
-// template <typename Data>
-// void HashTableOpnAdr<Data>::InitCoeffs ()
-// {
-//     this->acoeff2 = this->dista2(gen2);
-//     this->bcoeff2 = this->distb2(gen2);
-// }
 /* ************************************************************************** */
 
 }
