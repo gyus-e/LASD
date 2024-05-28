@@ -376,7 +376,7 @@ void HashTableOpnAdr<Data>::Clear()
 template <typename Data>
 unsigned long HashTableOpnAdr<Data>::HashKey(const Data & dat, const unsigned long i) const
 {
-    return (this->HashKey(dat) + ((i * this->coprimeFun(dat)) % this->tableSize)) % this->tableSize; //doppio hashing
+    return (this->HashKey(dat) + ((i * this->coprimeFun(dat)) % this->tableSize)) % this->tableSize;
 }
 
 //Deve produrre sempre numeri dispari (coprimi con tableSize, che è una potenza di 2)
