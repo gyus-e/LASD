@@ -94,13 +94,6 @@ HashTable<Data>::HashTable(const HashTable<Data> & that)
     this->tableSize = that.tableSize;
     this->size = that.size;
 
-    // this->acoeff = that.acoeff;
-    // this->bcoeff = that.bcoeff;
-    // this->gen = that.gen;
-    // this->dista = that.dista;
-    // this->distb = that.distb;
-    // this->enchash = that.enchash;
-
     //genero nuovi coefficienti
     gen  = std::default_random_engine (std::random_device{}());
     dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);
@@ -121,7 +114,6 @@ HashTable<Data>::HashTable(HashTable<Data> && that) noexcept
     std::swap(this->gen, that.gen);
     std::swap (this->dista, that.dista);
     std::swap (this->distb, that.distb);
-    // std::swap (this->enchash, that.enchash);
 }
 
 // Copy assignment
@@ -129,8 +121,6 @@ template <typename Data>
 HashTable<Data> & HashTable<Data>::operator=(const HashTable<Data> & that)
 {
     this->tableSize = that.tableSize;
-    // this->acoeff = that.acoeff;
-    // this->bcoeff = that.bcoeff;
 
     //genero nuovi coefficienti
     this->acoeff = dista(gen);
@@ -154,15 +144,11 @@ HashTable<Data> & HashTable<Data>::operator=(HashTable<Data> && that) noexcept
 template <typename Data>
 inline unsigned long HashTable<Data>::HashKey(const Data & dat) const noexcept
 {
-    // return HashKey(enchash(dat));
-    return ((((acoeff * enchash(dat))) + (bcoeff)) % prime) % tableSize;
+    // sfruttando le proprietá: 
+    // (A + B) % C == (A % C + B % C) % C
+    // (A * B) % C == (A % C * B % C) % C
+    return ( ( ( ( (this->acoeff % this->prime) * (this->enchash(dat) % this->prime) ) % this->prime ) + ( this->bcoeff % this->prime ) ) % this->prime ) % this->tableSize;
 }
-
-// template <typename Data>
-// inline unsigned long HashTable<Data>::HashKey(unsigned long key) const noexcept
-// {
-//     return ((acoeff * key + bcoeff) % prime) % tableSize;
-// }
 
 /* ************************************************************************** */
 

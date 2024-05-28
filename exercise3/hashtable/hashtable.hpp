@@ -37,11 +37,12 @@ private:
 
 protected:
   #define INITIAL_SIZE (unsigned long) 128
+  #define MAX_SIZE (unsigned long) 2147483648 //2^31
 
   using DictionaryContainer<Data>::size;
   unsigned long acoeff = 1;
   unsigned long bcoeff = 0;
-  static const unsigned long prime = 1000000016531;
+  static const unsigned long prime = 2606670827; //numero primo rappresentabile in 32 bit
 
   std::default_random_engine gen  = std::default_random_engine (std::random_device{}());
   std::uniform_int_distribution <unsigned long> dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);
@@ -87,7 +88,6 @@ protected:
   // Auxiliary member functions
 
   virtual inline unsigned long HashKey(const Data & dat) const noexcept;
-  // virtual inline unsigned long HashKey(unsigned long key) const noexcept;
 
 };
 
