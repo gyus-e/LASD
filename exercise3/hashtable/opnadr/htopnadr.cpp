@@ -382,21 +382,21 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
     //Evita che la resize venga fatta a una dimensione non valida (vogliamo che il numero di elementi sia sempre inferiore a tableSize * LOAD_FACTOR)
     if (this->size >= newSize * LOAD_FACTOR_OPNADR) 
     {
-        //lanciare eccezione?
+        //Non bisogna lanciare eccezione
         return;
     }
 
     //serve una nuova HashTable perché vogliamo anche una nuova funzione HashKey
     HashTableOpnAdr<Data> newTable(newSize); 
-    for (unsigned long i = 0; i < this->tableSize; i++)
+    for (unsigned long j = 0; j < this->tableSize; j++)
     {
-        if (this->flag[i] == status::inserted)
+        if (this->flag[j] == status::inserted)
         {
-            Data dat = this->Table[i];
+            Data dat = this->Table[j];
             
-            for (unsigned long k = 0; k < newTable.tableSize; k++)
+            for (unsigned long i = 0; i < newTable.tableSize; i++)
             {
-                unsigned long idx = newTable.HashKey(dat, k);
+                unsigned long idx = newTable.HashKey(dat, i);
                 if (newTable.flag[idx] == status::free)
                 {
                     newTable.Table[idx] = dat;
@@ -404,20 +404,10 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
                     newTable.size++;
                     break;
                 }
-
-                // else if (newTable.flag[idx] == status::deleted)
-                // {
-                //     // non succede mai
-                // }
-                else if (newTable.flag[idx] == status::inserted)
+                else if (newTable.flag[idx] == status::inserted && dat == newTable.Table[idx])
                 {
-                    if (dat == newTable.Table[idx])
-                    {
-                        //ho fatto il giro
-                        break;
-                    }
-                    
-                    // continua col probing 
+                    //ho fatto il giro?
+                    break;
                 }
             }   
         }
@@ -429,11 +419,12 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
 template <typename Data>
 void HashTableOpnAdr<Data>::Clear()
 {
-    //modo molto semplice: allocare una nuova hashtable a initial size e fare lo swap
+    //modo semplice: allocare una nuova hashtable a initial size e fare lo swap
     HashTableOpnAdr<Data> clearTable (INITIAL_SIZE);
     std::swap (*this, clearTable);
 
-    //modo vecchio
+    //modo vecchio:
+
     // this->Table.Clear();
     // this->Table.Resize(INITIAL_SIZE);
     // this->tableSize = this->Table.Size();
@@ -450,12 +441,10 @@ void HashTableOpnAdr<Data>::Clear()
 template <typename Data>
 unsigned long HashTableOpnAdr<Data>::HashKey(const Data & dat, const unsigned long i) const
 {
-        // return HashKey(dat) + (i*i); //probing quadratico, conviene se si usano numeri primi per tablesize
-        
-        return (this->HashKey(dat) + ((i * this->coprimeFun(dat)) % this->tableSize)) % this->tableSize; //doppio hashing
+    return (this->HashKey(dat) + ((i * this->coprimeFun(dat)) % this->tableSize)) % this->tableSize; //doppio hashing
 }
 
-//Deve produrre sempre numeri dispari (coprimi con tableSize)
+//Deve produrre sempre numeri dispari (coprimi con tableSize, che è una potenza di 2)
 template <typename Data>
 unsigned long HashTableOpnAdr<Data>::coprimeFun (const Data & dat) const 
 {
