@@ -5,7 +5,7 @@ namespace lasd {
 
 //specific constructors
 template<typename Data>
-Vector<Data>::Vector (unsigned long sz)
+Vector<Data>::Vector (unsigned long sz) : Vector<Data> ()
 {
     if (sz != 0)
     {
@@ -24,21 +24,10 @@ Vector<Data>::Vector (unsigned long sz)
 
 // A vector obtained from a TraversableContainer
 template<typename Data>
-Vector<Data>::Vector (const TraversableContainer<Data> & cont)
+Vector<Data>::Vector (const TraversableContainer<Data> & cont) : Vector<Data> (cont.Size())
 {
-    unsigned long sz = cont.Size();
-    if (sz != 0)
+    if (!cont.Empty())       
     {
-        try 
-        {
-            this->A = new Data [sz];
-            this->size = sz;
-        }
-        catch (std::bad_alloc & exc)
-        {
-            throw;
-        }
-
         unsigned long i = 0;
         cont.Traverse (
             [this, &i] (const Data & dat)
@@ -53,21 +42,10 @@ Vector<Data>::Vector (const TraversableContainer<Data> & cont)
 
 // A vector obtained from a MappableContainer
 template<typename Data>
-Vector<Data>::Vector (MappableContainer<Data> && cont)
+Vector<Data>::Vector (MappableContainer<Data> && cont) : Vector<Data> (cont.Size())
 {
-    unsigned long sz = cont.Size();
-    if (sz != 0)
+    if (!cont.Empty())       
     {
-        try 
-        {
-            this->A = new Data [sz];
-            this->size = sz;
-        }
-        catch (std::bad_alloc & exc)
-        {
-            throw;
-        }
-
         unsigned long i = 0;
         cont.Map (
             [this, &i] (Data & dat)
@@ -109,7 +87,7 @@ Vector<Data> & Vector<Data>::operator=(Vector && that)
 
 //copy constructor
 template<typename Data>
-Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
+Vector<Data>::Vector (const Vector<Data> & that) : Vector<Data> (that.size)
 {
     for (unsigned long i = 0; i < this->size; i++) 
     {
@@ -119,7 +97,7 @@ Vector<Data>::Vector (const Vector & that) : Vector<Data> (that.size)
 
 //copy operator
 template<typename Data>
-Vector<Data> & Vector<Data>::operator=(const Vector & that)
+Vector<Data> & Vector<Data>::operator=(const Vector<Data> & that)
 {
     if (!this->Empty())
     {

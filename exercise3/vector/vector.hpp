@@ -46,10 +46,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  Vector(const Vector & that);
+  Vector(const Vector<Data> & that);
 
   // Move constructor
-  Vector(Vector &&) noexcept;
+  Vector(Vector<Data> &&) noexcept;
 
   /* ************************************************************************ */
 
