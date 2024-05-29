@@ -114,20 +114,8 @@ protected:
   using HashTable<Data>::HashKey;
   unsigned long HashKey (const Data &, const unsigned long) const;
   unsigned long coprimeFun (const Data &) const;
-
-  // type Find(argument) specifiers;
-  // type FindEmpty(argument) specifiers;
-  
-  // type Remove(Data toRemove, unsigned long indiceProbing) specifiers; 
-      /*
-      cancella un dato partendo da un certo indice di probing in poi
-      posso chiamare la remove col parametro di probing, partendo da 0
-      posso chiamarla nella insert: se inserisco un dato in una cella deleted, poi chiamo la remove dall'indice di probing successivo
-      */
-
   inline void GarbageCollect ();
   void InitFlag ();
-  // void InitCoeffs ();
 };
 
 /* ************************************************************************** */
