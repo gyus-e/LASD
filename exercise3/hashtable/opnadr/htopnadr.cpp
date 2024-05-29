@@ -3,7 +3,7 @@ namespace lasd {
 
 /* ************************************************************************** */
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr () : Table (INITIAL_SIZE), flag (INITIAL_SIZE)
+HashTableOpnAdr<Data>::HashTableOpnAdr () : HashTable<Data> (), Table (INITIAL_SIZE), flag (INITIAL_SIZE)
 {
     this->tableSize = this->Table.Size();
     InitFlag();
@@ -11,7 +11,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr () : Table (INITIAL_SIZE), flag (INITIAL_
 
 // Specific constructor
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize) : 
+HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize) : HashTable<Data> (),
     Table (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)), 
     flag (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)) 
 {
@@ -21,7 +21,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize) :
 
 // Constructor from TraversableContainer
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(const TraversableContainer<Data>& container) : Table (INITIAL_SIZE), flag (INITIAL_SIZE)
+HashTableOpnAdr<Data>::HashTableOpnAdr(const TraversableContainer<Data>& container) : HashTable<Data> (), Table (INITIAL_SIZE), flag (INITIAL_SIZE)
 {
     this->tableSize = this->Table.Size();
     InitFlag();
@@ -39,7 +39,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(const TraversableContainer<Data>& contain
 
 // Constructor from TraversableContainer with specified tableSize
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, const TraversableContainer<Data>& container) : 
+HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, const TraversableContainer<Data>& container) : HashTable<Data> (),
     Table (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)), 
     flag (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)) 
 {
@@ -60,7 +60,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, const TraversableC
 
 // Constructor from MappableContainer
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(MappableContainer<Data> && container) : Table (INITIAL_SIZE), flag (INITIAL_SIZE)
+HashTableOpnAdr<Data>::HashTableOpnAdr(MappableContainer<Data> && container) : HashTable<Data> (), Table (INITIAL_SIZE), flag (INITIAL_SIZE)
 {
     this->tableSize = this->Table.Size();
     InitFlag();
@@ -78,7 +78,7 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(MappableContainer<Data> && container) : T
 
 // Constructor from MappableContainer with specified tableSize
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<Data> && container) : 
+HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<Data> && container) : HashTable<Data> (),
     Table (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)), 
     flag (std::max ((unsigned long) pow(2, ceil(log2(newSize))), INITIAL_SIZE)) 
 {
@@ -98,8 +98,21 @@ HashTableOpnAdr<Data>::HashTableOpnAdr(unsigned long newSize, MappableContainer<
 
 // Copy constructor
 template <typename Data>
-HashTableOpnAdr<Data>::HashTableOpnAdr(const HashTableOpnAdr<Data> & that) : HashTable<Data> (that), Table (that.Table), flag (that.flag)
+HashTableOpnAdr<Data>::HashTableOpnAdr(const HashTableOpnAdr<Data> & that) : Table (INITIAL_SIZE), flag (INITIAL_SIZE)
 {
+    this->tableSize = this->Table.Size();
+    this->size = 0;
+
+    if (!that.Empty())
+    {
+        for (unsigned long i = 0; i < that.tableSize; i++)
+        {
+            if (that.flag[i] == status::inserted)
+            {
+                this->Insert(that.Table[i]);
+            }
+        }
+    }
 } 
 
 // Move constructor
@@ -116,9 +129,8 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(const HashTableOpnAdr<Da
 {
     if (this != &that) 
     {
-        this->HashTable<Data>::operator=(that);
-        this->Table = that.Table;
-        this->flag = that.flag;
+        HashTableOpnAdr<Data> copy (that);
+        std::swap(*this, copy);
     }
     return *this;
 }
@@ -140,8 +152,7 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(HashTableOpnAdr<Data>&& 
 template <typename Data>
 bool HashTableOpnAdr<Data>::operator==(const HashTableOpnAdr<Data> & that) const
 {
-    //stessa struttura:
-    if (this->size != that.size || this->tableSize != that.tableSize) 
+    if (this->size != that.size)
     {
         return false;
     }
@@ -150,33 +161,14 @@ bool HashTableOpnAdr<Data>::operator==(const HashTableOpnAdr<Data> & that) const
     {
         if (this->flag[i] == status::inserted) 
         {
-            if (that.flag[i] != status::inserted || !(this->Table[i] == that.Table[i])) 
+            Data dat = this->Table[i];
+            if (!that.Exists(dat)) 
             {
                 return false;
             }
         }
     }
     return true;
-
-    //stessi elementi:
-
-    // if (this->size != that.size)
-    // {
-    //     return false;
-    // }
-
-    // for (unsigned long i = 0; i < this->tableSize; i++) 
-    // {
-    //     if (this->flag[i] == status::inserted) 
-    //     {
-    //         Data dat = this->Table[i];
-    //         if (!that.Exists(dat)) 
-    //         {
-    //             return false;
-    //         }
-    //     }
-    // }
-    // return true;
 }
 
 template <typename Data>
@@ -272,16 +264,6 @@ bool HashTableOpnAdr<Data>::Remove (const Data & dat)
             this->GarbageCollect();
             return true;
         }
-
-        // else if (this->flag[index] == status::free)
-        // {
-        //     return false;
-        // }
-
-        // else if (this->flag[index] == status::deleted) 
-        // {
-        //         continue;
-        // }
     }
 
     return false;
@@ -299,11 +281,6 @@ bool HashTableOpnAdr<Data>::Exists (const Data & dat) const noexcept
         {
             return true;
         }
-        
-        // else if (this->flag[index] == status::free) //se siamo in una casella vuota, vuol dire che il valore non è stato inserito
-        // {
-        //     return false;
-        // }
     } 
     return false;
 } 
@@ -375,20 +352,8 @@ void HashTableOpnAdr<Data>::Resize(unsigned long newSize)
 template <typename Data>
 void HashTableOpnAdr<Data>::Clear()
 {
-    //modo semplice: allocare una nuova hashtable a initial size e fare lo swap
     HashTableOpnAdr<Data> clearTable (INITIAL_SIZE);
     std::swap (*this, clearTable);
-
-    //modo vecchio:
-
-    // this->Table.Clear();
-    // this->Table.Resize(INITIAL_SIZE);
-    // this->tableSize = this->Table.Size();
-
-    // this->flag.Resize(INITIAL_SIZE);
-    // this->InitFlag();
-
-    // this->size = 0;
 } 
 
 /* ************************************************************************** */

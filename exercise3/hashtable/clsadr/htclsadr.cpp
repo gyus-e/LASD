@@ -89,8 +89,30 @@ HashTableClsAdr<Data>::HashTableClsAdr(unsigned long newSize, MappableContainer<
 
 // Copy constructor
 template <typename Data>
-HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data> & that) : HashTable<Data> (that), Table (that.Table)
-{}
+HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data> & that) : Table (INITIAL_SIZE)
+{
+    this->tableSize = this->Table.Size();
+    this->size = 0;
+
+    if (!that.Empty())
+    {
+        that.Table.Traverse(
+            [this](const Bucket & bucket)
+            {
+                if (!bucket.Empty())
+                {
+                    bucket.Traverse(
+                        [this](const Data & dat)
+                        {
+                            this->Insert(dat);
+                        }
+                    );
+                }
+            }
+        );
+    }
+
+}
 
 // Move constructor
 template <typename Data>
@@ -105,8 +127,8 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr<Da
 {
     if (this != &that) 
     {
-        this->HashTable<Data>::operator=(that);
-        this->Table = that.Table;
+        HashTableClsAdr<Data> copy (that);
+        std::swap (*this, copy);
     }
     return *this;
 }
@@ -127,32 +149,28 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr<Data>&& 
 template <typename Data>
 inline bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) const
 {
-    //stessa struttura
-    return (this->Table == that.Table) && (this->size == that.size) && (this->tableSize == that.tableSize);
-    
-    //stessi elementi
-    // if (this->size != that.size)
-    // {
-    //     return false;
-    // }
+    if (this->size != that.size)
+    {
+        return false;
+    }
 
-    // bool ret = true;
+    bool ret = true;
 
-    // this->Table.Traverse(
-    //     [&that, &ret] (const Bucket & bucket)
-    //     {
-    //         if (!bucket.Empty())
-    //         {
-    //             bucket.Traverse(
-    //                 [&that, &ret] (const Data & dat)
-    //                 {
-    //                      ret &= that.Exists(dat);
-    //                 }
-    //             );
-    //         }
-    //     }
-    // );
-    // return ret;
+    this->Table.Traverse(
+        [&that, &ret] (const Bucket & bucket)
+        {
+            if (!bucket.Empty())
+            {
+                bucket.Traverse(
+                    [&that, &ret] (const Data & dat)
+                    {
+                         ret &= that.Exists(dat);
+                    }
+                );
+            }
+        }
+    );
+    return ret;
 }
 
 template <typename Data>
