@@ -71,13 +71,11 @@ Vector<Data>::~Vector ()
 
 //move constructor
 template<typename Data>
-Vector<Data>::Vector (Vector<Data> && that) noexcept
+Vector<Data>::Vector (Vector<Data> && that) noexcept : Vector<Data> ()
 {
-    this->A = that.A;
-    that.A = nullptr;
-    this->size = that.size;
-    that.size = 0;
-    std::cout<<"vec size = "<<that.size<<std::endl;
+    std::swap(this->A, that.A);
+    std::swap(this->size, that.size);
+    // std::cout<<"vec size = "<<that.size<<std::endl;
 }
 
 //move operator
