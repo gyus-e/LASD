@@ -342,6 +342,8 @@ private:
 
 protected:
 
+  // typename MutableBinaryTree<Data>::MutableNode * mRoot = nullptr;
+  // typename MutableBinaryTree<Data>::MutableNode * mCurr = nullptr;
   using BTPreOrderIterator<Data>::curr;
   using BTPreOrderIterator<Data>::root;
   using BTPreOrderIterator<Data>::stk;
@@ -381,7 +383,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
-
+  using BTPreOrderIterator<Data>::operator*;
   Data & operator*() override; // (throw std::out_of_range when terminated)
 };
 
@@ -517,7 +519,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
-
+  using BTPostOrderIterator<Data>::operator*;
   Data & operator*() override; // (throw std::out_of_range when terminated)
 
 };
@@ -653,7 +655,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
-
+  using BTInOrderIterator<Data>::operator*;
   Data & operator*() override; // (throw std::out_of_range when terminated)
 
 };
@@ -788,7 +790,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions (inherited from MutableIterator)
-
+  using BTBreadthIterator<Data>::operator*;
   Data & operator*() override; // (throw std::out_of_range when terminated)
 };
 

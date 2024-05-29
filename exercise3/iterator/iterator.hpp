@@ -86,7 +86,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member functions
-
+  using Iterator<Data>::operator*;
   virtual Data & operator*() = 0; // (mutable version; concrete function must throw std::out_of_range when terminated)
 
 };

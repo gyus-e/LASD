@@ -425,7 +425,7 @@ Data & BTPreOrderMutableIterator<Data>::operator*()  // (throw std::out_of_range
     {
         throw std::out_of_range("from operator *");
     }
-    return this->curr->Element();
+    return const_cast<Data&> (this->curr->Element());
 }
 
 /* ************************************************************************** */
@@ -610,7 +610,7 @@ Data & BTPostOrderMutableIterator<Data>::operator*()  // (throw std::out_of_rang
     {
         throw std::out_of_range("from operator *");
     }
-    return this->curr->Element();
+    return const_cast<Data&> (this->curr->Element());
 }
 
 /* ************************************************************************** */
@@ -784,7 +784,7 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
     {
       throw std::out_of_range("from operator *");
     }
-    return this->curr->Element();
+    return const_cast<Data&> (this->curr->Element());
   }
 
 /* ************************************************************************** */
@@ -929,6 +929,6 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
     {
       throw std::out_of_range("from operator *");
     }
-    return this->curr->Element();
+    return const_cast<Data&> (this->curr->Element());
   }
 }
