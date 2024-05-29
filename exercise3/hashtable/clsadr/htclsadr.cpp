@@ -62,7 +62,7 @@ HashTableClsAdr<Data>::HashTableClsAdr(MappableContainer<Data>&& container) : Ta
     if (!container.Empty())
     {
         container.Map(
-            [this](Data&& elem) 
+            [this](Data& elem) 
             {
                 this->Insert(std::move(elem));
             }
