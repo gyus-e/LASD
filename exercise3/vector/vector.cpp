@@ -51,6 +51,7 @@ Vector<Data>::Vector (MappableContainer<Data> && cont) : Vector<Data> (cont.Size
             [this, &i] (Data & dat)
             {
                 this->A[i] = std::move(dat);
+                // std::swap (this->A[i], dat);
                 i++;
             }
         );
@@ -70,10 +71,13 @@ Vector<Data>::~Vector ()
 
 //move constructor
 template<typename Data>
-Vector<Data>::Vector (Vector && that) noexcept
+Vector<Data>::Vector (Vector<Data> && that) noexcept
 {
-    std::swap (this->A, that.A);
-    std::swap (this->size, that.size);
+    this->A = that.A;
+    that.A = nullptr;
+    this->size = that.size;
+    that.size = 0;
+    std::cout<<"vec size = "<<that.size<<std::endl;
 }
 
 //move operator
