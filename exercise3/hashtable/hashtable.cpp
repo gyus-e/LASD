@@ -147,7 +147,7 @@ inline unsigned long HashTable<Data>::HashKey(const Data & dat) const noexcept
     // sfruttando le proprietá: 
     // (A + B) % C == (A % C + B % C) % C
     // (A * B) % C == (A % C * B % C) % C
-    return ( ( ( ( (this->acoeff % this->prime) * (this->enchash(dat) % this->prime) ) % this->prime ) + ( this->bcoeff % this->prime ) ) % this->prime ) % this->tableSize;
+    return ( ( ( ( (this->acoeff * (this->enchash(dat) % this->prime) ) % this->prime ) + this->bcoeff ) ) % this->prime ) % this->tableSize;
 }
 
 /* ************************************************************************** */
