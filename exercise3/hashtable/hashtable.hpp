@@ -36,13 +36,13 @@ class HashTable : public virtual ResizableContainer,
 private:
 
 protected:
-  #define INITIAL_SIZE (unsigned long) 128
-  #define MAX_SIZE (unsigned long) 2147483648 //2^31
+  #define INITIAL_SIZE 128UL
+  #define MAX_SIZE 2147483648UL //2^31
 
   using DictionaryContainer<Data>::size;
   unsigned long acoeff = 1;
   unsigned long bcoeff = 0;
-  static const unsigned long prime = 2606670827; //numero primo rappresentabile in 32 bit
+  static const unsigned long prime = 2147483647; //numero primo ((2^31) - 1)
 
   std::default_random_engine gen  = std::default_random_engine (std::random_device{}());
   std::uniform_int_distribution <unsigned long> dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);
