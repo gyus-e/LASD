@@ -13,6 +13,7 @@ Vector<Data>::Vector (unsigned long sz)
         try 
         {
             this->A = new Data [sz] {};
+            this->size = sz;
         }
         catch (std::bad_alloc & exc)
         {
@@ -27,12 +28,12 @@ template<typename Data>
 Vector<Data>::Vector (const TraversableContainer<Data> & cont)
 {
     unsigned long sz = cont.Size();
-    this->setSize (sz);
     if (sz != 0)
     {
         try 
         {
             this->A = new Data [sz];
+            this->size = sz;
         }
         catch (std::bad_alloc & exc)
         {
@@ -56,12 +57,12 @@ template<typename Data>
 Vector<Data>::Vector (MappableContainer<Data> && cont)
 {
     unsigned long sz = cont.Size();
-    this->setSize (sz);
     if (sz != 0)
     {
         try 
         {
             this->A = new Data [sz];
+            this->size = sz;
         }
         catch (std::bad_alloc & exc)
         {
@@ -297,7 +298,7 @@ void Vector<Data>::Clear()
         delete [] this->A;
         this->A = nullptr;
     }
-    this->setSize(0);
+    this->size = 0;
 } 
 
 /* ************************************************************************** */
