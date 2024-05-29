@@ -140,6 +140,7 @@ HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(HashTableOpnAdr<Data>&& 
 template <typename Data>
 bool HashTableOpnAdr<Data>::operator==(const HashTableOpnAdr<Data> & that) const
 {
+    //stessa struttura:
     if (this->size != that.size || this->tableSize != that.tableSize) 
     {
         return false;
@@ -156,6 +157,26 @@ bool HashTableOpnAdr<Data>::operator==(const HashTableOpnAdr<Data> & that) const
         }
     }
     return true;
+
+    //stessi elementi:
+
+    // if (this->size != that.size)
+    // {
+    //     return false;
+    // }
+
+    // for (unsigned long i = 0; i < this->tableSize; i++) 
+    // {
+    //     if (this->flag[i] == status::inserted) 
+    //     {
+    //         Data dat = this->Table[i];
+    //         if (!that.Exists(dat)) 
+    //         {
+    //             return false;
+    //         }
+    //     }
+    // }
+    // return true;
 }
 
 template <typename Data>

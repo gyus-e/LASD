@@ -127,7 +127,32 @@ HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr<Data>&& 
 template <typename Data>
 inline bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) const
 {
+    //stessa struttura
     return (this->Table == that.Table) && (this->size == that.size) && (this->tableSize == that.tableSize);
+    
+    //stessi elementi
+    // if (this->size != that.size)
+    // {
+    //     return false;
+    // }
+
+    // bool ret = true;
+
+    // this->Table.Traverse(
+    //     [&that, &ret] (const Bucket & bucket)
+    //     {
+    //         if (!bucket.Empty())
+    //         {
+    //             bucket.Traverse(
+    //                 [&that, &ret] (const Data & dat)
+    //                 {
+    //                      ret &= that.Exists(dat);
+    //                 }
+    //             );
+    //         }
+    //     }
+    // );
+    // return ret;
 }
 
 template <typename Data>
