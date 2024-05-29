@@ -35,7 +35,7 @@ protected:
 
   protected:
 
-    Data elem;
+    Data elem {};
     unsigned long idx = 0;
     BinaryTreeVec * tree = nullptr;
 

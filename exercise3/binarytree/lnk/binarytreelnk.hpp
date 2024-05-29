@@ -31,7 +31,7 @@ protected:
 
   public:
 
-    Data elem;
+    Data elem {};
     NodeLnk * Sx = nullptr;
     NodeLnk * Dx = nullptr;
 
