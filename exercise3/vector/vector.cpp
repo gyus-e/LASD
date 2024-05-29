@@ -7,7 +7,6 @@ namespace lasd {
 template<typename Data>
 Vector<Data>::Vector (unsigned long sz)
 {
-    this->setSize (sz);
     if (sz != 0)
     {
         try 
@@ -144,7 +143,8 @@ Vector<Data> & Vector<Data>::operator=(const Vector & that)
 template<typename Data>
 inline Data & Vector<Data>::operator[](unsigned long idx)
 {
-    if (idx >= this->Container::Size ())
+    // std::cout<<"access at index "<<idx<<" on vector of size "<<this->size<<std::endl;
+    if (idx >= this->size || this->Empty())
     {
         throw std::out_of_range ("from vector::operator []");
     }
@@ -155,11 +155,11 @@ inline Data & Vector<Data>::operator[](unsigned long idx)
 template<typename Data>
 inline const Data & Vector<Data>::operator[](unsigned long idx) const 
 {
-    if (idx >= this->Container::Size ())
+    if (idx >= this->size || this->Empty())
     {
         throw std::out_of_range ("from vector::operator []");
     }
-    return this->A[idx];
+    return (const Data &) this->A[idx];
 }
 
 template <typename Data>
@@ -217,6 +217,11 @@ inline Data & Vector<Data>::Back()
 template <typename Data>
 bool Vector<Data>::operator==(const Vector<Data> & that) const noexcept
 {
+    if (that.Empty() || this->Empty())
+    {
+        return this->Empty() && that.Empty();
+    }
+
     if (this->Size() != that.Size())
     {
         return false;
@@ -234,18 +239,7 @@ bool Vector<Data>::operator==(const Vector<Data> & that) const noexcept
 template <typename Data>
 bool Vector<Data>::operator!=(const Vector<Data> & that) const noexcept
 {
-    if (this->Size() != that.Size())
-    {
-        return true;
-    }
-    for (unsigned long i = 0; i < this->Size(); i++)
-    {
-        if  (this->A[i] != that.A[i])
-        {
-            return true;
-        }
-    }
-    return false;
+    return !this->operator==(that);
 }
 
 template<typename Data>

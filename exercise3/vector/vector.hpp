@@ -95,6 +95,8 @@ public:
   inline const Data & Back() const override; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
   inline Data & Back() override; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
 
+  inline bool Empty () const noexcept override {return this->A == nullptr || this->size == 0;}
+
 protected:
 
   // Auxiliary functions, if necessary!
