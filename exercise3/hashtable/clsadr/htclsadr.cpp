@@ -223,7 +223,7 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize)
     HashTableClsAdr<Data> newTable(newSize); 
     
     this->Table.Map (
-        [&newTable] (BUCKET & cont)
+        [&newTable] (Bucket & cont)
         {
             if (!cont.Empty())
             {
@@ -249,7 +249,7 @@ void HashTableClsAdr<Data>::Clear()
 {
     unsigned long count = 0;
     Table.Map(
-        [&count](BUCKET & cont)
+        [&count](Bucket & cont)
         {
             if (!cont.Empty())
             {    

@@ -33,12 +33,12 @@ protected:
   #define LOAD_FACTOR_CLSADR 1.5
   #define REDUCE_LOAD_FACTOR_CLSADR 0.5
 
-  typedef BST<Data> BUCKET;
-  // typedef List<Data> BUCKET;
+  // typedef BST<Data> Bucket;
+  typedef List<Data> Bucket;
 
   using HashTable<Data>::tableSize; //size of the Table
   using HashTable<Data>::size; //number of elements
-  Vector <BUCKET> Table;
+  Vector <Bucket> Table;
 
 public:
 
