@@ -21,15 +21,11 @@ class Vector : public virtual ResizableContainer, public virtual LinearContainer
 
 private:
 
-  // ...
-
 protected:
 
   using Container::size;
   
   Data * A = nullptr;
-
-  // ...
 
 public:
 
