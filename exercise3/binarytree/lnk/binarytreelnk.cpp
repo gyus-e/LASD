@@ -281,7 +281,18 @@ BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(BinaryTreeLnk<Data> && that
 template <typename Data>
 bool BinaryTreeLnk<Data>::operator==(const BinaryTreeLnk<Data> & that)
 {
-    return (*(this->root) == *(that.root));
+    if (this->Empty() || that.Empty())
+    {
+        return this->Empty() && that.Empty();
+    }
+    else if (this->Size() != that.Size())
+    {
+        return false;
+    }
+    else 
+    {
+        return (*(this->root) == *(that.root));
+    }
 }
 
 template <typename Data>

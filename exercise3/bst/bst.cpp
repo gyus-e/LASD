@@ -48,6 +48,12 @@ template <typename Data>
 bool BST<Data>::operator==(const BST<Data> & that) const
 {
     // return ((BinaryTreeLnk<Data> *) this)->BinaryTreeLnk<Data>::operator==((BinaryTreeLnk<Data>)that);
+
+    if (this->Empty() || that.Empty())
+    {
+        return this->Empty() && that.Empty();
+    }
+
     if (this->Size() != that.Size())
     {
         return false;
@@ -700,11 +706,16 @@ const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToSu
 template <typename Data>
 bool BST<Data>::Insert(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
+    if (curr == nullptr)
+    {
+        throw std::logic_error("From insert (copy): curr is nullptr");
+    }
+
     if (*curr == nullptr)
     {
         try
         {
-            *curr = new NodeLnk (d);
+            *curr = new BinaryTreeLnk<Data>::NodeLnk (d);
         }
         catch (std::bad_alloc & exc)
         {
@@ -715,11 +726,13 @@ bool BST<Data>::Insert(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
     
     else if ((*curr)->Element() > d)
     {
-        return Insert (d, (*curr)->SX());
+        // return Insert (d, (*curr)->SX());
+        return Insert (d, &((*curr)->Sx));
     }
     else if ((*curr)->Element() < d)
     {
-        return Insert (d, (*curr)->DX());
+        // return Insert (d, (*curr)->DX());
+        return Insert (d, &((*curr)->Dx));
     }
     else //if ((*curr)->Element() == d)
     {
@@ -731,11 +744,16 @@ bool BST<Data>::Insert(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** 
 template <typename Data>
 bool BST<Data>::Insert(Data && d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
+    if (curr == nullptr)
+    {
+        throw std::logic_error("From insert (move): curr is nullptr");
+    }
+
     if (*curr == nullptr)
     {
         try
         {
-            *curr = new NodeLnk (std::move(d));
+            *curr = new BinaryTreeLnk<Data>::NodeLnk (std::move(d));
         }
         catch (std::bad_alloc & exc)
         {
@@ -746,11 +764,11 @@ bool BST<Data>::Insert(Data && d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
     
     else if ((*curr)->Element() > d)
     {
-        return Insert (d, (*curr)->SX());
+        return Insert (std::move(d), &((*curr)->Sx));
     }
     else if ((*curr)->Element() < d)
     {
-        return Insert (d, (*curr)->DX());
+        return Insert (std::move(d), &((*curr)->Dx));
     }
     else //if ((*curr)->Element() == d)
     {
