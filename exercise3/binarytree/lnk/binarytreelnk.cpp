@@ -225,7 +225,7 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> && con)
 
 //Copy constructor
 template <typename Data>
-BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
+BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk<Data> & that)
 {
     try
     {     
@@ -241,24 +241,29 @@ BinaryTreeLnk<Data>::BinaryTreeLnk(const BinaryTreeLnk & that)
 
 //Copy assignment
 template <typename Data>
-BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk & that)
+BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk<Data> & that)
 {
-    try
-    {     
-        this->root = new NodeLnk (*that.root);
-    }
-    catch(std::bad_alloc & e)
+    this->Clear();
+
+    if (!that.Empty())
     {
-        throw;
+        try
+        {     
+            this->root = new NodeLnk (*that.root);
+        }
+        catch(std::bad_alloc & e)
+        {
+            throw;
+        }
+        this->size = that.size;
     }
-    
-    this->size = that.size;
+
     return *this;
 }
 
 //Move constructor
 template <typename Data>
-BinaryTreeLnk<Data>::BinaryTreeLnk (BinaryTreeLnk && that) noexcept
+BinaryTreeLnk<Data>::BinaryTreeLnk (BinaryTreeLnk<Data> && that) noexcept
 {
     std::swap (this->root, that.root);
     std::swap (this->size, that.size);
@@ -266,7 +271,7 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (BinaryTreeLnk && that) noexcept
 
 //Move assignment
 template <typename Data>
-BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that)
+BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(BinaryTreeLnk<Data> && that)
 {
     std::swap (this->root, that.root);
     std::swap (this->size, that.size);
@@ -274,13 +279,13 @@ BinaryTreeLnk<Data> & BinaryTreeLnk<Data>::operator=(BinaryTreeLnk && that)
 }
 
 template <typename Data>
-bool BinaryTreeLnk<Data>::operator==(const BinaryTreeLnk & that)
+bool BinaryTreeLnk<Data>::operator==(const BinaryTreeLnk<Data> & that)
 {
     return (*(this->root) == *(that.root));
 }
 
 template <typename Data>
-bool BinaryTreeLnk<Data>::operator!=(const BinaryTreeLnk & that)
+bool BinaryTreeLnk<Data>::operator!=(const BinaryTreeLnk<Data> & that)
 {
     return (*(this->root) != *(that.root));
 }

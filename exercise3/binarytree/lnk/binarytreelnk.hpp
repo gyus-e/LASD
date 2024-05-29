@@ -86,10 +86,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  BinaryTreeLnk(const BinaryTreeLnk &);
+  BinaryTreeLnk(const BinaryTreeLnk<Data> &);
 
   // Move constructor
-  BinaryTreeLnk(BinaryTreeLnk &&) noexcept;
+  BinaryTreeLnk(BinaryTreeLnk<Data> &&) noexcept;
 
   /* ************************************************************************ */
 
@@ -99,16 +99,16 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  BinaryTreeLnk & operator=(const BinaryTreeLnk &);
+  BinaryTreeLnk & operator=(const BinaryTreeLnk<Data> &);
 
   // Move assignment
-  BinaryTreeLnk & operator=(BinaryTreeLnk &&);
+  BinaryTreeLnk & operator=(BinaryTreeLnk<Data> &&);
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BinaryTreeLnk &);
-  bool operator!=(const BinaryTreeLnk &);
+  bool operator==(const BinaryTreeLnk<Data> &);
+  bool operator!=(const BinaryTreeLnk<Data> &);
 
   /* ************************************************************************ */
 
