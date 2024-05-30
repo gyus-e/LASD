@@ -362,14 +362,7 @@ void HashTableOpnAdr<Data>::Clear()
 template <typename Data>
 unsigned long HashTableOpnAdr<Data>::HashKey(const Data & dat, const unsigned long i) const
 {
-    return (this->HashKey(dat) + (i * this->coprimeFun(dat))) % this->tableSize;
-}
-
-//Deve produrre sempre numeri dispari (coprimi con tableSize, che è una potenza di 2)
-template <typename Data>
-unsigned long HashTableOpnAdr<Data>::coprimeFun (const Data & dat) const 
-{
-    return ( ( (this->acoeff + this->bcoeff) % this->prime ) * 2 + 1); 
+    return (this->HashKey(dat) + ((i*i) + i)/2)  % this->tableSize;
 }
 
 template <typename Data>

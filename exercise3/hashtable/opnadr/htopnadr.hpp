@@ -112,8 +112,8 @@ protected:
   // Auxiliary member functions
   using HashTable<Data>::enchash;
   using HashTable<Data>::HashKey;
+
   unsigned long HashKey (const Data &, const unsigned long) const;
-  unsigned long coprimeFun (const Data &) const;
   inline void GarbageCollect ();
   void InitFlag ();
 };
