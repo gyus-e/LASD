@@ -100,22 +100,28 @@ inline void LinearContainer<Data>::Traverse(TraverseFun traverseFun) const
 template <typename Data>
 void LinearContainer<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 {
-    for (unsigned long i = 0; i < this->Size(); i++)
-    {
-        traverseFun (this->operator[](i));
+    if (!this->Empty())
+    {    
+        for (unsigned long i = 0; i < this->Size(); i++)
+        {
+            traverseFun (this->operator[](i));
+        }
     }
 }
 
 template <typename Data>
 void LinearContainer<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 {
-    for (unsigned long i = (this->Size() - 1); i >= 0; i--)
-    {
-        if ((long) i < 0)
+    if (!this->Empty())
+    {    
+        for (unsigned long i = (this->Size() - 1); i >= 0; i--)
         {
-            return;
+            if ((long) i < 0)
+            {
+                return;
+            }
+            traverseFun (this->operator[](i));
         }
-        traverseFun (this->operator[](i));
     }
 }
 
@@ -128,22 +134,28 @@ inline void LinearContainer<Data>::Map(MapFun mapFun)
 template <typename Data>
 void LinearContainer<Data>::PreOrderMap(MapFun mapFun) 
 {
-    for (unsigned long i = 0; i < this->Size(); i++)
+    if (!this->Empty())
     {
-        mapFun ((*this)[i]);
+        for (unsigned long i = 0; i < this->Size(); i++)
+        {
+            mapFun ((*this)[i]);
+        }
     }
 }
 
 template <typename Data>
 void LinearContainer<Data>::PostOrderMap(MapFun mapFun) 
 {
-    for (unsigned long i = this->Size() - 1; i >= 0; i--)
+    if (!this->Empty())
     {
-        if ((long) i < 0)
+        for (unsigned long i = this->Size() - 1; i >= 0; i--)
         {
-            return;
+            if ((long) i < 0)
+            {
+                return;
+            }
+            mapFun ((*this)[i]);
         }
-        mapFun ((*this)[i]);
     }
 }
 
