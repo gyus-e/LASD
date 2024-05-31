@@ -26,9 +26,9 @@ bool TraversableContainer<Data>::Exists(const Data & val) const noexcept
     this->Traverse (
         [val, &exists] (const Data & dat)
         {
-            if (!exists)
+            if (val == dat)
             {
-                exists = (val == dat);
+                exists = true;
             }
         }
     );
