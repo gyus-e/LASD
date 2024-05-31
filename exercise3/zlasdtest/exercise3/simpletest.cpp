@@ -30,62 +30,58 @@ void stestHashTableInt(lasd::HashTable<int> & ht, const lasd::LinearContainer<in
     for (int i = 0; i < 50; ++i) {
       vec[i] = 2 * (i - 25);
     }
-
-    //-50, -48, -46, -44...
-
-    Size(loctestnum, loctesterr, ht, true, 125); //1
+    Size(loctestnum, loctesterr, ht, true, 125);
     for (int i = 0; i < 127; i += 17) {
       Exists(loctestnum, loctesterr, ht, true, con[i]);
     }
     for (int i = 0; i < 127; i += 24) {
       Remove(loctestnum, loctesterr, ht, con[i]);
     }
-    Size(loctestnum, loctesterr, ht, true, 119); //16
+    Size(loctestnum, loctesterr, ht, true, 119);
     for (int i = 0; i < 127; i += 24) {
       Exists(loctestnum, loctesterr, ht, false, con[i]);
     }
-    CountHT(loctestnum, loctesterr, ht, vec, 1); //23
+    CountHT(loctestnum, loctesterr, ht, vec, 1);
     for (int i = 0; i < 127; i += 12) {
       InsertC(loctestnum, loctesterr, ht, con[i]);
     }
-    Size(loctestnum, loctesterr, ht, true, 125); //35
+    Size(loctestnum, loctesterr, ht, true, 125);
     for (int i = 0; i < 127; i += 20) {
       Exists(loctestnum, loctesterr, ht, true, con[i]);
     }
-    CountHT(loctestnum, loctesterr, ht, vec, 2); 
+    CountHT(loctestnum, loctesterr, ht, vec, 2);
     for (int i = 0; i < 127; i += 17) {
       Remove(loctestnum, loctesterr, ht, con[i]);
     }
-    Size(loctestnum, loctesterr, ht, true, 117); //52
+    Size(loctestnum, loctesterr, ht, true, 117);
     for (int i = 0; i < 127; i += 17) {
       Exists(loctestnum, loctesterr, ht, false, con[i]);
     }
-
-    CountHT(loctestnum, loctesterr, ht, vec, 2); //61
+    CountHT(loctestnum, loctesterr, ht, vec, 2);
     for (int i = 0; i < 127; i += 7) {
       InsertC(loctestnum, loctesterr, ht, con[i]);
     }
-    Size(loctestnum, loctesterr, ht, true, 119); //81: Errore! (inseriti 2 elementi di troppo?)
+    Size(loctestnum, loctesterr, ht, true, 119);
     for (int i = 0; i < 127; i += 7) {
       Exists(loctestnum, loctesterr, ht, true, con[i]);
     }
-    CountHT(loctestnum, loctesterr, ht, vec, 2); //101
+    CountHT(loctestnum, loctesterr, ht, vec, 2);
     ht.Resize(2003);
     for (int i = 0; i < 127; i += 17) {
       InsertC(loctestnum, loctesterr, ht, con[i]);
     }
     ht.Resize(4001);
-    Size(loctestnum, loctesterr, ht, true, 125); //110
+    Size(loctestnum, loctesterr, ht, true, 125);
     ht.Resize(61);
-    CountHT(loctestnum, loctesterr, ht, vec, 2); 
-    Empty(loctestnum, loctesterr, ht, false); 
+    CountHT(loctestnum, loctesterr, ht, vec, 2);
+    Empty(loctestnum, loctesterr, ht, false);
     ht.Clear();
-    Empty(loctestnum, loctesterr, ht, true); 
-    Size(loctestnum, loctesterr, ht, true, 0); 
-    InsertC(loctestnum, loctesterr, ht, con); //115
+    Empty(loctestnum, loctesterr, ht, true);
+    Size(loctestnum, loctesterr, ht, true, 0);
+    InsertC(loctestnum, loctesterr, ht, con);
     Empty(loctestnum, loctesterr, ht, false);
     Size(loctestnum, loctesterr, ht, true, 125);
-    CountHT(loctestnum, loctesterr, ht, vec, 2); //118
+    CountHT(loctestnum, loctesterr, ht, vec, 2);
   }
   catch (...) {
     loctestnum++; loctesterr++;
@@ -104,32 +100,23 @@ void stestHashTableInt(uint & testnum, uint & testerr) {
     for (uint i = 0; i < 127; i++) {
       vec[i] = pow(-2, i % 24) * ((61 * i + 29) % 127);
     }
-    
-    lasd::HashTableClsAdr<int> htclsadr(83, vec); 
 
+    lasd::HashTableClsAdr<int> htclsadr(83, vec);
     cout << endl << "Begin of HashTableClsAdr<int> Test:" << endl;
     stestHashTableInt(htclsadr, vec, loctestnum, loctesterr);
-
-    
-
     lasd::HashTableOpnAdr<int> htopnadr(83, vec);
-
     cout << endl << "Begin of HashTableOpnAdr<int> Test:" << endl;
     stestHashTableInt(htopnadr, vec, loctestnum, loctesterr);
     cout << "\n";
 
     lasd::HashTableClsAdr<int> cophtclsadr(htclsadr);
-    
-
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //237
-
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr.Clear();
-
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr = std::move(cophtclsadr);
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     cophtclsadr = htclsadr;
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //240: ERROR
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
 
     lasd::HashTableOpnAdr<int> cophtopnadr(htopnadr);
     EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
@@ -138,7 +125,7 @@ void stestHashTableInt(uint & testnum, uint & testerr) {
     htopnadr = std::move(cophtopnadr);
     NonEqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
     cophtopnadr = htopnadr;
-    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr); //244: ERROR
+    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
   }
   catch (...) {
     loctestnum++; loctesterr++;
@@ -216,13 +203,13 @@ void stestHashTableFloat(uint & testnum, uint & testerr) {
     cout << "\n";
 
     lasd::HashTableClsAdr<double> cophtclsadr(htclsadr);
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //267
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr.Clear();
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr = std::move(cophtclsadr);
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     cophtclsadr = htclsadr;
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //270: ERROR
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
 
     lasd::HashTableOpnAdr<double> cophtopnadr(htopnadr);
     EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
@@ -231,7 +218,7 @@ void stestHashTableFloat(uint & testnum, uint & testerr) {
     htopnadr = std::move(cophtopnadr);
     NonEqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
     cophtopnadr = htopnadr;
-    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr); //274: ERROR
+    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
   }
   catch (...) {
     loctestnum++; loctesterr++;
@@ -273,7 +260,7 @@ void stestHashTableString(lasd::HashTable<string> & ht, const lasd::LinearContai
     ht.Resize(3631);
     Size(loctestnum, loctesterr, ht, true, 106);
     ht.Resize(797);
-    Size(loctestnum, loctesterr, ht, true, 106); //121
+    Size(loctestnum, loctesterr, ht, true, 106);
     for (int i = 0; i < 127; i += 13) {
       InsertC(loctestnum, loctesterr, ht, con[i]);
     }
@@ -281,7 +268,7 @@ void stestHashTableString(lasd::HashTable<string> & ht, const lasd::LinearContai
       Exists(loctestnum, loctesterr, ht, true, con[i]);
     }
     ht.Resize(101);
-    Size(loctestnum, loctesterr, ht, true, 114); //142
+    Size(loctestnum, loctesterr, ht, true, 114);
   }
   catch (...) {
     loctestnum++; loctesterr++;
@@ -315,13 +302,13 @@ void stestHashTableString(uint & testnum, uint & testerr) {
     cout << "\n";
 
     lasd::HashTableClsAdr<string> cophtclsadr(htclsadr);
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //285
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr.Clear();
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     htclsadr = std::move(cophtclsadr);
     NonEqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
     cophtclsadr = htclsadr;
-    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr); //288: ERROR
+    EqualHT(loctestnum, loctesterr, cophtclsadr, htclsadr);
 
     lasd::HashTableOpnAdr<string> cophtopnadr(htopnadr);
     EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
@@ -330,7 +317,7 @@ void stestHashTableString(uint & testnum, uint & testerr) {
     htopnadr = std::move(cophtopnadr);
     NonEqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
     cophtopnadr = htopnadr;
-    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr); //292: ERROR
+    EqualHT(loctestnum, loctesterr, cophtopnadr, htopnadr);
   }
   catch (...) {
     loctestnum++; loctesterr++;

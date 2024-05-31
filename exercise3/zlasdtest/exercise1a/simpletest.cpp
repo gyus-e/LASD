@@ -116,38 +116,37 @@ void stestVectorString(uint & testnum, uint & testerr) {
   try {
     lasd::SortableVector<string> vec(2);
 
-    Empty(loctestnum, loctesterr, vec, false); //1
+    Empty(loctestnum, loctesterr, vec, false);
     Size(loctestnum, loctesterr, vec, true, 2);
 
-    SetAt(loctestnum, loctesterr, vec, true, 0, string("A")); //3
+    SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
     SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
 
-    GetFront(loctestnum, loctesterr, vec, true, string("A")); //5
+    GetFront(loctestnum, loctesterr, vec, true, string("A"));
     GetBack(loctestnum, loctesterr, vec, true, string("B"));
 
-    Exists(loctestnum, loctesterr, vec, true, string("A")); //7
+    Exists(loctestnum, loctesterr, vec, true, string("A"));
 
-    MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string(" ")); }); //8
+    MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string(" ")); });
     TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
     FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XA B "));
     FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XB A "));
 
-    Exists(loctestnum, loctesterr, vec, false, string("A")); //12
+    Exists(loctestnum, loctesterr, vec, false, string("A"));
 
     lasd::SortableVector<string> copvec(vec);
-    EqualVector(loctestnum, loctesterr, vec, copvec, true); //13
+    EqualVector(loctestnum, loctesterr, vec, copvec, true);
     MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string("!")); });
     NonEqualVector(loctestnum, loctesterr, vec, copvec, true);
 
     copvec = move(vec);
-    FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !")); //16
+    FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !"));
 
-    lasd::SortableVector<string> movvec(move(vec)); //vec = movvec    
-
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //17: error
+    lasd::SortableVector<string> movvec(move(vec));
+    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
     movvec.Sort();
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //18: error
-    SetAt(loctestnum, loctesterr, vec, false, 1, string("")); //19
+    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
+    SetAt(loctestnum, loctesterr, vec, false, 1, string(""));
     vec.Resize(1);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
 
