@@ -82,7 +82,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline void Clear() override {this->List<Data>::Clear();}
+  inline virtual void Clear() override {this->List<Data>::Clear();}
 
 protected:
 

@@ -105,7 +105,7 @@ public:
 
   // Specific member functions (inherited from ClearableContainer)
 
-  void Clear() override; // Override Container member
+  virtual void Clear() override; // Override Container member
 
 protected:
 

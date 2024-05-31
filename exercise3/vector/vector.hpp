@@ -15,20 +15,14 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class Vector : public virtual ResizableContainer, public virtual LinearContainer<Data> {
-  // Must extend ResizableContainer,
-  //             LinearContainer<Data>
-
-private:
-
+class Vector : public virtual ResizableContainer, public virtual LinearContainer<Data> 
+{
 protected:
 
   using Container::size;
-  
   Data * A = nullptr;
 
 public:
-
   // Default constructor
   Vector () = default;
 
@@ -70,7 +64,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  void Clear() override; // Override ClearableContainer member
+  virtual virtual void Clear() override; // Override ClearableContainer member
 
   /* ************************************************************************ */
 
@@ -92,11 +86,6 @@ public:
   inline Data & Back() override; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
 
   inline bool Empty () const noexcept override {return this->A == nullptr || this->size == 0;}
-
-protected:
-
-  // Auxiliary functions, if necessary!
-
 };
 
 /* ************************************************************************** */

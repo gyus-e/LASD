@@ -138,7 +138,7 @@ public:
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
-  inline void Clear() override {this->Resize(0);} // Override ClearableContainer member
+  inline virtual void Clear() override {this->Resize(0);} // Override ClearableContainer member
 
 };
 
