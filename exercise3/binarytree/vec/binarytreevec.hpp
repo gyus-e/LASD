@@ -18,43 +18,36 @@ namespace lasd {
 template <typename Data>
 class BinaryTreeVec : public virtual MutableBinaryTree<Data> {
 
-private:
-
-  // ...
-
 protected:
-
-  // ...
 
   struct NodeVec : public virtual MutableBinaryTree<Data>::MutableNode
   {
-
-  private:
-
-    // ...
-
   protected:
-
     Data elem {};
     unsigned long idx = 0;
     BinaryTreeVec * tree = nullptr;
 
   public:
-
-    friend class BinaryTreeVec<Data>;
-    
     NodeVec () = default;
-    NodeVec (const Data & d) : elem (d) {}
-    NodeVec (Data && d) {this->elem = std::move(d);}
-    NodeVec (const NodeVec & that) : elem(that.elem), idx(that.idx), tree(that.tree) {}
-    NodeVec (NodeVec && that) noexcept {std::swap (this->elem, that.elem); std::swap (this->idx, that.idx); std::swap (this->tree, that.tree);}
+
+    NodeVec (const Data &);
+    NodeVec (Data &&);
     
+    NodeVec (const NodeVec &);
+    NodeVec (NodeVec &&) noexcept;
+
+    NodeVec & operator= (const NodeVec &);
+    NodeVec & operator= (NodeVec &&);
+
     virtual ~NodeVec () = default;
+
+    bool operator== (const NodeVec &) const;
+    bool operator!= (const NodeVec &) const;
     
-    inline Data & Element () override {return this->elem;}
-    inline const Data & Element () const override {return this->elem;}
+    inline Data & Element () override;
+    inline const Data & Element () const override;
     
-    inline bool IsLeaf() const noexcept override {return !(this->HasLeftChild() || this->HasRightChild());} 
+    inline bool IsLeaf() const noexcept override;
     
     inline bool HasLeftChild() const noexcept override;
     inline bool HasRightChild() const noexcept override;
@@ -64,11 +57,14 @@ protected:
 
     typename MutableBinaryTree<Data>::MutableNode & RightChild() override; // (concrete function must throw std::out_of_range when not existent)    
     const typename BinaryTree<Data>::Node & RightChild() const override; // (concrete function must throw std::out_of_range when not existent)
+  
+    friend class BinaryTreeVec<Data>;
+    friend class Vector<Data>;
   };
   
-  using MutableBinaryTree<Data>::size; //real size of the vector
-  unsigned long dim = 0; //amount of nodes in the tree
-  Vector<NodeVec *> * vec = nullptr;
+  using MutableBinaryTree<Data>::size; //amount of elements in the tree
+  unsigned long vecSize = 0; //real size of the vector
+  Vector<NodeVec> vec;
 
 public:
 
@@ -92,7 +88,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  virtual ~BinaryTreeVec();
+  virtual ~BinaryTreeVec() = default;
 
   /* ************************************************************************ */
 
@@ -124,9 +120,9 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  void Clear() override; // Override ClearableContainer member
+  virtual void Clear() override; // Override ClearableContainer member
 
-  inline bool Empty() const noexcept override;
+  inline virtual bool Empty() const noexcept override;
 
   /* ************************************************************************ */
 
@@ -142,13 +138,9 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-
   void BreadthMap(MapFun) override; // Override BreadthMappableContainer member
-
-protected:
-
-  // Auxiliary functions, if necessary!
-
+  
+  friend class Vector<Data>;
 };
 
 /* ************************************************************************** */
