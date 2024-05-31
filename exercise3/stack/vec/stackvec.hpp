@@ -9,9 +9,9 @@
 
 /* ************************************************************************** */
 #define INIT_SIZE 16 
-#define REDUCE_THRESHOLD 4
+#define REDUCE_THRESHOLD 0.2
 #define INCREASE_FACTOR 2
-#define REDUCE_FACTOR 2
+#define REDUCE_FACTOR 0.5
 
 namespace lasd {
 

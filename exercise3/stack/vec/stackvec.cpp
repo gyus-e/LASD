@@ -100,10 +100,9 @@ void StackVec<Data>::Pop()
     }
     
     this->top--;
-    if (this->top < (this->size / REDUCE_THRESHOLD))
+    if (this->top < (this->size * REDUCE_THRESHOLD) && (this->size * REDUCE_THRESHOLD > INIT_SIZE))
     {
-        unsigned long newSize = (this->size / REDUCE_FACTOR);
-        this->Resize(newSize);
+        this->Resize(this->size * REDUCE_FACTOR);
     }
 }
 
@@ -127,8 +126,7 @@ template <typename Data>
 void StackVec<Data>::Push(const Data & dat) {
     if (this->top == this->size)
     {
-        unsigned long newSize = this->size * INCREASE_FACTOR;
-        this->Resize(newSize);
+        this->Resize(this->size * INCREASE_FACTOR);
     }
     this->A[top] = dat;
     top++;
@@ -138,8 +136,7 @@ template <typename Data>
 void StackVec<Data>::Push(Data && dat) {
     if (this->top == this->size)
     {
-        unsigned long newSize = this->size * INCREASE_FACTOR;
-        this->Resize(newSize);
+        this->Resize(this->size * INCREASE_FACTOR);
     }
     this->A[top] = std::move(dat);
     top++;
