@@ -172,7 +172,7 @@ template <typename Data>
 const Data & BST<Data>::Predecessor (const Data & d) const // (concrete function must throw std::length_error when not found)
 {
     const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = FindPointerToPredecessor(d, &(root));
-    if (*ret == nullptr)
+    if (ret == nullptr || *ret == nullptr)
     {
         throw std::length_error("Predecessor not found.");
     }
@@ -217,7 +217,7 @@ template <typename Data>
 const Data & BST<Data>::Successor(const Data & d) const// (concrete function must throw std::length_error when not found)
 {
     const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = this->FindPointerToSuccessor (d, &root);
-    if (*ret == nullptr)
+    if (ret == nullptr || *ret == nullptr)
     {
         throw std::length_error("Successor not found.");
     }
@@ -594,12 +594,12 @@ typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToPredecessor(con
     {
         if ((*curr)->Element() >= d)
         {
-            return FindPointerToPredecessor(d, (*curr)->SX());
+            return FindPointerToPredecessor(d, &((*curr)->Sx));
         }
         else 
         {
-            NodeLnk ** ret = FindPointerToPredecessor(d, (*curr)->DX());
-            if (ret == nullptr)
+            NodeLnk ** ret = FindPointerToPredecessor(d, &((*curr)->Dx));
+            if (ret == nullptr || *ret == nullptr)
             {
                 return curr;
             }
@@ -623,12 +623,12 @@ const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToPr
     {
         if ((*curr)->Element() >= d)
         {
-            return FindPointerToPredecessor(d, (*curr)->SX());
+            return FindPointerToPredecessor(d, &((*curr)->Sx));
         }
         else 
         {
-            const NodeLnk * const * ret = FindPointerToPredecessor(d, (*curr)->DX());
-            if (ret == nullptr)
+            const NodeLnk * const * ret = FindPointerToPredecessor(d, &((*curr)->Dx));
+            if (ret == nullptr || *ret == nullptr)
             {
                 return curr;
             }
@@ -648,16 +648,16 @@ const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToPr
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToSuccessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr && (*curr) != nullptr)
     {
         if ((*curr)->Element() <= d)
         {
-            return FindPointerToSuccessor(d, (*curr)->DX());
+            return FindPointerToSuccessor(d, &((*curr)->Dx));
         }
         else 
         {
-            NodeLnk ** ret = FindPointerToSuccessor(d, (*curr)->SX());
-            if (ret == nullptr)
+            NodeLnk ** ret = FindPointerToSuccessor(d, &((*curr)->Sx));
+            if (ret == nullptr || *ret == nullptr)
             {
                 return curr;
             }
@@ -677,16 +677,16 @@ typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToSuccessor(const
 template <typename Data>
 const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToSuccessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * const * curr) const
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr && (*curr) != nullptr)
     {
         if ((*curr)->Element() <= d)
         {
-            return FindPointerToSuccessor(d, (*curr)->DX());
+            return FindPointerToSuccessor(d, &((*curr)->Dx));
         }
         else 
         {
-            const NodeLnk * const * ret = FindPointerToSuccessor(d, (*curr)->SX());
-            if (ret == nullptr)
+            const NodeLnk * const * ret = FindPointerToSuccessor(d, &((*curr)->Sx));
+            if (ret == nullptr || *ret == nullptr)
             {
                 return curr;
             }
