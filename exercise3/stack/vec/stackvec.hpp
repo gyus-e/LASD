@@ -94,7 +94,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline virtual virtual void Clear() override {((Vector<Data>)(* this)).Clear(); this->top = 0;} // Override ClearableContainer member
+  inline virtual void Clear() override {((Vector<Data>)(* this)).Clear(); this->top = 0;} // Override ClearableContainer member
 
 protected:
 
