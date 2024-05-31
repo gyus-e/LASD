@@ -9,12 +9,15 @@ template <typename Accumulator>
 Accumulator TraversableContainer<Data>::Fold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
-    this->Traverse (
-        [&acc, foldFun] (const Data & dat)
-        {
-            acc = foldFun (dat, acc);
-        }
-    );
+    if (!this->Empty())
+    {
+        this->Traverse (
+            [&acc, foldFun] (const Data & dat)
+            {
+                acc = foldFun (dat, acc);
+            }
+        );
+    }
     return acc;
 }
 
@@ -23,15 +26,18 @@ template <typename Data>
 bool TraversableContainer<Data>::Exists(const Data & val) const noexcept
 {
     bool exists = false;
-    this->Traverse (
-        [val, &exists] (const Data & dat)
-        {
-            if (val == dat)
+    if (!this->Empty())
+    {
+        this->Traverse (
+            [val, &exists] (const Data & dat)
             {
-                exists = true;
+                if (val == dat)
+                {
+                    exists = true;
+                }
             }
-        }
-    );
+        );
+    }
     return exists;
 }
 
@@ -86,12 +92,15 @@ template <typename Accumulator>
 Accumulator PreOrderTraversableContainer<Data>::PreOrderFold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
-    this->PreOrderTraverse (
-        [&acc, foldFun] (const Data & dat)
-        {
-            acc = foldFun (dat, acc);
-        }
-    );
+    if (!this->Empty())
+    {
+        this->PreOrderTraverse (
+            [&acc, foldFun] (const Data & dat)
+            {
+                acc = foldFun (dat, acc);
+            }
+        );
+    }
     return acc;
 }
 
@@ -104,12 +113,15 @@ template <typename Accumulator>
 Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
-    this->PostOrderTraverse (
-        [&acc, foldFun] (const Data & dat)
-        {
-            acc = foldFun (dat, acc);
-        }
-    );
+    if (!this->Empty())
+    {
+        this->PostOrderTraverse (
+            [&acc, foldFun] (const Data & dat)
+            {
+                acc = foldFun (dat, acc);
+            }
+        );
+    }
     return acc;
 }
 
@@ -121,12 +133,15 @@ template <typename Accumulator>
 Accumulator InOrderTraversableContainer<Data>::InOrderFold (FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
-    this->InOrderTraverse (
-        [&acc, foldFun] (const Data & dat)
-        {
-            acc = foldFun (dat, acc);
-        }
-    );
+    if (!this->Empty())
+    {
+        this->InOrderTraverse (
+            [&acc, foldFun] (const Data & dat)
+            {
+                acc = foldFun (dat, acc);
+            }
+        );
+    }
     return acc;
 }
 
@@ -138,12 +153,15 @@ template <typename Accumulator>
 Accumulator BreadthTraversableContainer<Data>::BreadthFold (FoldFun<Accumulator> foldFun, const Accumulator & init) const
 {
     Accumulator acc = init;
-    this->BreadthTraverse (
-        [&acc, foldFun] (const Data & dat)
-        {
-            acc = foldFun (dat, acc);
-        }
-    );
+    if (!this->Empty())
+    {
+        this->BreadthTraverse (
+            [&acc, foldFun] (const Data & dat)
+            {
+                acc = foldFun (dat, acc);
+            }
+        );
+    }
     return acc;
 }
 
