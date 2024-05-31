@@ -86,7 +86,7 @@ public:
 
   // Specific member functions (inherited from Container)
 
-  inline bool Empty() const noexcept override {return (this->dim == 0);}
+  inline virtual bool Empty() const noexcept override {return (this->dim == 0);}
 
   inline unsigned long Size() const noexcept override {return this->dim;}
 

@@ -128,7 +128,7 @@ public:
 
   virtual void Clear() override; // Override ClearableContainer member
 
-  inline bool Empty() const noexcept override;
+  inline virtual bool Empty() const noexcept override;
 
 };
 
