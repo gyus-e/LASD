@@ -222,63 +222,8 @@ namespace mytst
     }
   }
 
-  void Test1A ()
-  {
-    try 
-    {
-      lasd::Vector<T> vec (127);
-      randInit(vec);
-      print(vec);
-
-      std::cout<<std::endl;
-      
-      lasd::Vector<T> movVec (std::move(vec));
-      print(movVec);
-      std::cout<<(movVec == vec ? "error" : "correct")<<std::endl;
-
-      std::cout<<std::endl;
-
-      lasd::Vector<T> copVec (movVec);
-      print(copVec);
-      std::cout<<(movVec != copVec ? "error" : "correct")<<std::endl;
-
-      std::cout<<std::endl;
-
-      lasd::Vector<T> movVec2 = std::move(copVec);
-      print(movVec2);
-      std::cout<<(movVec != movVec2 ? "error" : "correct")<<std::endl;
-      std::cout<<(copVec == movVec2 ? "error" : "correct")<<std::endl;
-
-      std::cout<<std::endl;
-
-      lasd::Vector<T> copVec2 = movVec2;
-      print(copVec2);
-      std::cout<<(copVec2 != movVec2 ? "error" : "correct")<<std::endl;
-      std::cout<<(copVec2 == movVec ? "correct" : "error")<<std::endl;
-
-      std::cout<<std::endl;
-
-      lasd::Vector<T> vec2 (450);
-      randInit(vec2);
-      print(vec2);
-      std::cout<<std::endl;
-      copVec2 = std::move(vec2);
-      print(copVec2);
-      std::cout<<std::endl;
-
-      lasd::Vector<T> vec3 (std::move(copVec2));
-      print(vec3);
-      std::cout<<std::endl;
-
-    }
-    catch (std::exception & exc)
-    {
-      std::cerr<<exc.what()<<std::endl;
-    }
-  }
-
   template <typename BT>
-  void Test2A ()
+  void TestBinaryTree ()
   {
     try 
     {
@@ -355,7 +300,6 @@ namespace mytst
       std::cout<<"Inorder:\n";
       T k {};
       lasd::BTInOrderMutableIterator itr (btmov);
-      std::cout<<"constructed\n";
       while (!itr.Terminated())
       {
         k = dist(gen);
@@ -425,6 +369,94 @@ namespace mytst
     {
       std::cerr<<e.what()<<std::endl;
     }
+  }
+
+  void Test1A ()
+  {
+    try 
+    {
+      lasd::Vector<T> vec (127);
+      randInit(vec);
+      print(vec);
+
+      std::cout<<std::endl;
+      
+      lasd::Vector<T> movVec (std::move(vec));
+      print(movVec);
+      std::cout<<(movVec == vec ? "error" : "correct")<<std::endl;
+
+      std::cout<<std::endl;
+
+      lasd::Vector<T> copVec (movVec);
+      print(copVec);
+      std::cout<<(movVec != copVec ? "error" : "correct")<<std::endl;
+
+      std::cout<<std::endl;
+
+      lasd::Vector<T> movVec2 = std::move(copVec);
+      print(movVec2);
+      std::cout<<(movVec != movVec2 ? "error" : "correct")<<std::endl;
+      std::cout<<(copVec == movVec2 ? "error" : "correct")<<std::endl;
+
+      std::cout<<std::endl;
+
+      lasd::Vector<T> copVec2 = movVec2;
+      print(copVec2);
+      std::cout<<(copVec2 != movVec2 ? "error" : "correct")<<std::endl;
+      std::cout<<(copVec2 == movVec ? "correct" : "error")<<std::endl;
+
+      std::cout<<std::endl;
+
+      lasd::Vector<T> vec2 (450);
+      randInit(vec2);
+      print(vec2);
+      std::cout<<std::endl;
+      copVec2 = std::move(vec2);
+      print(copVec2);
+      std::cout<<std::endl;
+
+      lasd::Vector<T> vec3 (std::move(copVec2));
+      print(vec3);
+      std::cout<<std::endl;
+
+    }
+    catch (std::exception & exc)
+    {
+      std::cerr<<exc.what()<<std::endl;
+    }
+  }
+
+  void Test2A ()
+  {
+    mytst::TestBinaryTree<lasd::BinaryTreeLnk<T>>();
+    std::cout<<std::endl;
+    mytst::TestBinaryTree<lasd::BinaryTreeVec<T>>();
+    std::cout<<std::endl;
+
+    lasd::BinaryTreeLnk<T> btLnk;
+    randInit(btLnk);
+
+    lasd::BinaryTreeVec<T> btVec = btLnk;
+
+    std::cout<<(btVec.lasd::BinaryTree<T>::operator==(btLnk) ? "" : "error: not equals\n");
+    
+    btLnk.Clear();
+
+    std::cout<<(btVec.lasd::BinaryTree<T>::operator!=(btLnk) ? "" : "error: equals after clear\n");
+
+    btLnk = btVec;
+
+    std::cout<<(btLnk.lasd::BinaryTree<T>::operator==(btVec) ? "" : "error: not equals\n");
+
+    btVec.Clear();
+
+    btVec = std::move(btLnk);
+    std::cout<<(btLnk.Empty() ? "" : "error: not empty after move\n");
+    std::cout<<(btLnk.lasd::BinaryTree<T>::operator!=(btVec) ? "" : "error: equals\n");
+
+    btLnk = std::move(btVec);
+    std::cout<<(btVec.Empty() ? "" : "error: not empty after move\n");
+    std::cout<<(btLnk.lasd::BinaryTree<T>::operator!=(btVec) ? "" : "error: equals\n");
   }
 
   void Test2B ()
@@ -620,16 +652,14 @@ void mytest() {
 
   // mytst::Test1A();
   // std::cout<<std::endl;
-  // mytst::Test2A<lasd::BinaryTreeLnk<T>>();
-  // std::cout<<std::endl;
-  mytst::Test2A<lasd::BinaryTreeVec<T>>();
+  mytst::Test2A();
   std::cout<<std::endl;
   mytst::Test2B();
   std::cout<<std::endl;
-  mytst::Test3<lasd::HashTableClsAdr<T>>();
-  std::cout<<std::endl;
-  mytst::Test3<lasd::HashTableOpnAdr<T>>();
-  std::cout<<std::endl;
+  // mytst::Test3<lasd::HashTableClsAdr<T>>();
+  // std::cout<<std::endl;
+  // mytst::Test3<lasd::HashTableOpnAdr<T>>();
+  // std::cout<<std::endl;
 
   std::cout<<"End of mytest"<<std::endl;
   return;
