@@ -70,7 +70,7 @@ public:
 
   // Specific member function (inherited from ResizableContainer)
 
-  void Resize(unsigned long); // Override ResizableContainer member
+  virtual void Resize(unsigned long); // Override ResizableContainer member
 
   /* ************************************************************************ */
 
@@ -85,26 +85,17 @@ public:
   inline const Data & Back() const override; // Override (NonMutable) LinearContainer member (must throw std::length_error when empty)
   inline Data & Back() override; // Override (Mutable) LinearContainer member (must throw std::length_error when empty)
 
-  inline virtual bool Empty () const noexcept override {return this->A == nullptr || this->size == 0;}
+  inline virtual bool Empty () const noexcept override;
 };
 
 /* ************************************************************************** */
 
 template <typename Data>
 class SortableVector : public Vector<Data>, public SortableLinearContainer<Data> {
-  // Must extend Vector<Data>,
-  //             SortableLinearContainer<Data>
-
-private:
-
-  // ...
-
 protected:
 
   using Container::size;
   using Vector<Data>::A;
-
-  // ...
 
 public:
 
@@ -121,10 +112,10 @@ public:
   /* ************************************************************************ */
 
   // Copy constructor
-  SortableVector(const SortableVector<Data> & that) : Vector<Data> ((const Vector<Data>) that) {}
+  SortableVector(const SortableVector<Data> & that);
 
   // Move constructor
-  SortableVector(SortableVector<Data> && that) noexcept : Vector<Data> (std::move((Vector<Data>) that)) {}
+  SortableVector(SortableVector<Data> && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -134,15 +125,11 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  SortableVector operator=(const SortableVector & that) {(Vector<Data>) (*this) = (const Vector<Data>) that; return *this;}
+  SortableVector operator=(const SortableVector & that);
 
   // Move assignment
-  SortableVector operator=(SortableVector && that) {Vector<Data>::operator=(std::move(that)); return *this;}
-
-protected:
-
-  // Auxiliary functions, if necessary!
-
+  SortableVector operator=(SortableVector && that);
+  
 };
 
 /* ************************************************************************** */

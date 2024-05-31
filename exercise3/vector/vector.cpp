@@ -5,9 +5,9 @@ namespace lasd {
 
 //specific constructors
 template<typename Data>
-Vector<Data>::Vector (unsigned long sz) : Vector<Data> ()
+Vector<Data>::Vector (unsigned long sz)
 {
-    if (sz != 0)
+    if (sz > 0)
     {
         try 
         {
@@ -16,7 +16,7 @@ Vector<Data>::Vector (unsigned long sz) : Vector<Data> ()
         }
         catch (std::bad_alloc & exc)
         {
-            // std::cerr<<exc.what();
+            std::cerr<<exc.what();
             throw;
         }
     }
@@ -75,7 +75,6 @@ Vector<Data>::Vector (Vector<Data> && that) noexcept
 {
     std::swap(this->A, that.A);
     std::swap(this->size, that.size);
-    that.Clear();
 }
 
 //move operator
@@ -90,7 +89,6 @@ Vector<Data> & Vector<Data>::operator=(Vector && that)
         }
         std::swap (this->A, that.A);
         std::swap (this->size, that.size);
-        that.Clear();
     }
     return *this;
 }
@@ -99,14 +97,16 @@ Vector<Data> & Vector<Data>::operator=(Vector && that)
 template<typename Data>
 Vector<Data>::Vector (const Vector<Data> & that)
 {
+    this->A = nullptr;
     if (!that.Empty())
     {
         try 
         {
-            this->A = new Data [that.size];
+            this->A = new Data [that.size] {};
         }
         catch (std::bad_alloc & exc)
         {
+            std::cerr<<exc.what();
             throw;
         }
         this->size = that.size;
@@ -122,28 +122,41 @@ Vector<Data>::Vector (const Vector<Data> & that)
 template<typename Data>
 Vector<Data> & Vector<Data>::operator=(const Vector<Data> & that)
 {
-    if (*this != that)
+    if (this != &that)
     {
-        if (!this->Empty())
-        {
-            this->Clear();
-        }
-
         if (!that.Empty())
         {
+            Data* newArray = nullptr;
             try 
             {
-                this->A = new Data [that.size];
+                newArray = new Data[that.size] {};
             }
-            catch (std::bad_alloc & exc)
+            catch (std::bad_alloc& exc)
             {
+                std::cerr << exc.what();
                 throw;
             }
-            this->size = that.size;
-            for (unsigned long i = 0; i < this->size; i++) 
+
+            for (unsigned long i = 0; i < that.size; i++) 
             {
-                this->A[i] = that.A[i];
-            }        
+                newArray[i] = that.A[i];
+            }
+
+            if (this->A != nullptr)
+            {
+                delete[] this->A;
+            }
+            this->A = newArray;
+            this->size = that.size;
+        }
+        else
+        {
+            if (this->A != nullptr)
+            {
+                delete[] this->A;   
+                this->A = nullptr;
+            }
+            this->size = 0;
         }
     }
     return *this;
@@ -235,6 +248,7 @@ bool Vector<Data>::operator==(const Vector<Data> & that) const noexcept
     {
         return false;
     }
+
     for (unsigned long i = 0; i < this->Size(); i++)
     {
         if  (this->A[i] != that.A[i])
@@ -254,43 +268,44 @@ bool Vector<Data>::operator!=(const Vector<Data> & that) const noexcept
 template<typename Data>
 void Vector<Data>::Resize(unsigned long newSize)
 {
-    if (newSize == this->size)
-    {
-        return;
-    }
-
     if (newSize == 0)
     {
         this->Clear();
         return;
     }
 
-    Data * NewA = nullptr;
+    if (newSize == this->size)
+    {
+        return;
+    }
 
+    Data * newArray = nullptr;
+    
     try 
     {
-        NewA = new Data [newSize] {};
-    }
-    catch (std::bad_alloc & exc)
+        newArray = new Data [newSize] {};
+    } 
+    catch (std::bad_alloc & e)
     {
+        std::cerr<<e.what();
         throw;
     }
 
-    unsigned long minSize = std::min (this->size, newSize);
+    unsigned long minSize = std::min(this->size, newSize);
 
     if (this->A != nullptr)
     {
-        for (unsigned long i = 0; i < minSize; i++)
+        for (unsigned long i = 0; i < minSize; i++) 
         {
-            NewA [i] = this->A[i];
+            std::swap(newArray[i], this->A[i]);
         }
-
-        delete [] this->A;
-        this->A = nullptr;
     }
 
-    this->A = NewA;
+    Data * temp = this->A; 
+    this->A = newArray; 
     this->size = newSize;
+
+    delete [] temp;
 }
 
 template <typename Data>
@@ -304,30 +319,38 @@ void Vector<Data>::Clear()
     this->size = 0;
 } 
 
+template <typename Data>
+inline bool Vector<Data>::Empty () const noexcept 
+{
+    return this->A == nullptr && this->size == 0;
+}
+
 /* ************************************************************************** */
 
-/*
-//move operator
-template<typename Data>
-SortableVector<Data> SortableVector<Data>::operator=(SortableVector && that)
+// Copy constructor
+template <typename Data>
+SortableVector<Data>::SortableVector (const SortableVector<Data> & that) : Vector<Data> ((const Vector<Data> &) that) 
+{}
+
+// Move constructor
+template <typename Data>
+SortableVector<Data>::SortableVector (SortableVector<Data> && that) noexcept : Vector<Data> ((Vector<Data> &&) (that)) 
+{}
+
+ // Copy assignment
+template <typename Data>
+SortableVector<Data> SortableVector<Data>::operator=(const SortableVector<Data> & that) 
 {
-    
+    (Vector<Data>) (*this) = (const Vector<Data>) that; 
     return *this;
 }
 
-//copy operator
-template<typename Data>
-SortableVector<Data> SortableVector<Data>::operator=(const SortableVector & that)
+// Move assignment
+template <typename Data>
+SortableVector<Data> SortableVector<Data>::operator=(SortableVector<Data> && that) 
 {
-    if (this->Size() != that.Size())
-    {
-        this->Resize(that.Size());
-    }
-
-    for (unsigned long i = 0; i < that.Size(); i++)
-    {
-        this->A[i] = that.A[i];
-    }
+    Vector<Data>::operator=(std::move(that)); 
+    return *this;
 }
-*/
+
 }

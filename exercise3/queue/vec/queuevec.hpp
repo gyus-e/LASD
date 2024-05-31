@@ -9,9 +9,9 @@
 
 /* ************************************************************************** */
 #define INIT_SIZE 16 
-#define REDUCE_THRESHOLD 4
+#define REDUCE_THRESHOLD 0.2
 #define INCREASE_FACTOR 2
-#define REDUCE_FACTOR 2
+#define REDUCE_FACTOR 0.5
 
 namespace lasd {
 
@@ -19,13 +19,6 @@ namespace lasd {
 
 template <typename Data>
 class QueueVec : public virtual Queue<Data>, protected virtual Vector<Data> {
-  // Must extend Queue<Data>,
-  //             Vector<Data>
-
-private:
-
-  // ...
-
 protected:
 
   using Vector<Data>::size;
@@ -36,21 +29,21 @@ protected:
 public:
 
   // Default constructor
-  QueueVec() : Vector<Data> (INIT_SIZE), dim (0), head (0), tail (0) {}
+  QueueVec();
 
   /* ************************************************************************ */
 
   // Specific constructor
-  QueueVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), dim(cont.Size()), head (0), tail (cont.Size()-1) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A queue obtained from a TraversableContainer
-  QueueVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), dim(cont.Size()), head (0), tail (cont.Size()-1) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A queue obtained from a MappableContainer
+  QueueVec(const TraversableContainer<Data> & cont);
+  QueueVec(MappableContainer<Data> && cont);
 
   /* ************************************************************************ */
 
   // Copy constructor
-  QueueVec(const QueueVec & that) : Vector<Data> ((Vector<Data>) that), dim(that.dim), head (that.head), tail (that.tail) {}
+  QueueVec(const QueueVec & that);
 
-  // Move constructor
-  QueueVec(QueueVec && that) noexcept : Vector<Data> (std::move((Vector<Data>) (that))) {std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail);}
+  // Move constructor  
+  QueueVec(QueueVec && that) noexcept;
 
   /* ************************************************************************ */
 
@@ -60,11 +53,11 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  QueueVec & operator=(const QueueVec & that) {this->Vector<Data>::operator= ((Vector<Data>)(that)); this->dim = that.dim; this->head = that.head; this->tail = that.tail; return *this;}
+  QueueVec & operator=(const QueueVec & that);
 
   // Move assignment
-  QueueVec & operator=(QueueVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap (this->dim, that.dim); std::swap (this->head, that.head); std::swap (this->tail, that.tail); return *this;}
-
+  QueueVec & operator=(QueueVec && that);
+  
   /* ************************************************************************ */
 
   // Comparison operators
@@ -94,7 +87,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline virtual void Clear() override {((Vector<Data>)(* this)).Clear(); this->dim = 0; this->head = 0; this->tail = 0;} // Override ClearableContainer member
+  inline virtual void Clear() override; // Override ClearableContainer member
 
 protected:
 
