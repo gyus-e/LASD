@@ -16,7 +16,7 @@ bool BinaryTree<Data>::Node::operator==(const Node & that) const
 
     if (this->HasLeftChild() && that.HasLeftChild())
     {
-        ret &= this->LeftChild().operator==(that.LeftChild()) ; //ricorsione Sx 
+        ret &= (this->LeftChild() == that.LeftChild()) ; //ricorsione Sx 
     }
     else if (this->HasLeftChild() || that.HasLeftChild()) //se this ha figlio sx e that no, o viceversa
     {
@@ -25,7 +25,7 @@ bool BinaryTree<Data>::Node::operator==(const Node & that) const
     
     if (this->HasRightChild() && that.HasRightChild())
     {
-        ret &= this->RightChild().operator==(that.RightChild()); //ricorsione Dx
+        ret &= (this->RightChild() == that.RightChild()); //ricorsione Dx
     }
     else if (this->HasRightChild() || that.HasRightChild()) //se this ha figlio dx e that no, o viceversa
     {
@@ -128,6 +128,11 @@ bool BinaryTree<Data>::operator==(const BinaryTree & that) const
         return false;
     }
 
+    if (this->size != that.size)
+    {
+        return false;
+    }
+
     return this->Root() == that.Root();
 }
 
@@ -140,39 +145,46 @@ bool BinaryTree<Data>::operator!=(const BinaryTree & that) const
 template <typename Data>
 void BinaryTree<Data>::Traverse(TraverseFun traverseFun) const
 {
-    this->BreadthTraverse(traverseFun);
+    if (!this->Empty())
+    {    
+        this->BreadthTraverse(traverseFun);
+    }
 }
 
 template <typename Data>
 void BinaryTree<Data>::PreOrderTraverse(TraverseFun traverseFun) const
 {
-    const Node * root = &(this->Root());
-    if (root != nullptr)
-        root->PreOrderTraverse(traverseFun);
+    if (!this->Empty())
+    {
+        this->Root().PreOrderTraverse(traverseFun);
+    }
 }
 
 template <typename Data>
 void BinaryTree<Data>::PostOrderTraverse(TraverseFun traverseFun) const
 {
-    const Node * root = &(this->Root());
-    if (root != nullptr)
-        root->PostOrderTraverse(traverseFun);
+    if (!this->Empty())
+    {
+        this->Root().PostOrderTraverse(traverseFun);
+    }
 }
 
 template <typename Data>
 void BinaryTree<Data>::InOrderTraverse(TraverseFun traverseFun) const
 {
-    const Node * root = &(this->Root());
-    if (root != nullptr)
-        root->InOrderTraverse(traverseFun);
+    if (!this->Empty())
+    {
+        this->Root().InOrderTraverse(traverseFun);
+    }
 }
 
 template <typename Data>
 void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 {
-    const Node * root = &(this->Root());
-    if (root != nullptr)
-        root->BreadthTraverse(traverseFun);
+    if (!this->Empty())
+    {
+        this->Root().BreadthTraverse(traverseFun);
+    }
 }
 
 /* ************************************************************************** */
@@ -256,31 +268,46 @@ void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
 template <typename Data>
 void MutableBinaryTree<Data>::Map(MapFun mapFun)
 {
-    this->Root().BreadthMap(mapFun);
+    if (!this->Empty())
+    {
+        this->BreadthMap(mapFun);
+    }
 }
 
 template <typename Data>
 void MutableBinaryTree<Data>::PreOrderMap(MapFun mapFun)
 {
-    this->Root().PreOrderMap(mapFun);
+    if (!this->Empty())
+    {
+        this->Root().PreOrderMap(mapFun);
+    }
 }
 
 template <typename Data>
 void MutableBinaryTree<Data>::PostOrderMap(MapFun mapFun) 
 {
-    this->Root().PostOrderMap(mapFun);
+    if (!this->Empty())
+    {
+        this->Root().PostOrderMap(mapFun);
+    }
 }
 
 template <typename Data>
 void MutableBinaryTree<Data>::InOrderMap(MapFun mapFun) 
 {
-    this->Root().InOrderMap(mapFun);
+    if (!this->Empty())
+    {    
+        this->Root().InOrderMap(mapFun);
+    }
 }
 
 template <typename Data>
 void MutableBinaryTree<Data>::BreadthMap(MapFun mapFun) 
 {
-    this->Root().BreadthMap(mapFun);
+    if (!this->Empty())
+    {    
+        this->Root().BreadthMap(mapFun);
+    }
 }
 
 /* ************************************************************************** */
@@ -289,7 +316,7 @@ void MutableBinaryTree<Data>::BreadthMap(MapFun mapFun)
 template <typename Data>
 BTPreOrderIterator<Data>::BTPreOrderIterator (const BinaryTree<Data> & binTree)
 {
-    if (binTree.Size() != 0)
+    if (!binTree.Empty())
     {
         this->root = &binTree.Root();
         this->curr = this->root;
