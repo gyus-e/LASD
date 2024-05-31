@@ -71,29 +71,50 @@ Vector<Data>::~Vector ()
 
 //move constructor
 template<typename Data>
-Vector<Data>::Vector (Vector<Data> && that) noexcept : Vector<Data> ()
+Vector<Data>::Vector (Vector<Data> && that) noexcept
 {
     std::swap(this->A, that.A);
     std::swap(this->size, that.size);
-    // std::cout<<"vec size = "<<that.size<<std::endl;
+    that.Clear();
 }
 
 //move operator
 template<typename Data>
 Vector<Data> & Vector<Data>::operator=(Vector && that)
 {
-    std::swap (this->A, that.A);
-    std::swap (this->size, that.size);
+    if (*this != that)
+    {
+        if (!this->Empty())
+        {
+            this->Clear();
+        }
+        std::swap (this->A, that.A);
+        std::swap (this->size, that.size);
+        that.Clear();
+    }
     return *this;
 }
 
 //copy constructor
 template<typename Data>
-Vector<Data>::Vector (const Vector<Data> & that) : Vector<Data> (that.size)
+Vector<Data>::Vector (const Vector<Data> & that)
 {
-    for (unsigned long i = 0; i < this->size; i++) 
+    if (!that.Empty())
     {
-        this->A[i] = that.A[i];
+        try 
+        {
+            this->A = new Data [that.size];
+        }
+        catch (std::bad_alloc & exc)
+        {
+            throw;
+        }
+        this->size = that.size;
+        
+        for (unsigned long i = 0; i < this->size; i++) 
+        {
+            this->A[i] = that.A[i];
+        }
     }
 }
 
@@ -101,21 +122,30 @@ Vector<Data>::Vector (const Vector<Data> & that) : Vector<Data> (that.size)
 template<typename Data>
 Vector<Data> & Vector<Data>::operator=(const Vector<Data> & that)
 {
-    if (!this->Empty())
+    if (*this != that)
     {
-        this->Clear();
-    }
-
-    if (!that.Empty())
-    {
-        this->A = new Data [that.size];
-        this->size = that.size;
-        for (unsigned long i = 0; i < this->size; i++) 
+        if (!this->Empty())
         {
-            this->A[i] = that.A[i];
-    }
-    }
+            this->Clear();
+        }
 
+        if (!that.Empty())
+        {
+            try 
+            {
+                this->A = new Data [that.size];
+            }
+            catch (std::bad_alloc & exc)
+            {
+                throw;
+            }
+            this->size = that.size;
+            for (unsigned long i = 0; i < this->size; i++) 
+            {
+                this->A[i] = that.A[i];
+            }        
+        }
+    }
     return *this;
 }
 
@@ -123,8 +153,7 @@ Vector<Data> & Vector<Data>::operator=(const Vector<Data> & that)
 template<typename Data>
 inline Data & Vector<Data>::operator[](unsigned long idx)
 {
-    // std::cout<<"access at index "<<idx<<" on vector of size "<<this->size<<std::endl;
-    if (idx >= this->size || this->Empty())
+    if (this->Empty() || idx >= this->size)
     {
         throw std::out_of_range ("from vector::operator []");
     }
@@ -135,7 +164,7 @@ inline Data & Vector<Data>::operator[](unsigned long idx)
 template<typename Data>
 inline const Data & Vector<Data>::operator[](unsigned long idx) const 
 {
-    if (idx >= this->size || this->Empty())
+    if (this->Empty() || idx >= this->size)
     {
         throw std::out_of_range ("from vector::operator []");
     }
