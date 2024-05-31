@@ -89,7 +89,7 @@ void stestBinaryTreeFloat(lasd::MutableBinaryTree<double> & bt, uint & testnum, 
   uint loctestnum = 0, loctesterr = 0;
   try {
     lasd::BTPreOrderIterator<double> itr1(bt);
-    GetItrValue(loctestnum, loctesterr, itr1, true, 1.2);
+    GetItrValue(loctestnum, loctesterr, itr1, true, 1.2); //1
     ++itr1;
     GetItrValue(loctestnum, loctesterr, itr1, true, 0.3);
     ++itr1;
@@ -97,17 +97,17 @@ void stestBinaryTreeFloat(lasd::MutableBinaryTree<double> & bt, uint & testnum, 
     ++itr1;
     GetItrValue(loctestnum, loctesterr, itr1, true, 3.0);
     ++itr1;
-    Terminated(loctestnum, loctesterr, itr1, true);
+    Terminated(loctestnum, loctesterr, itr1, true); //5
     itr1.Reset();
     Terminated(loctestnum, loctesterr, itr1, false);
     ++itr1;
-    GetItrValue(loctestnum, loctesterr, itr1, true, 0.3);
+    GetItrValue(loctestnum, loctesterr, itr1, true, 0.3); //7
     itr1.Reset();
     lasd::BTPreOrderIterator<double> newitr1(move(itr1));
     itr1.Reset();
 
-    lasd::BTBreadthIterator<double> itr2(bt);
-    GetItrValue(loctestnum, loctesterr, itr2, true, 1.2);
+    lasd::BTBreadthIterator<double> itr2(bt); //iteratore creato
+    GetItrValue(loctestnum, loctesterr, itr2, true, 1.2); //8
     ++itr2;
     GetItrValue(loctestnum, loctesterr, itr2, true, 0.3);
     ++itr2;
@@ -117,8 +117,8 @@ void stestBinaryTreeFloat(lasd::MutableBinaryTree<double> & bt, uint & testnum, 
     ++itr2;
     Terminated(loctestnum, loctesterr, itr2, true);
     itr2.Reset();
-    Terminated(loctestnum, loctesterr, itr2, false);
-    ++itr2;
+    Terminated(loctestnum, loctesterr, itr2, false); //13
+    ++itr2; //Errore
     GetItrValue(loctestnum, loctesterr, itr2, true, 0.3);
     itr2.Reset();
     lasd::BTBreadthIterator<double> newitr2(move(itr2));
@@ -174,10 +174,10 @@ void stestBinaryTreeFloat(uint & testnum, uint & testerr) {
   cout << endl << "Begin of BinaryTree<double> Test" << endl;
   try {
     lasd::List<double> lst;
-    InsertAtFront(loctestnum, loctesterr, lst, true, 0.3);
+    InsertAtFront(loctestnum, loctesterr, lst, true, 0.3); 
     InsertAtBack(loctestnum, loctesterr, lst, true, 3.0);
     InsertAtFront(loctestnum, loctesterr, lst, true, 1.2);
-    InsertAtBack(loctestnum, loctesterr, lst, true, 2.1);
+    InsertAtBack(loctestnum, loctesterr, lst, true, 2.1); 
 
     lasd::BinaryTreeVec<double> btvec(lst);
     cout << endl << "Begin of BinaryTreeVec<double> Test:" << endl;
