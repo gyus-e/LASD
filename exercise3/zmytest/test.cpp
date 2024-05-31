@@ -307,6 +307,14 @@ namespace mytst
         std::cout<<*itr<<" ";
         ++itr;
       }
+      try 
+      {
+        ++itr;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
       std::cout<<std::endl;
       printInOrder(btmov);
       itr.Reset();
@@ -321,6 +329,14 @@ namespace mytst
         std::cout<<*itr2<<" ";
         ++itr2;
       }
+      try 
+      {
+        ++itr2;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
       std::cout<<std::endl;
       printPostOrder(btmov);
       itr2.Reset();
@@ -334,6 +350,14 @@ namespace mytst
         *itr3 = k;
         std::cout<<*itr3<<" ";
         ++itr3;
+      }
+      try 
+      {
+        ++itr3;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
       }
       std::cout<<std::endl;
       printPreOrder(btmov);
@@ -353,17 +377,113 @@ namespace mytst
         std::cout<<*itr4<<" ";
         ++itr4;
       }
+      try 
+      {
+        ++itr4;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
       std::cout<<std::endl;
       printBreadth(btmov);
       itr4.Reset();
-      if (*itr4 != btmov.Root().Element())
+      if (*itr4 != *itr3)
       {
         std::cout<<"iterator error\n";
       }
       
       std::cout<<"root = "<<*itr4<<std::endl;
 
+      btmov.Clear();
 
+      lasd::BTInOrderMutableIterator empitr (btmov);
+      if (!empitr.Terminated())
+      {
+        std::cout<<"error: iterator on empty tree\n";
+      }
+      try
+      {
+        *empitr;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+      try
+      {
+        ++empitr;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+
+      lasd::BTPostOrderMutableIterator empitr2 (btmov);
+      if (!empitr2.Terminated())
+      {
+        std::cout<<"error: iterator on empty tree\n";
+      }
+      try
+      {
+        *empitr2;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+      try
+      {
+        ++empitr2;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+
+      lasd::BTPreOrderMutableIterator empitr3 (btmov);
+      if (!empitr3.Terminated())
+      {
+        std::cout<<"error: iterator on empty tree\n";
+      }
+      try
+      {
+        *empitr3;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+      try
+      {
+        ++empitr3;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+
+      lasd::BTBreadthMutableIterator empitr4 (btmov);      
+      if (!empitr4.Terminated())
+      {
+        std::cout<<"error: iterator on empty tree\n";
+      }
+      try
+      {
+        *empitr4;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
+      try
+      {
+        ++empitr4;
+      }
+      catch (std::exception & e)
+      {
+        std::cout<<e.what()<<" correct.\n";
+      }
     }
     catch (std::exception & e)
     {
