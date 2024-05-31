@@ -45,7 +45,8 @@ namespace mytst
 {
   #define DIM 20
   #define TABLE_SIZE 400
-  // using namespace std;
+  using std::cout;
+  using std::endl;
 
   template <typename Data>
   void printdata (const Data & d)
@@ -87,6 +88,30 @@ namespace mytst
   void printPostOrder (const lasd::PostOrderTraversableContainer<Data> & cont)
   {
     cont.PostOrderTraverse(
+      [](const Data & d)
+      {
+        std::cout<<d<<" ";
+      }
+    );
+    std::cout<<std::endl;
+  }
+
+  template <typename Data>
+  void printBreadth (const lasd::BreadthTraversableContainer<Data> & cont)
+  {
+    cont.BreadthTraverse(
+      [](const Data & d)
+      {
+        std::cout<<d<<" ";
+      }
+    );
+    std::cout<<std::endl;
+  }
+
+  template <typename Data>
+  void printPreOrder (const lasd::PreOrderTraversableContainer<Data> & cont)
+  {
+    cont.PreOrderTraverse(
       [](const Data & d)
       {
         std::cout<<d<<" ";
@@ -274,48 +299,51 @@ namespace mytst
 
       std::cout<<"clearing tree"<<std::endl;
       bt.Clear();
-      std::cout<<(bt.Empty() ? "" : "error: not empty")<<std::endl;
+      std::cout<<(bt.Empty() ? "" : "error: not empty\n");
 
       try 
       {
-        std::cout<<"root: "<<bt.Root().Element();
-        std::cout<<"error"<<std::endl;
+        std::cout<<"root? "<<bt.Root().Element();
+        std::cout<<"error\n"<<std::endl;
       }
       catch (std::exception & e)
       {
-        std::cout<<"correct, "<<e.what()<<std::endl;
+        std::cout<<e.what()<<" (correct).\n";
       }
 
       std::cout<<"Tree from moving vector: ";
       bt = std::move(V);
       print<T> (bt);
-      std::cout<<(bt.Empty() ? "error: empty" : "")<<std::endl;
+      std::cout<<(bt.Empty() ? "error: empty\n" : "");
 
       T root = bt.Root().Element();
 
       std::cout<<"Tree from copy constructor: ";
       BT btcop (bt);
       print<T> (btcop);
-      std::cout<<(bt == btcop ? "" : "copy error")<<std::endl;
+      std::cout<<(bt == btcop ? "" : "copy error\n");
 
       std::cout<<"Tree from move constructor: ";
       BT btmov (std::move(bt));
-      std::cout<<(bt == btcop ? "move error" : "")<<std::endl;
-      btcop.Clear();
-      std::cout<<(bt == btcop ? "" : "move error")<<std::endl;
+      print<T> (btmov);
+      std::cout<<(bt == btcop ? "move error\n" : "");
 
-      std::cout<<(root == btmov.Root().Element() ? "" : "error")<<std::endl;
+      std::cout<<(bt.Empty() ? "" : "move or empty error\n");
+
+      btcop.Clear();
+      std::cout<<(bt == btcop ? "" : "move error\n");
+
+      std::cout<<(root == btmov.Root().Element() ? "" : "error\n");
 
       std::cout<<"testing map"<<std::endl;
 
-      // randInit(bt); //map empty
       randInit(btmov); //map
+      randInit(bt); //map empty
 
       std::cout<<"testing traverse"<<std::endl;
 
-      // print(bt); //traverse empty
       print(btmov); //traverse
-
+      print(bt); //traverse empty
 
       //TESTING ITERATORS
 
@@ -327,24 +355,20 @@ namespace mytst
       std::cout<<"Inorder:\n";
       T k {};
       lasd::BTInOrderMutableIterator itr (btmov);
+      std::cout<<"constructed\n";
       while (!itr.Terminated())
       {
         k = dist(gen);
+        std::cout<<"dereferencing\n";
         *itr = k;
         std::cout<<*itr<<" ";
+        std::cout<<"incrementing\n";
         ++itr;
       }
-
       std::cout<<std::endl;
-      btmov.InOrderTraverse(
-        [](const T & d)
-        {
-          std::cout<<d<<" ";
-        }
-      );
+      printInOrder(btmov);
       itr.Reset();
-
-      std::cout<<"\nmin = "<<*itr<<std::endl;
+      std::cout<<"left most node = "<<*itr<<std::endl;
 
       std::cout<<"Postorder:\n";
       lasd::BTPostOrderMutableIterator itr2 (btmov);
@@ -355,17 +379,10 @@ namespace mytst
         std::cout<<*itr2<<" ";
         ++itr2;
       }
-
       std::cout<<std::endl;
-      btmov.PostOrderTraverse(
-        [](const T & d)
-        {
-          std::cout<<d<<" ";
-        }
-      );
+      printPostOrder(btmov);
       itr2.Reset();
-
-      std::cout<<"\nleft most leaf = "<<*itr2<<std::endl;
+      std::cout<<"left most leaf = "<<*itr2<<std::endl;
 
       std::cout<<"Preorder:\n";
       lasd::BTPreOrderMutableIterator itr3 (btmov);
@@ -376,21 +393,14 @@ namespace mytst
         std::cout<<*itr3<<" ";
         ++itr3;
       }
-
       std::cout<<std::endl;
-      btmov.PreOrderTraverse(
-        [](const T & d)
-        {
-          std::cout<<d<<" ";
-        }
-      );
-      
+      printPreOrder(btmov);
       itr3.Reset();
       if (*itr3 != btmov.Root().Element())
       {
         std::cout<<"iterator error\n";
       }
-      std::cout<<"\nroot = "<<*itr3<<std::endl;
+      std::cout<<"root = "<<*itr3<<std::endl;
 
       std::cout<<"Breadth:\n";
       lasd::BTBreadthMutableIterator itr4 (btmov);
@@ -401,22 +411,15 @@ namespace mytst
         std::cout<<*itr4<<" ";
         ++itr4;
       }
-
       std::cout<<std::endl;
-      btmov.BreadthTraverse(
-        [](const T & d)
-        {
-          std::cout<<d<<" ";
-        }
-      );
-
+      printBreadth(btmov);
       itr4.Reset();
       if (*itr4 != btmov.Root().Element())
       {
         std::cout<<"iterator error\n";
       }
       
-      std::cout<<"\nroot = "<<*itr4<<std::endl;
+      std::cout<<"root = "<<*itr4<<std::endl;
 
 
     }
@@ -619,16 +622,16 @@ void mytest() {
 
   // mytst::Test1A();
   // std::cout<<std::endl;
-  // mytst::Test2A<lasd::BinaryTreeLnk<T>>();
-  // std::cout<<std::endl;
+  mytst::Test2A<lasd::BinaryTreeLnk<T>>();
+  std::cout<<std::endl;
   mytst::Test2A<lasd::BinaryTreeVec<T>>();
   std::cout<<std::endl;
   mytst::Test2B();
-  // std::cout<<std::endl;
-  // mytst::Test3<lasd::HashTableClsAdr<T>>();
-  // std::cout<<std::endl;
-  // mytst::Test3<lasd::HashTableOpnAdr<T>>();
-  // std::cout<<std::endl;
+  std::cout<<std::endl;
+  mytst::Test3<lasd::HashTableClsAdr<T>>();
+  std::cout<<std::endl;
+  mytst::Test3<lasd::HashTableOpnAdr<T>>();
+  std::cout<<std::endl;
 
   std::cout<<"End of mytest"<<std::endl;
   return;
