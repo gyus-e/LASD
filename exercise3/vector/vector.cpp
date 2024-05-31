@@ -73,6 +73,8 @@ Vector<Data>::~Vector ()
 template<typename Data>
 Vector<Data>::Vector (Vector<Data> && that) noexcept
 {
+    this->A = nullptr;
+    this->size = 0;
     std::swap(this->A, that.A);
     std::swap(this->size, that.size);
 }
@@ -83,10 +85,6 @@ Vector<Data> & Vector<Data>::operator=(Vector && that)
 {
     if (*this != that)
     {
-        if (!this->Empty())
-        {
-            this->Clear();
-        }
         std::swap (this->A, that.A);
         std::swap (this->size, that.size);
     }
