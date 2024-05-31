@@ -168,25 +168,27 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (const TraversableContainer<Data> & con)
     {
         QueueLst<NodeLnk **> Q;
         Q.Enqueue (&(this->root));
-
-        con.Traverse (
-            [&Q] (const Data & d)
-            {
-                NodeLnk ** temp = (Q.HeadNDequeue());
-
-                try
+        if (!con.Empty())
+        {
+            con.Traverse (
+                [&Q] (const Data & d)
                 {
-                    *temp = new NodeLnk (d);
-                }
-                catch (std::bad_alloc & exc)
-                {
-                    throw;
-                }
+                    NodeLnk ** temp = (Q.HeadNDequeue());
 
-                Q.Enqueue (&((*temp)->Sx));
-                Q.Enqueue (&((*temp)->Dx));
-            }
-        );
+                    try
+                    {
+                        *temp = new NodeLnk (d);
+                    }
+                    catch (std::bad_alloc & exc)
+                    {
+                        throw;
+                    }
+
+                    Q.Enqueue (&((*temp)->Sx));
+                    Q.Enqueue (&((*temp)->Dx));
+                }
+            );
+        }
     }
 }
 
@@ -201,25 +203,27 @@ BinaryTreeLnk<Data>::BinaryTreeLnk (MappableContainer<Data> && con)
     {
         QueueLst<NodeLnk **> Q;
         Q.Enqueue (&(this->root));
-
-        con.Map (
-            [&Q] (Data & d)
-            {
-                NodeLnk ** temp = (Q.HeadNDequeue());
-
-                try
+        if (!con.Empty())
+        {
+            con.Map (
+                [&Q] (Data & d)
                 {
-                    *temp = new NodeLnk (std::move(d));
-                }
-                catch (std::bad_alloc & exc)
-                {
-                    throw;
-                }
+                    NodeLnk ** temp = (Q.HeadNDequeue());
 
-                Q.Enqueue (&((*temp)->Sx));
-                Q.Enqueue (&((*temp)->Dx));
-            }
-        );
+                    try
+                    {
+                        *temp = new NodeLnk (std::move(d));
+                    }
+                    catch (std::bad_alloc & exc)
+                    {
+                        throw;
+                    }
+
+                    Q.Enqueue (&((*temp)->Sx));
+                    Q.Enqueue (&((*temp)->Dx));
+                }
+            );
+        }
     }
 }
 
@@ -335,19 +339,19 @@ void BinaryTreeLnk<Data>::Clear()
 template <typename Data>
 inline bool BinaryTreeLnk<Data>::Empty() const noexcept
 {
-    //return this->root == nullptr && this->size == 0;
+    return this->root == nullptr && this->size == 0;
 
     //versione debug
-    if (this->root == nullptr && this->size == 0)
-    {
-        return true;
-    }
-    else if (this->root == nullptr || this->size == 0)
-    {
-        std::cerr<<"SIZE ERROR:"<<std::endl<<"root="<<this->root<<std::endl<<"size="<<this->size<<std::endl;
-        return true;
-    }
-    else return false;
+    // if (this->root == nullptr && this->size == 0)
+    // {
+    //     return true;
+    // }
+    // else if (this->root == nullptr || this->size == 0)
+    // {
+    //     std::cerr<<"SIZE ERROR:"<<std::endl<<"root="<<this->root<<std::endl<<"size="<<this->size<<std::endl;
+    //     return true;
+    // }
+    // else return false;
     
 }
 /* ************************************************************************** */
