@@ -16,14 +16,14 @@
 
 #include <stdexcept>
 
+/* ************************************************************************** */
+
+namespace lasd {
+
 // #define Stck StackVec
 #define Stck StackLst
 // #define Que QueueVec
 #define Que QueueLst
-
-/* ************************************************************************** */
-
-namespace lasd {
 
 /* ************************************************************************** */
 
@@ -294,6 +294,10 @@ public:
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
     std::swap (this->stk, that.stk);
+
+    that.root = nullptr;
+    that.curr = nullptr;
+    that.stk.Clear();
   }
 
   /* ************************************************************************ */
@@ -429,6 +433,10 @@ public:
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
     std::swap (this->stk, that.stk);
+
+    that.root = nullptr;
+    that.curr = nullptr;
+    that.stk.Clear();
   }
 
   /* ************************************************************************ */
@@ -566,6 +574,10 @@ public:
     std::swap (this->root, that.root);
     std::swap (this->curr, that.curr);
     std::swap (this->stk, that.stk);
+
+    that.root = nullptr;
+    that.curr = nullptr;
+    that.stk.Clear();
   }
 
   /* ************************************************************************ */
@@ -700,6 +712,10 @@ public:
     std::swap(root, that.root);
     std::swap(curr, that.curr);
     std::swap(que, that.que);
+
+    that.root = nullptr;
+    that.curr = nullptr;
+    that.que.Clear();
   }
 
   /* ************************************************************************ */

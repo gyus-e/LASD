@@ -342,6 +342,10 @@ BTPreOrderIterator<Data> & BTPreOrderIterator<Data>::operator=(BTPreOrderIterato
     std::swap (this->curr, that.curr);
     std::swap (this->stk, that.stk);
 
+    that.root = nullptr;
+    that.curr = nullptr;
+    that.stk.Clear();
+
     return *this;
 }
 
@@ -371,7 +375,7 @@ const Data & BTPreOrderIterator<Data>::operator*() const // (throw std::out_of_r
 template <typename Data>
 bool BTPreOrderIterator<Data>::Terminated() const noexcept // (should not throw exceptions)
 {
-    return (this->curr==nullptr);
+    return this->stk.Empty() && (this->curr==nullptr);
 }
 
 template <typename Data>

@@ -590,7 +590,7 @@ const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerTo(const Dat
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToPredecessor(const Data & d, typename BinaryTreeLnk<Data>::NodeLnk ** curr)
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr && (*curr) != nullptr)
     {
         if ((*curr)->Element() >= d)
         {
@@ -619,7 +619,7 @@ typename BinaryTreeLnk<Data>::NodeLnk ** BST<Data>::FindPointerToPredecessor(con
 template <typename Data>
 const typename BinaryTreeLnk<Data>::NodeLnk * const * BST<Data>::FindPointerToPredecessor(const Data & d, const typename BinaryTreeLnk<Data>::NodeLnk * const * curr) const
 {
-    if ((*curr) != nullptr)
+    if (curr != nullptr && (*curr) != nullptr)
     {
         if ((*curr)->Element() >= d)
         {
