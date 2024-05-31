@@ -38,8 +38,8 @@ public:
   protected:
     
     // Comparison operators
-    bool operator==(const Node &) const; // Comparison of abstract types is possible, but is not visible.
-    bool operator!=(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+    virtual bool operator==(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+    virtual bool operator!=(const Node &) const; // Comparison of abstract types is possible, but is not visible.
 
     //Auxiliary functions
     void PreOrderTraverse (TraverseFun) const;
@@ -95,8 +95,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
-  bool operator!=(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
+  virtual bool operator==(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
+  virtual bool operator!=(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
 
   /* ************************************************************************ */
 
@@ -131,7 +131,7 @@ public:
 
   // Specific member function (inherited from BreadthTraversableContainer)
 
-  void BreadthTraverse(TraverseFun) const override; // Override BreadthTraversableContainer member
+  virtual void BreadthTraverse(TraverseFun) const override; // Override BreadthTraversableContainer member
 
 protected:
 
@@ -159,7 +159,17 @@ public:
   using typename MappableContainer<Data>::MapFun;
 
   struct MutableNode : public virtual BinaryTree<Data>::Node {
-    public:
+  protected:
+  
+    MutableNode() = default;
+  
+    // Auxiliary functions
+    void PreOrderMap (MapFun);
+    void PostOrderMap (MapFun);
+    void InOrderMap (MapFun);
+    void BreadthMap (MapFun);
+
+  public:
     friend class MutableBinaryTree<Data>;
 
     /* ********************************************************************** */
@@ -186,15 +196,7 @@ public:
     virtual MutableNode & LeftChild() = 0; // (concrete function must throw std::out_of_range when not existent)
 
     using BinaryTree<Data>::Node::RightChild;
-    virtual MutableNode & RightChild() = 0; // (concrete function must throw std::out_of_range when not existent)
-  
-    protected:
-    MutableNode() = default;
-    // Auxiliary functions
-    void PreOrderMap (MapFun);
-    void PostOrderMap (MapFun);
-    void InOrderMap (MapFun);
-    void BreadthMap (MapFun);
+    virtual MutableNode & RightChild() = 0; // (concrete function must throw std::out_of_range when not existent)    
   };
 
   /* ************************************************************************ */
@@ -246,7 +248,7 @@ public:
 
   // Specific member function (inherited from BreadthMappableContainer)
 
-  void BreadthMap(MapFun) override; // Override BreadthMappableContainer member
+  virtual void BreadthMap(MapFun) override; // Override BreadthMappableContainer member
 
 protected:
 
