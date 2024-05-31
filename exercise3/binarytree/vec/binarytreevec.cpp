@@ -71,14 +71,22 @@ inline bool BinaryTreeVec<Data>::NodeVec::IsLeaf() const noexcept
 }
 
 template <typename Data>
-inline bool BinaryTreeVec<Data>::NodeVec::HasLeftChild() const noexcept
+bool BinaryTreeVec<Data>::NodeVec::HasLeftChild() const noexcept
 {
+    if (this->tree == nullptr)
+    {
+        return false;
+    }
     return ((this->idx * 2) + 1) < this->tree->size;
 }
 
 template <typename Data>
 inline bool BinaryTreeVec<Data>::NodeVec::HasRightChild() const noexcept
 {
+    if (this->tree == nullptr)
+    {
+        return false;
+    }
     return ((this->idx * 2) + 2) < this->tree->size;
 }
 
