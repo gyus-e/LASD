@@ -317,8 +317,16 @@ namespace mytst
       }
       std::cout<<std::endl;
       printInOrder(btmov);
+
+      lasd::BTInOrderMutableIterator itrcopy (itr);
+      std::cout<<(itrcopy.Terminated() ? "" : "error in copy\n");
+      
       itr.Reset();
-      std::cout<<"left most node = "<<*itr<<std::endl;
+      lasd::BTInOrderMutableIterator itrmov (std::move(itr));
+      std::cout<<*itr<<std::endl;
+      std::cout<<(itr.Terminated() ? "" : "error in move\n");
+
+      std::cout<<"left most node = "<<*itrmov<<std::endl;
 
       std::cout<<"Postorder:\n";
       lasd::BTPostOrderMutableIterator itr2 (btmov);
@@ -339,8 +347,15 @@ namespace mytst
       }
       std::cout<<std::endl;
       printPostOrder(btmov);
+
+      lasd::BTPostOrderMutableIterator itr2copy (itr2);
+      std::cout<<(itr2copy.Terminated() ? "" : "error in copy\n");
+      
       itr2.Reset();
-      std::cout<<"left most leaf = "<<*itr2<<std::endl;
+      lasd::BTPostOrderMutableIterator itr2mov (std::move(itr2));
+      std::cout<<(itr2.Terminated() ? "" : "error in move\n");
+
+      std::cout<<"left most leaf = "<<*itr2mov<<std::endl;
 
       std::cout<<"Preorder:\n";
       lasd::BTPreOrderMutableIterator itr3 (btmov);
@@ -361,12 +376,19 @@ namespace mytst
       }
       std::cout<<std::endl;
       printPreOrder(btmov);
+      
+      lasd::BTPreOrderMutableIterator itr3copy (itr3);
+      std::cout<<(itr3copy.Terminated() ? "" : "error in copy\n");
+      
       itr3.Reset();
-      if (*itr3 != btmov.Root().Element())
+      lasd::BTPreOrderMutableIterator itr3mov (std::move(itr3));
+      std::cout<<(itr3.Terminated() ? "" : "error in move\n");
+
+      if (*itr3mov != btmov.Root().Element())
       {
         std::cout<<"iterator error\n";
       }
-      std::cout<<"root = "<<*itr3<<std::endl;
+      std::cout<<"root = "<<*itr3mov<<std::endl;
 
       std::cout<<"Breadth:\n";
       lasd::BTBreadthMutableIterator itr4 (btmov);
@@ -387,13 +409,18 @@ namespace mytst
       }
       std::cout<<std::endl;
       printBreadth(btmov);
-      itr4.Reset();
-      if (*itr4 != *itr3)
+      lasd::BTBreadthMutableIterator itr4copy (itr4);
+      std::cout<<(itr4copy.Terminated() ? "" : "error in copy\n");
+      
+      itr.Reset();
+      lasd::BTBreadthMutableIterator itr4mov (std::move(itr4));
+      std::cout<<(itr4.Terminated() ? "" : "error in move\n");
+      if (*itr4mov != *itr3mov)
       {
         std::cout<<"iterator error\n";
       }
       
-      std::cout<<"root = "<<*itr4<<std::endl;
+      std::cout<<"root = "<<*itr4mov<<std::endl;
 
       btmov.Clear();
 
@@ -577,6 +604,7 @@ namespace mytst
     btLnk = std::move(btVec);
     std::cout<<(btVec.Empty() ? "" : "error: not empty after move\n");
     std::cout<<(btLnk.lasd::BinaryTree<T>::operator!=(btVec) ? "" : "error: equals\n");
+
   }
 
   void Test2B ()
