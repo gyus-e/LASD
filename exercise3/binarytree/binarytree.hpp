@@ -16,6 +16,9 @@
 
 #include <stdexcept>
 
+#define Stck StackVec
+#define Que QueueVec
+
 /* ************************************************************************** */
 
 namespace lasd {
@@ -271,7 +274,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackLst<const typename BinaryTree<Data>::Node*> stk;
+  Stck<const typename BinaryTree<Data>::Node*> stk;
 
 public:
 
@@ -404,7 +407,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackLst<const typename BinaryTree<Data>::Node*> stk;
+  Stck<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostLeaf();
 
@@ -541,7 +544,7 @@ protected:
   
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  StackLst<const typename BinaryTree<Data>::Node*> stk;
+  Stck<const typename BinaryTree<Data>::Node*> stk;
 
   void toLeftMostNode ();
 
@@ -677,7 +680,7 @@ protected:
 
   const typename BinaryTree<Data>::Node * root = nullptr;
   const typename BinaryTree<Data>::Node * curr = nullptr;
-  QueueLst<const typename BinaryTree<Data>::Node *> que;
+  Que<const typename BinaryTree<Data>::Node *> que;
 
 public:
 
