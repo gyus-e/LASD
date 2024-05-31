@@ -90,18 +90,21 @@ bool BST<Data>::operator!=(const BST<Data> & that) const
 template <typename Data>
 const Data & BST<Data>::Min() const // (concrete function must throw std::length_error when empty)
 {
-    if (this->Empty())
+    if (!this->Empty())
     {
-        throw std::length_error ("no min: BST is empty.");
+        const typename BinaryTreeLnk<Data>::NodeLnk * min = FindPointerToMin(this->root);
+        if (min != nullptr)
+        {
+            return min->Element();
+        }
     }
-
-    return FindPointerToMin(this->root)->Element();
+    throw std::length_error ("no min: BST is empty.");
 }
 
 template <typename Data>
 Data BST<Data>::MinNRemove() // (concrete function must throw std::length_error when empty)
 {
-    Data ret;
+    Data ret {};
     try 
     {
         ret = this->Min();
@@ -131,11 +134,15 @@ void BST<Data>::RemoveMin() // (concrete function must throw std::length_error w
 template <typename Data>
 const Data & BST<Data>::Max() const // (concrete function must throw std::length_error when empty)
 {
-    if (this->Empty())
+    if (!this->Empty())
     {
-        throw std::length_error ("no max: BST is empty.");
+        const typename BinaryTreeLnk<Data>::NodeLnk * max = FindPointerToMax(this->root);
+        if (max != nullptr)
+        {
+            return max->Element();
+        }
     }
-    return this->FindPointerToMax(this->root)->Element();   
+    throw std::length_error ("no min: BST is empty.");
 }
 
 template <typename Data>
@@ -171,12 +178,15 @@ void BST<Data>::RemoveMax() // (concrete function must throw std::length_error w
 template <typename Data>
 const Data & BST<Data>::Predecessor (const Data & d) const // (concrete function must throw std::length_error when not found)
 {
-    const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = FindPointerToPredecessor(d, &(root));
-    if (ret == nullptr || *ret == nullptr)
+    if (!this->Empty())
     {
-        throw std::length_error("Predecessor not found.");
+        const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = FindPointerToPredecessor(d, &(this->root));
+        if (ret != nullptr && *ret != nullptr)
+        {   
+            return (*ret)->Element();
+        }
     }
-    return (*ret)->Element();
+    throw std::length_error("Predecessor not found.");
 }
 
 template <typename Data>
@@ -216,12 +226,15 @@ void BST<Data>::RemovePredecessor(const Data & d) // (concrete function must thr
 template <typename Data>
 const Data & BST<Data>::Successor(const Data & d) const// (concrete function must throw std::length_error when not found)
 {
-    const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = this->FindPointerToSuccessor (d, &root);
-    if (ret == nullptr || *ret == nullptr)
+    if (!this->Empty())
     {
-        throw std::length_error("Successor not found.");
+        const typename BinaryTreeLnk<Data>::NodeLnk * const * ret = FindPointerToSuccessor(d, &(this->root));
+        if (ret != nullptr && *ret != nullptr)
+        {   
+            return (*ret)->Element();
+        }
     }
-    return (*ret)->Element();
+    throw std::length_error("Successor not found.");
 }
 
 template <typename Data>
@@ -476,56 +489,60 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMax(typename BinaryTree
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMin (typename BinaryTreeLnk<Data>::NodeLnk * curr)
 {
-    if (curr->HasLeftChild())
+    if (curr == nullptr)
     {
-        return FindPointerToMin(&(curr->LeftChild()));
+        return nullptr;
     }
-    else 
+    while (curr->Sx != nullptr)
     {
-        return curr;
+        curr = curr->Sx;
     }
+    return curr;
 }
 
 //unmutable version
 template <typename Data>
 const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMin (const typename BinaryTreeLnk<Data>::NodeLnk * curr) const
 {
-    if (curr->HasLeftChild())
+    if (curr == nullptr)
     {
-        return FindPointerToMin(&(curr->LeftChild()));
+        return nullptr;
     }
-    else 
+    while (curr->Sx != nullptr)
     {
-        return curr;
+        curr = curr->Sx;
     }
+    return curr;
 }
 
 //mutable version
 template <typename Data>
 typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMax (typename BinaryTreeLnk<Data>::NodeLnk * curr)
 {
-    if (curr->HasRightChild())
+    if (curr == nullptr)
     {
-        return FindPointerToMax(&(curr->RightChild()));
+        return nullptr;
     }
-    else 
+    while (curr->Dx != nullptr)
     {
-        return curr;
+        curr = curr->Dx;
     }
+    return curr;
 }
 
 //unmutable version
 template <typename Data>
 const typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMax (const typename BinaryTreeLnk<Data>::NodeLnk * curr) const
 {
-    if (curr->HasRightChild())
+    if (curr == nullptr)
     {
-        return FindPointerToMax(&(curr->RightChild()));
+        return nullptr;
     }
-    else 
+    while (curr->Dx != nullptr)
     {
-        return curr;
+        curr = curr->Dx;
     }
+    return curr;
 }
 
 //mutable version
