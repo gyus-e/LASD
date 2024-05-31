@@ -336,7 +336,7 @@ void BinaryTreeVec<Data>::Clear()
 template <typename Data>
 inline bool BinaryTreeVec<Data>::Empty() const noexcept
 {
-    return this->vec.Empty() || this->size == 0;
+    return this->vec.Empty() && this->size == 0;
 }
 
 template <typename Data>
