@@ -109,6 +109,8 @@ public:
   // Comparison operators
   bool operator==(const BinaryTreeLnk<Data> &);
   bool operator!=(const BinaryTreeLnk<Data> &);
+  using BinaryTree<Data>::operator==;
+  using BinaryTree<Data>::operator!=;
 
   /* ************************************************************************ */
 
