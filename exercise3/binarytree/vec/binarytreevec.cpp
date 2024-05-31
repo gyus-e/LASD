@@ -198,6 +198,15 @@ BinaryTreeVec<Data>::BinaryTreeVec(BinaryTreeVec && that) noexcept //: vec (std:
     std::swap (this->vec, that.vec);
     std::swap (this->vecSize, that.vecSize);
     std::swap (this->size, that.size);
+    if (!this->vec.Empty())
+    {
+        this->vec.Map(
+            [this] (NodeVec & node)
+            {
+                node.tree = this;
+            }
+        );
+    }
 }
 
 template <typename Data>
@@ -242,7 +251,16 @@ BinaryTreeVec<Data> & BinaryTreeVec<Data>::operator=(BinaryTreeVec && that)
         std::swap (this->vec, that.vec);
         std::swap (this->vecSize, that.vecSize);
         std::swap (this->size, that.size);
-    }
+        if (!this->vec.Empty())
+        {
+            this->vec.Map(
+                [this] (NodeVec & node)
+                {
+                    node.tree = this;
+                }
+            );
+        }
+        }
     return *this;
 }
 
