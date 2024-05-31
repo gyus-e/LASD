@@ -359,10 +359,8 @@ namespace mytst
       while (!itr.Terminated())
       {
         k = dist(gen);
-        std::cout<<"dereferencing\n";
         *itr = k;
         std::cout<<*itr<<" ";
-        std::cout<<"incrementing\n";
         ++itr;
       }
       std::cout<<std::endl;
@@ -622,8 +620,8 @@ void mytest() {
 
   // mytst::Test1A();
   // std::cout<<std::endl;
-  mytst::Test2A<lasd::BinaryTreeLnk<T>>();
-  std::cout<<std::endl;
+  // mytst::Test2A<lasd::BinaryTreeLnk<T>>();
+  // std::cout<<std::endl;
   mytst::Test2A<lasd::BinaryTreeVec<T>>();
   std::cout<<std::endl;
   mytst::Test2B();
