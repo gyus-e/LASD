@@ -655,15 +655,10 @@ void BTInOrderIterator<Data>::toLeftMostNode ()
     //scendo sempre a sinistra finché possibile
     while (this->curr->HasLeftChild())
     {
-        if (this->curr->HasLeftChild())
-        {
         this->stk.Push(this->curr);
-        this->curr = & this->curr->LeftChild();
-        // throw std::logic_error("from toLeftMostNode: curr has no left child");
-        }
-        
+        this->curr = &(this->curr->LeftChild());
+        // throw std::logic_error("from toLeftMostNode: curr has no left child");        
     }
-
     return;
 }
 
@@ -671,9 +666,9 @@ void BTInOrderIterator<Data>::toLeftMostNode ()
 template <typename Data>
 BTInOrderIterator<Data>::BTInOrderIterator(const BinaryTree<Data> & binTree) // An iterator over a given binary tree
 {
-    if (binTree.Size() != 0)
+    if (!binTree.Empty())
     {
-        this->root = &binTree.Root();
+        this->root = &(binTree.Root());
         this->curr = this->root;
         this->toLeftMostNode();
     }
@@ -741,7 +736,7 @@ BTInOrderIterator<Data> & BTInOrderIterator<Data>::operator++() // (throw std::o
 
     //curr inizia dal nodo piú a sinistra (minimo)
 
-    //se puó scendere a destra, lo fa partendo dal minimo del sottoalbero destro
+    //se c'è un sottoalbero destro, parte dal suo minimo
     if (this->curr->HasRightChild())
     {
         this->curr = & (this->curr->RightChild());
