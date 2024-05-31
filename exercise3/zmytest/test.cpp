@@ -43,7 +43,7 @@ typedef int T;
 
 namespace mytst
 {
-  #define DIM 20
+  #define DIM 50
   #define TABLE_SIZE 400
   using std::cout;
   using std::endl;
@@ -622,6 +622,14 @@ namespace mytst
       {
         T x = dist(gen);
         std::cout<<bst.Predecessor(x)<<" "<<x<<" "<<bst.Successor(x)<<std::endl;
+        if (i % 23 == 0)
+        {
+          bst.RemovePredecessor(x);
+        }
+        if (i % 29 == 0)
+        {
+          bst.RemoveSuccessor(x);
+        }
       }
 
       //COPY AND MOVE TEST
@@ -647,6 +655,13 @@ namespace mytst
       lasd::BST<T> bstvec (V);
       print(bstvec);
       std::cout<<(bstvec == bst ? "equals" : "error: not equals")<<std::endl;
+
+      //MAX AND MIN
+      for (int i = 0; i < 10; i++)
+      {
+        std::cout<<bst.MaxNRemove()<<std::endl;
+        std::cout<<bst.MinNRemove()<<std::endl;
+      }
 
       //REMOVEALL AND REMOVESOME
       V.Resize(DIM-10);
