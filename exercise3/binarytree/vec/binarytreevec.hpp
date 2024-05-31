@@ -25,7 +25,7 @@ protected:
   protected:
     Data elem {};
     unsigned long idx = 0;
-    BinaryTreeVec * tree = nullptr;
+    BinaryTreeVec<Data> * tree = nullptr;
 
   public:
     NodeVec () = default;
@@ -49,7 +49,7 @@ protected:
     
     inline bool IsLeaf() const noexcept override;
     
-    inline bool HasLeftChild() const noexcept override;
+    bool HasLeftChild() const noexcept override;
     inline bool HasRightChild() const noexcept override;
 
     typename MutableBinaryTree<Data>::MutableNode & LeftChild() override; // (concrete function must throw std::out_of_range when not existent)
