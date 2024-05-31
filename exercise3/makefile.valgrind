@@ -1,5 +1,5 @@
 
-cc = g++
+cc = g++-13
 cflags = -g -Wall -pedantic -O1 -std=c++20
 
 objects = main.o mytest.o container.o exc1as.o exc1af.o exc1bs.o exc1bf.o exc2as.o exc2af.o exc2bs.o exc2bf.o exc3f.o exc3s.o test.o
