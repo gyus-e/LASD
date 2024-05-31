@@ -195,7 +195,7 @@ template <typename Que>
 void stestQueueInt(Que & que, uint & testnum, uint & testerr) {
   uint loctestnum = 0, loctesterr = 0;
   try {
-    Empty(loctestnum, loctesterr, que, true);
+    Empty(loctestnum, loctesterr, que, true); //1
     Size(loctestnum, loctesterr, que, true, 0);
 
     Head(loctestnum, loctesterr, que, false, 0);
@@ -207,15 +207,16 @@ void stestQueueInt(Que & que, uint & testnum, uint & testerr) {
     EnqueueC(loctestnum, loctesterr, que, 1);
     EnqueueC(loctestnum, loctesterr, que, 2);
 
-    Empty(loctestnum, loctesterr, que, false);
+    Empty(loctestnum, loctesterr, que, false); //10
     Size(loctestnum, loctesterr, que, true, 5);
 
     HeadNDequeue(loctestnum, loctesterr, que, true, 4);
     Head(loctestnum, loctesterr, que, true, 0);
     Head(loctestnum, loctesterr, (const Que) que, true, 0);
 
-    Que copque(que);
-    EqualQueue(loctestnum, loctesterr, que, copque, true);
+    Que copque(que); //copy constr
+
+    EqualQueue(loctestnum, loctesterr, que, copque, true); //15
     EnqueueC(loctestnum, loctesterr, que, 5);
     NonEqualQueue(loctestnum, loctesterr, que, copque, true);
 
