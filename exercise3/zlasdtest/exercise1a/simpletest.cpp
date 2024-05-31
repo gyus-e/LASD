@@ -143,12 +143,11 @@ void stestVectorString(uint & testnum, uint & testerr) {
     FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !")); //16
 
     lasd::SortableVector<string> movvec(move(vec)); //vec = movvec    
-    std::cout<<"now vec has size "<<vec.Size()<<std::endl; //size 2?
 
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //17
+    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //17: error
     movvec.Sort();
-    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //18
-    SetAt(loctestnum, loctesterr, vec, false, 1, string("")); //19: Error: vec ha size 2???
+    FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B ")); //18: error
+    SetAt(loctestnum, loctesterr, vec, false, 1, string("")); //19
     vec.Resize(1);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
 
