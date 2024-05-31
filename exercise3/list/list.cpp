@@ -177,8 +177,8 @@ List<Data>::List (MappableContainer<Data> && cont)
 {
     if (!cont.Empty())
     {
-        cont.Traverse(
-            [this] (const Data & dat)
+        cont.Map(
+            [this] (Data & dat)
             {
                 this->InsertAtBack(std::move(dat));
             }
