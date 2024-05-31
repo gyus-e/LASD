@@ -615,11 +615,20 @@ namespace mytst
       
       testInsert(bst);
 
+      //SUCCESSOR AND PREDECESSOR
+      std::default_random_engine gen (std::random_device{}());
+      std::uniform_int_distribution <T> dist (0, 100);
+      for (int i = 0; i < 99; i++)
+      {
+        T x = dist(gen);
+        std::cout<<bst.Predecessor(x)<<" "<<x<<" "<<bst.Successor(x)<<std::endl;
+      }
+
       //COPY AND MOVE TEST
       std::cout<<std::endl;
       std::cout<<"copy: "<<std::endl;
       lasd::BST<T> bstcop = bst;
-      printInOrder(bstcop);
+      printInOrder(bstcop);    
 
       std::cout<<"move: "<<std::endl;
       lasd::BST<T> bstmov = std::move(bstcop);
