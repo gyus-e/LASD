@@ -16,8 +16,10 @@
 
 #include <stdexcept>
 
-#define Stck StackVec
-#define Que QueueVec
+// #define Stck StackVec
+#define Stck StackLst
+// #define Que QueueVec
+#define Que QueueLst
 
 /* ************************************************************************** */
 
@@ -40,9 +42,9 @@ public:
   struct Node {
   protected:
     
-    // Comparison operators
-    virtual bool operator==(const Node &) const; // Comparison of abstract types is possible, but is not visible.
-    virtual bool operator!=(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+    // // Comparison operators
+    bool operator==(const Node &) const; // Comparison of abstract types is possible, but is not visible.
+    bool operator!=(const Node &) const; // Comparison of abstract types is possible, but is not visible.
 
     //Auxiliary functions
     void PreOrderTraverse (TraverseFun) const;
@@ -98,8 +100,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  virtual bool operator==(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
-  virtual bool operator!=(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
+  bool operator==(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
+  bool operator!=(const BinaryTree &) const; // Comparison of abstract binary tree is possible.
 
   /* ************************************************************************ */
 
