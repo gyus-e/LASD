@@ -18,14 +18,8 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class StackVec : public virtual Stack<Data>, protected virtual Vector<Data>{
-  // Must extend Stack<Data>,
-  //             Vector<Data>
-
-private:
-
-  // ...
-
+class StackVec : public virtual Stack<Data>, protected virtual Vector<Data>
+{
 protected:
 
   using Vector<Data>::size;
@@ -39,16 +33,16 @@ public:
   /* ************************************************************************ */
 
   // Specific constructor
-  StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), top(cont.Size()) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A stack obtained from a TraversableContainer
-  StackVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), top(cont.Size()) {if (this->size < INIT_SIZE) {this->Resize(INIT_SIZE);}} // A stack obtained from a MappableContainer
+  StackVec(const TraversableContainer<Data> &);
+  StackVec(MappableContainer<Data> &&);
 
   /* ************************************************************************ */
 
   // Copy constructor
-  StackVec(const StackVec & that) : Vector<Data> ((Vector<Data>) that), top (that.top) {}
+  StackVec(const StackVec<Data> &);
 
   // Move constructor
-  StackVec(StackVec && that) noexcept : Vector<Data> (std::move((Vector<Data>) that)), top (that.top) {}
+  StackVec(StackVec<Data> &&) noexcept;
 
   /* ************************************************************************ */
 
@@ -58,16 +52,15 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  StackVec & operator=(const StackVec & that) {this->Vector<Data>::operator=((Vector<Data>)(that)); this->top = that.top; return *this;}
-
+  StackVec & operator=(const StackVec<Data> & that);
   // Move assignment
-  StackVec & operator=(StackVec && that) {this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); std::swap(this->top, that.top); return *this;}
+  StackVec & operator=(StackVec<Data> && that);
 
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const StackVec & that) const; //{return (Vector<Data>)(*this) == (Vector<Data>)(that) && this->top == that.top;}
-  bool operator!=(const StackVec & that) const; //{return (Vector<Data>)(*this) != (Vector<Data>)(that) || this->top != that.top;}
+  bool operator==(const StackVec<Data> & that) const; 
+  bool operator!=(const StackVec<Data> & that) const;
 
   /* ************************************************************************ */
 
@@ -94,7 +87,7 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline virtual void Clear() override {((Vector<Data>)(* this)).Clear(); this->top = 0;} // Override ClearableContainer member
+  inline virtual void Clear() override; // Override ClearableContainer member
 
 protected:
 

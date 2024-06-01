@@ -55,8 +55,9 @@ QueueVec<Data>::QueueVec(const QueueVec & that) :
 // Move constructor
 template <typename Data>
 QueueVec<Data>::QueueVec(QueueVec && that) noexcept : 
-    Vector<Data> (std::move(that)) 
+    Vector<Data> (std::move(that)), dim (0), head (0), tail (0)
 {
+    this->size = 0;
     std::swap (this->size, that.size);
     std::swap (this->dim, that.dim); 
     std::swap (this->head, that.head); 
@@ -90,11 +91,6 @@ QueueVec<Data> & QueueVec<Data>::operator=(QueueVec && that)
 {
     if (*this != that)
     {
-        if (!this->Empty())
-        {
-            this->Clear();
-        }
-
         this->Vector<Data>::operator=(std::move(that));
         std::swap (this->size, that.size);
         std::swap (this->dim, that.dim); 

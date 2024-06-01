@@ -2,48 +2,62 @@
 namespace lasd {
 
 /* ************************************************************************** */
-// template <typename Data>
-// StackVec<Data>::StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (INIT_SIZE)
-// {
-//     this->size = cont.Size();
-//     cont.Traverse(
-//         [this](const Data & d)
-//         {
-//             this->Push(d);
-//         }
-//     );
-// }
 
-// template <typename Data>
-// StackVec<Data>::StackVec(MappableContainer<Data> && cont) : Vector<Data> (INIT_SIZE)
-// {
-//     this->size = cont.Size();
-//     cont.Map(
-//         [this](const Data & d)
-//         {
-//             this->Push(std::move(d));
-//         }
-//     );
-// }
+// Specific constructor
 
-// template <typename Data>
-// StackVec<Data>  StackVec<Data>::operator=(const StackVec & that)
-// {
-//     this->Vector<Data>::operator=(that);
-//     this->top = that.top;
-//     return *this;
-// }
+// A stack obtained from a TraversableContainer
+template <typename Data>
+StackVec<Data>::StackVec(const TraversableContainer<Data> & cont) : Vector<Data> (cont), top(cont.Size()) 
+{
+    if (this->size < INIT_SIZE) 
+    {
+        this->Resize(INIT_SIZE);
+    }
+} 
 
-// template <typename Data>
-// StackVec<Data>  StackVec<Data>::operator=(StackVec && that)
-// {
-//     this->Vector<Data>::operator=(std::move(that));
-//     this->top = that.top;
-//     return *this;
-// }
+// A stack obtained from a MappableContainer
+template <typename Data>
+StackVec<Data>::StackVec(MappableContainer<Data> && cont) : Vector<Data> (std::move(cont)), top(cont.Size()) 
+{
+    if (this->size < INIT_SIZE) 
+    {
+        this->Resize(INIT_SIZE);
+    }
+} 
+
+// Copy constructor
+template <typename Data>
+StackVec<Data>::StackVec(const StackVec<Data> & that) : Vector<Data> ((Vector<Data>) that), top (that.top) 
+{}
+
+// Move constructor
+template <typename Data>
+StackVec<Data>::StackVec(StackVec<Data> && that) noexcept : Vector<Data> (std::move((Vector<Data>) that))
+{
+    this->top = 0;
+    std::swap (this->top, that.top);
+}
+
+// Copy assignment
+template <typename Data>
+StackVec<Data> & StackVec<Data>::operator=(const StackVec<Data> & that)
+{
+    this->Vector<Data>::operator=((Vector<Data>)(that)); 
+    this->top = that.top; return *this;
+}
+
+// Move assignment
+template <typename Data>
+StackVec<Data> & StackVec<Data>::operator=(StackVec<Data> && that) 
+{
+    this->top = 0;
+    this->Vector<Data>::operator= (std::move((Vector<Data>)(that))); 
+    std::swap(this->top, that.top); return *this;
+}
+
 
 template <typename Data>
-bool StackVec<Data>::operator==(const StackVec & that) const
+bool StackVec<Data>::operator==(const StackVec<Data> & that) const
 {
     if (this->top != that.top) 
     {
@@ -63,7 +77,7 @@ bool StackVec<Data>::operator==(const StackVec & that) const
 }
 
 template <typename Data>
-bool StackVec<Data>::operator!=(const StackVec & that) const
+bool StackVec<Data>::operator!=(const StackVec<Data> & that) const
 {
     return !this->operator==(that);
 }
@@ -140,6 +154,13 @@ void StackVec<Data>::Push(Data && dat) {
     }
     this->A[top] = std::move(dat);
     top++;
+}
+
+template <typename Data> 
+inline void StackVec<Data>::Clear() 
+{
+    this->Vector<Data>::Clear(); 
+    this->top = 0;
 }
 
 /* ************************************************************************** */
