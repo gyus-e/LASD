@@ -621,14 +621,22 @@ namespace mytst
       for (int i = 0; i < 99; i++)
       {
         T x = dist(gen);
-        std::cout<<bst.Predecessor(x)<<" "<<x<<" "<<bst.Successor(x)<<std::endl;
-        if (i % 23 == 0)
+        try
         {
-          bst.RemovePredecessor(x);
+          std::cout<<bst.Predecessor(x)<<" "<<x<<" "<<bst.Successor(x)<<std::endl;
+        
+          if (i % 23 == 0)
+          {
+            bst.RemovePredecessor(x);
+          }
+          if (i % 29 == 0)
+          {
+            bst.RemoveSuccessor(x);
+          }
         }
-        if (i % 29 == 0)
+        catch (std::exception & e)
         {
-          bst.RemoveSuccessor(x);
+          std::cout<<e.what()<<std::endl;
         }
       }
 
