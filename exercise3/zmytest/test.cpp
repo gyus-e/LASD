@@ -640,6 +640,19 @@ namespace mytst
         }
       }
 
+      lasd::BST<T> emptyBst;
+      try 
+      {
+        emptyBst.Predecessor(4);
+        std::cout<<"error: predecessor on empty bst\n";
+      } catch (std::exception &) {}
+      try 
+      {
+        emptyBst.Successor(4);
+        std::cout<<"error: successor on empty bst\n";
+      } catch(std::exception &) {}
+
+
       //COPY AND MOVE TEST
       std::cout<<std::endl;
       std::cout<<"copy: "<<std::endl;
