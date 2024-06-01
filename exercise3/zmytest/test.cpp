@@ -672,12 +672,15 @@ namespace mytst
 
       testInsertAll(bst, V);
 
+      std::cout<<std::endl;
+
       //COMPARISON OPERATOR
       lasd::BST<T> bstvec (V);
-      print(bstvec);
-      std::cout<<(bstvec == bst ? "equals" : "error: not equals")<<std::endl;
+      printInOrder(bstvec);
+      std::cout<<(bstvec == bst ? "" : "error: not equals")<<std::endl;
 
       //MAX AND MIN
+      std::cout<<"Testing Max and Min\n";
       for (int i = 0; i < 10; i++)
       {
         std::cout<<bst.MaxNRemove()<<std::endl;
@@ -685,6 +688,7 @@ namespace mytst
       }
 
       //REMOVEALL AND REMOVESOME
+      std::cout<<"\nTesting Remove\n";
       V.Resize(DIM-10);
 
       testRemoveSome(bst, V);
