@@ -104,16 +104,19 @@ const Data & BST<Data>::Min() const // (concrete function must throw std::length
 template <typename Data>
 Data BST<Data>::MinNRemove() // (concrete function must throw std::length_error when empty)
 {
-    Data ret {};
-    try 
+    if (this->Empty())
     {
-        ret = this->Min();
-        this->RemoveMin();
+        throw std::length_error ("cannot remove min: BST is empty.");
     }
-    catch (std::exception & e)
-    {
-        throw;
-    }
+
+    NodeLnk * min = DetachMin(this->root, nullptr); //restituisce puntatore al minimo dopo averlo staccato dall'albero
+    this->size--;
+
+    Data ret = min->Element();
+
+    std::cout<<"removed min at "<<min<<", now min is at "<<this->FindPointerToMin(this->root)<<std::endl;
+
+    delete min;
     return ret;
 }
 
@@ -126,9 +129,8 @@ void BST<Data>::RemoveMin() // (concrete function must throw std::length_error w
     }
 
     NodeLnk * min = DetachMin(this->root, nullptr); //restituisce puntatore al minimo dopo averlo staccato dall'albero
-    delete min;
-    
     this->size--;
+    delete min;
 }
 
 template <typename Data>
@@ -148,16 +150,19 @@ const Data & BST<Data>::Max() const // (concrete function must throw std::length
 template <typename Data>
 Data BST<Data>::MaxNRemove() // (concrete function must throw std::length_error when empty)
 {
-    Data ret;
-    try
+    if (this->Empty())
     {
-        ret = this->Max();
-        this->RemoveMax();
+        throw std::length_error ("cannot remove min: BST is empty.");
     }
-    catch (std::length_error & exc)
-    {
-        throw;
-    }
+
+    NodeLnk * max = DetachMax(this->root, nullptr);
+    this->size--;
+
+    Data ret = max->Element();
+
+    std::cout<<"removed max at "<<max<<", now max is at "<<this->FindPointerToMax(this->root)<<std::endl;
+
+    delete max;
     return ret;
 }
 
@@ -322,6 +327,11 @@ bool BST<Data>::Insert(Data && d)
 template <typename Data>
 bool BST<Data>::Remove(const Data & d) 
 {
+    if (this->Empty())
+    {
+        return false;
+    }
+    
     bool ret = false;
     try 
     {
@@ -419,6 +429,10 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMin(typename BinaryTree
                     pred->Dx = curr->Dx;
                 }
             }
+            else //min = root
+            {
+                this->root = min->Dx;
+            }
             min->Dx = nullptr;
             return min;
         }
@@ -452,6 +466,10 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::DetachMax(typename BinaryTree
                 {
                     pred->Dx = curr->Sx;
                 }
+            }
+            else //max = root
+            {
+                this->root = max->Sx;
             }
             max->Sx = nullptr;
             return max;
@@ -497,6 +515,7 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMin (typename Bi
     {
         curr = curr->Sx;
     }
+    // std::cout<<"found min="<<curr->Element()<<std::endl;
     return curr;
 }
 
@@ -527,6 +546,7 @@ typename BinaryTreeLnk<Data>::NodeLnk * BST<Data>::FindPointerToMax (typename Bi
     {
         curr = curr->Dx;
     }
+    // std::cout<<"found max="<<curr->Element()<<std::endl;
     return curr;
 }
 
