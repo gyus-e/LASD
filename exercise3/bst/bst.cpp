@@ -114,7 +114,7 @@ Data BST<Data>::MinNRemove() // (concrete function must throw std::length_error 
 
     Data ret = min->Element();
 
-    std::cout<<"removed min at "<<min<<", now min is at "<<this->FindPointerToMin(this->root)<<std::endl;
+    // std::cout<<"removed min at "<<min<<", now min is at "<<this->FindPointerToMin(this->root)<<std::endl;
 
     delete min;
     return ret;
@@ -160,7 +160,7 @@ Data BST<Data>::MaxNRemove() // (concrete function must throw std::length_error 
 
     Data ret = max->Element();
 
-    std::cout<<"removed max at "<<max<<", now max is at "<<this->FindPointerToMax(this->root)<<std::endl;
+    // std::cout<<"removed max at "<<max<<", now max is at "<<this->FindPointerToMax(this->root)<<std::endl;
 
     delete max;
     return ret;
