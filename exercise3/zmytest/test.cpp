@@ -847,16 +847,16 @@ namespace mytst
 void mytest() {
   std::cout<<"Start of mytest"<<std::endl;
 
-  // mytst::Test1A();
-  // std::cout<<std::endl;
+  mytst::Test1A();
+  std::cout<<std::endl;
   mytst::Test2A();
   std::cout<<std::endl;
   mytst::Test2B();
   std::cout<<std::endl;
-  // mytst::Test3<lasd::HashTableClsAdr<T>>();
-  // std::cout<<std::endl;
-  // mytst::Test3<lasd::HashTableOpnAdr<T>>();
-  // std::cout<<std::endl;
+  mytst::Test3<lasd::HashTableClsAdr<T>>();
+  std::cout<<std::endl;
+  mytst::Test3<lasd::HashTableOpnAdr<T>>();
+  std::cout<<std::endl;
 
   std::cout<<"End of mytest"<<std::endl;
   return;
