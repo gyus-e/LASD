@@ -8,14 +8,6 @@
 
 #include "../../vector/vector.hpp"
 #include "../../list/list.hpp"
-
-#include "../../queue/lst/queuelst.hpp"
-// #include "../../queue/vec/queuevec.hpp"
-
-#include "../../stack/lst/stacklst.hpp"
-// #include "../../stack/vec/stackvec.hpp"
-
-#include "../../binarytree/lnk/binarytreelnk.hpp"
 #include "../../bst/bst.hpp"
 
 /* ************************************************************************** */
