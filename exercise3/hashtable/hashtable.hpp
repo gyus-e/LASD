@@ -37,12 +37,14 @@ private:
 
 protected:
   #define INITIAL_SIZE 128UL
-  #define MAX_SIZE 2147483648UL //2^31
+  // #define MAX_SIZE 2147483648UL //2^31
 
   using DictionaryContainer<Data>::size;
   unsigned long acoeff = 1;
   unsigned long bcoeff = 0;
-  static const unsigned long prime = 2147483647; //numero primo ((2^31) - 1)
+  // static const unsigned long prime = 2147483647; //numero primo ((2^31) - 1)
+  static const unsigned long prime = 3999999979;
+
 
   std::default_random_engine gen  = std::default_random_engine (std::random_device{}());
   std::uniform_int_distribution <unsigned long> dista = std::uniform_int_distribution <unsigned long> (1, prime - 1);

@@ -254,7 +254,7 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize)
     //Verifica che la dimensione minima sia rispettata
     newSize = std::max(newSize, INITIAL_SIZE);
     //Verifica che la dimensione massima sia rispettata
-    newSize = std::min(newSize, MAX_SIZE);
+    // newSize = std::min(newSize, MAX_SIZE);
     
     //Verifica che la resize vada effettuata davvero
     if (newSize == this->tableSize)
