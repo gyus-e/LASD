@@ -43,7 +43,7 @@ protected:
   unsigned long acoeff = 1;
   unsigned long bcoeff = 0;
   // static const unsigned long prime = 2147483647; //numero primo ((2^31) - 1)
-  static const unsigned long prime = 3999999979;
+  static const unsigned long prime = 4294967291; //largest prime number in unsigned long int
 
 
   std::default_random_engine gen  = std::default_random_engine (std::random_device{}());
