@@ -28,7 +28,7 @@ protected:
 public:
 
   // Default constructor
-  StackVec() : Vector<Data> (INIT_SIZE), top (0) {}
+  StackVec();
 
   /* ************************************************************************ */
 

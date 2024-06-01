@@ -2,6 +2,12 @@
 namespace lasd {
 
 /* ************************************************************************** */
+// Default constructor
+template <typename Data>
+StackVec<Data>::StackVec() : Vector<Data> (INIT_SIZE), top (0) 
+{
+    this->size = INIT_SIZE;
+}
 
 // Specific constructor
 
