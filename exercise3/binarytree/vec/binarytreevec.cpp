@@ -26,18 +26,28 @@ BinaryTreeVec<Data>::NodeVec::NodeVec (BinaryTreeVec<Data>::NodeVec && that) noe
 template <typename Data>
 BinaryTreeVec<Data>::NodeVec & BinaryTreeVec<Data>::NodeVec::operator= (const BinaryTreeVec<Data>::NodeVec & that) 
 {
-    this->elem = that.elem;
-    this->idx = that.idx;
-    this->tree = that.tree; 
+    if (this != &that)
+    {
+        this->elem = that.elem;
+        this->idx = that.idx;
+        this->tree = that.tree; 
+    }   
     return * this;
 }
 
 template <typename Data>
-BinaryTreeVec<Data>::NodeVec & BinaryTreeVec<Data>::NodeVec::operator= (BinaryTreeVec<Data>::NodeVec && that) 
+BinaryTreeVec<Data>::NodeVec & BinaryTreeVec<Data>::NodeVec::operator= (BinaryTreeVec<Data>::NodeVec && that) noexcept
 {
-    NodeVec toSwap (std::move(that)); 
-    std::swap (*this, toSwap); 
-    return * this;
+    if (this != &that)
+    {
+        this->elem = std::move(that.elem);
+        this->idx = that.idx;
+        this->tree = that.tree;
+
+        that.idx = 0;
+        that.tree = nullptr;
+    }
+    return *this;
 }
 
 template <typename Data>

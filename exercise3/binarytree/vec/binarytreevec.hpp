@@ -37,7 +37,7 @@ protected:
     NodeVec (NodeVec &&) noexcept;
 
     NodeVec & operator= (const NodeVec &);
-    NodeVec & operator= (NodeVec &&);
+    NodeVec & operator= (NodeVec &&) noexcept;
 
     virtual ~NodeVec () = default;
 
