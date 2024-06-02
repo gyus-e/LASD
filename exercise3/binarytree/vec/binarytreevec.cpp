@@ -342,9 +342,12 @@ inline bool BinaryTreeVec<Data>::Empty() const noexcept
 template <typename Data>
 void BinaryTreeVec<Data>::BreadthTraverse(TraverseFun fun) const
 {
-    for (unsigned long i = 0; i < this->size; i++)
-    {
-        fun(this->vec[i].Element());
+    if (!this->vec.Empty())
+    {    
+        for (unsigned long i = 0; i < this->size; i++)
+        {
+            fun(this->vec[i].Element());
+        }
     }
 }
 
