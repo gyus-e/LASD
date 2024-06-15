@@ -156,7 +156,14 @@ inline bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) const
 
     bool ret = true;
 
-    this->Table.Traverse(
+    if (this->Empty() || that.Empty())
+    {
+        return this->Empty() && that.Empty();
+    }
+    
+    if (!this->Table.Empty())
+    {
+        this->Table.Traverse(
         [&that, &ret] (const Bucket & bucket)
         {
             if (!bucket.Empty())
@@ -170,6 +177,7 @@ inline bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr& that) const
             }
         }
     );
+    }
     return ret;
 }
 
