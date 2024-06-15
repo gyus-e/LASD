@@ -11,6 +11,7 @@
 #include "../container/traversable.hpp"
 #include "../container/mappable.hpp"
 #include "../container/linear.hpp"
+#include "../container/dictionary.hpp"
 #include "../vector/vector.hpp"
 #include "../list/list.hpp"
 
@@ -580,7 +581,7 @@ namespace mytst
     mytst::TestBinaryTree<lasd::BinaryTreeVec<T>>();
     std::cout<<std::endl;
 
-    lasd::BinaryTreeLnk<T> btLnk;
+    lasd::BinaryTreeLnk<T> btLnk (lasd::Vector<T>(40));
     randInit(btLnk);
 
     lasd::BinaryTreeVec<T> btVec = btLnk;
