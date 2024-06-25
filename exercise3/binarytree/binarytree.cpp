@@ -476,14 +476,14 @@ void BTPostOrderIterator<Data>::toLeftMostLeaf()
         //scendo a sinistra, se possibile
         if (this->curr->HasLeftChild())
         {
-        this->stk.Push(this->curr);
-        this->curr = & this->curr->LeftChild();
+            this->stk.Push(this->curr);
+            this->curr = & this->curr->LeftChild();
         }
         //altrimenti scendo a destra
         else if (this->curr->HasRightChild())
         {
-        this->stk.Push(this->curr);
-        this->curr = & this->curr->RightChild();
+            this->stk.Push(this->curr);
+            this->curr = & this->curr->RightChild();
         }      
     }
 }
@@ -567,19 +567,19 @@ BTPostOrderIterator<Data> & BTPostOrderIterator<Data>::operator++() // (throw st
 
     if (!stk.Empty())
     {
-        //il top dello stack è il fratello sinistro di curr, oppure il padre
+        //curr potrebbe essere tanto il figlio destro quanto il sinistro del top dello stack
         const typename BinaryTree<Data>::Node* top = this->stk.Top();
 
-        //se top è il fratello sinistro di curr
+        //se curr è figlio sinistro e ha un fratello
         if (top->HasRightChild() && this->curr != &(top->RightChild()))
         {
-            //curr si sposta sul fratello sinistro
+            //curr si sposta sul fratello
             this->curr = & (top->RightChild());
             //e poi sulla foglia piú a sinistra del sottoablero radicato in curr, aggiungendo allo stack i nodi attraversati
             this->toLeftMostLeaf();
         }
 
-        //altrimenti, se top è il padre di curr, basta visitarlo
+        //altrimenti, basta visitare top
         else 
         {
             this->curr = top;
