@@ -16,18 +16,18 @@ bool BinaryTree<Data>::Node::operator==(const Node & that) const
 
     if (this->HasLeftChild() && that.HasLeftChild())
     {
-        ret &= (this->LeftChild() == that.LeftChild()) ; //ricorsione Sx 
+        ret &= (this->LeftChild() == that.LeftChild()) ; 
     }
-    else if (this->HasLeftChild() || that.HasLeftChild()) //se this ha figlio sx e that no, o viceversa
+    else if (this->HasLeftChild() || that.HasLeftChild()) 
     {
         return false;
     }
     
     if (this->HasRightChild() && that.HasRightChild())
     {
-        ret &= (this->RightChild() == that.RightChild()); //ricorsione Dx
+        ret &= (this->RightChild() == that.RightChild()); 
     }
-    else if (this->HasRightChild() || that.HasRightChild()) //se this ha figlio dx e that no, o viceversa
+    else if (this->HasRightChild() || that.HasRightChild()) 
     {
         return false;
     }
@@ -44,15 +44,15 @@ bool BinaryTree<Data>::Node::operator!=(const Node & that) const
 template <typename Data>
 void BinaryTree<Data>::Node::PreOrderTraverse (TraverseFun traverseFun) const
 {
-    traverseFun(this->Element()); //visita in preorder
+    traverseFun(this->Element());
     
     if (this->HasLeftChild())
     {
-        this->LeftChild().PreOrderTraverse(traverseFun); //chiamata a sinistra
+        this->LeftChild().PreOrderTraverse(traverseFun); 
     }    
     if (this->HasRightChild())
     {
-        this->RightChild().PreOrderTraverse(traverseFun); //chiamata a destra
+        this->RightChild().PreOrderTraverse(traverseFun); 
     }
 }
 
@@ -61,14 +61,14 @@ void BinaryTree<Data>::Node::PostOrderTraverse (TraverseFun traverseFun) const
 {
     if (this->HasLeftChild())
     {
-        this->LeftChild().PostOrderTraverse(traverseFun); //chiamata a sinistra
+        this->LeftChild().PostOrderTraverse(traverseFun);
     }    
     if (this->HasRightChild())
     {
-        this->RightChild().PostOrderTraverse(traverseFun); //chiamata a destra
+        this->RightChild().PostOrderTraverse(traverseFun);
     }
     
-    traverseFun(this->Element()); //visita in postorder
+    traverseFun(this->Element());
 }
 
 template <typename Data>
@@ -76,14 +76,14 @@ void BinaryTree<Data>::Node::InOrderTraverse (TraverseFun traverseFun) const
 {
     if (this->HasLeftChild())
     {
-        this->LeftChild().InOrderTraverse(traverseFun); //chiamata a sinistra
+        this->LeftChild().InOrderTraverse(traverseFun); 
     }    
 
-    traverseFun(this->Element()); //visita in order
+    traverseFun(this->Element()); 
 
     if (this->HasRightChild())
     {
-        this->RightChild().InOrderTraverse(traverseFun); //chiamata a destra
+        this->RightChild().InOrderTraverse(traverseFun);
     }
 }
 
@@ -96,17 +96,14 @@ void BinaryTree<Data>::Node::BreadthTraverse (TraverseFun traverseFun) const
     {
         const Node * curr = Q.Head();
 
-        //Accoda figlio sx
         if (curr->HasLeftChild())
         {
             Q.Enqueue(& (curr->LeftChild()));
         }
-        //Accoda figlio dx
         if (curr->HasRightChild())
         {
             Q.Enqueue(& (curr->RightChild()));
         }
-        //visita curr
         traverseFun(curr->Element ());
 
         Q.Dequeue();
@@ -193,15 +190,15 @@ void BinaryTree<Data>::BreadthTraverse(TraverseFun traverseFun) const
 template <typename Data>
 void MutableBinaryTree<Data>::MutableNode::PreOrderMap (MapFun mapFun)
 {
-    mapFun(this->Element()); //visita in preorder
+    mapFun(this->Element()); 
     
     if (this->HasLeftChild())
     {
-        this->LeftChild().PreOrderMap(mapFun); //chiamata a sinistra
+        this->LeftChild().PreOrderMap(mapFun); 
     }    
     if (this->HasRightChild())
     {
-        this->RightChild().PreOrderMap(mapFun); //chiamata a destra
+        this->RightChild().PreOrderMap(mapFun); 
     }
 }
 
@@ -210,14 +207,14 @@ void MutableBinaryTree<Data>::MutableNode::PostOrderMap (MapFun mapFun)
 {
     if (this->HasLeftChild())
     {
-        this->LeftChild().PostOrderMap(mapFun); //chiamata a sinistra
+        this->LeftChild().PostOrderMap(mapFun); 
     }    
     if (this->HasRightChild())
     {
-        this->RightChild().PostOrderMap(mapFun); //chiamata a destra
+        this->RightChild().PostOrderMap(mapFun); 
     }
     
-    mapFun(this->Element()); //visita in postorder
+    mapFun(this->Element()); 
 }
 
 template <typename Data>
@@ -225,14 +222,14 @@ void MutableBinaryTree<Data>::MutableNode::InOrderMap (MapFun mapFun)
 {
     if (this->HasLeftChild())
     {
-        this->LeftChild().InOrderMap(mapFun); //chiamata a sinistra
+        this->LeftChild().InOrderMap(mapFun); 
     }    
 
-    mapFun(this->Element()); //visita in order
+    mapFun(this->Element()); 
 
     if (this->HasRightChild())
     {
-        this->RightChild().InOrderMap(mapFun); //chiamata a destra
+        this->RightChild().InOrderMap(mapFun);
     }
 }
 
@@ -245,17 +242,14 @@ void MutableBinaryTree<Data>::MutableNode::BreadthMap (MapFun mapFun)
     {
         MutableNode * curr = Q.Head();
 
-        //Accoda figlio sx
         if (curr->HasLeftChild())
         {
             Q.Enqueue(&(curr->LeftChild()));
         }
-        //Accoda figlio dx
         if (curr->HasRightChild())
         {
             Q.Enqueue(&(curr->RightChild()));
         }
-        //visita curr
         mapFun(curr->Element ());
 
         Q.Dequeue();
@@ -386,24 +380,18 @@ BTPreOrderIterator<Data> & BTPreOrderIterator<Data>::operator++() // (throw std:
         throw std::out_of_range("from operator++");
     }
 
-    //curr inizia dalla radice
-
-    //prima spingo il figlio destro
     if (this->curr->HasRightChild())
     {
         this->stk.Push(&(this->curr->RightChild()));
     }
-    //poi spingo il figlio sinistro in cima allo stack
     if (this->curr->HasLeftChild())
     {
         this->stk.Push(&(this->curr->LeftChild()));
     } 
-    //se lo stack è vuoto, non ci sono altri nodi da visitare
     if (this->stk.Empty())
     {
         this->curr = nullptr;
     }
-    //altrimenti, curr passa al nodo in cima allo stack
     else 
     {
         this->curr = this->stk.Top();
@@ -473,13 +461,11 @@ void BTPostOrderIterator<Data>::toLeftMostLeaf()
 
     while (!this->curr->IsLeaf())
     {
-        //scendo a sinistra, se possibile
         if (this->curr->HasLeftChild())
         {
             this->stk.Push(this->curr);
             this->curr = & this->curr->LeftChild();
         }
-        //altrimenti scendo a destra
         else if (this->curr->HasRightChild())
         {
             this->stk.Push(this->curr);
@@ -563,30 +549,22 @@ BTPostOrderIterator<Data> & BTPostOrderIterator<Data>::operator++() // (throw st
         throw std::out_of_range("from operator++");
     }
 
-    //curr inizia dalla foglia piú a sinistra (NB! non dal nodo piú a sinistra)
-
     if (!stk.Empty())
     {
-        //curr potrebbe essere tanto il figlio destro quanto il sinistro del top dello stack
         const typename BinaryTree<Data>::Node* top = this->stk.Top();
 
-        //se curr è figlio sinistro e ha un fratello
         if (top->HasRightChild() && this->curr != &(top->RightChild()))
         {
-            //curr si sposta sul fratello
             this->curr = & (top->RightChild());
-            //e poi sulla foglia piú a sinistra del sottoablero radicato in curr, aggiungendo allo stack i nodi attraversati
             this->toLeftMostLeaf();
         }
 
-        //altrimenti, basta visitare top
         else 
         {
             this->curr = top;
             this->stk.Pop();
         }
     }
-    //se lo stack è vuoto, l'iteratore è terminato
     else 
     {
         this->curr = nullptr;
@@ -656,7 +634,6 @@ void BTInOrderIterator<Data>::toLeftMostNode ()
         // throw std::out_of_range("from toLeftMostNode: curr is nullptr");
     }
 
-    //scendo sempre a sinistra finché possibile
     while (this->curr->HasLeftChild())
     {
         this->stk.Push(this->curr);
@@ -738,9 +715,6 @@ BTInOrderIterator<Data> & BTInOrderIterator<Data>::operator++() // (throw std::o
         throw std::out_of_range("from operator++");
     }
 
-    //curr inizia dal nodo piú a sinistra (minimo)
-
-    //se c'è un sottoalbero destro, parte dal suo minimo
     if (this->curr->HasRightChild())
     {
         this->curr = & (this->curr->RightChild());
@@ -748,13 +722,11 @@ BTInOrderIterator<Data> & BTInOrderIterator<Data>::operator++() // (throw std::o
     }
     else 
     {
-        //recupera il padre dallo stack, se presente
         if (!stk.Empty())
         {
             this->curr = this->stk.Top();
             this->stk.Pop();
         }
-        //altrimenti l'iteratore è terminato
         else 
         {
             this->curr = nullptr;
@@ -885,23 +857,19 @@ void BTInOrderIterator<Data>::Reset() noexcept // (should not throw exceptions)
     {
       throw std::out_of_range("from operator++");
     }
-    //accoda figlio sinistro
     if (this->curr->HasLeftChild())
     {
       this->que.Enqueue(&(this->curr->LeftChild()));
     }
-    //accoda figlio destro
     if (this->curr->HasRightChild())
     {
       this->que.Enqueue(&(this->curr->RightChild()));
     }
 
-    //visita testa della coda
     if (!this->que.Empty())
     {
       this->curr = this->que.HeadNDequeue();
     }
-    //se la coda è vuota l'iteratore è terminato
     else 
     {
       this->curr = nullptr; 
