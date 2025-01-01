@@ -1,1 +1,1 @@
-Fanno abbastanza schifo, usatene altre
+Fanno abbastanza schifo, vedete altre librerie
